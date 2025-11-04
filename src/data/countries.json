@@ -1,0 +1,134 @@
+[
+  {
+    "iso2": "CL",
+    "name": "Chile",
+    "risk": 0.30,
+    "growth": 0.023,
+    "baseReturn": 0.06,
+    "sources": {
+      "riskUrl": "https://www.atradius.com/en/economic-research/country-report/chile.html",
+      "growthUrl": "https://www.imf.org/external/datamapper/NGDP_RPCH@WEO"
+    }
+  },
+  {
+    "iso2": "MX",
+    "name": "México",
+    "risk": 0.65,
+    "growth": 0.032,
+    "baseReturn": 0.09,
+    "sources": {
+      "riskUrl": "https://www.atradius.com/en/economic-research/country-report/mexico.html",
+      "growthUrl": "https://www.imf.org/external/datamapper/NGDP_RPCH@WEO"
+    }
+  },
+  {
+    "iso2": "IN",
+    "name": "India",
+    "risk": 0.50,
+    "growth": 0.065,
+    "baseReturn": 0.10,
+    "sources": {
+      "riskUrl": "https://www.atradius.com/en/economic-research/country-report/india.html",
+      "growthUrl": "https://www.imf.org/external/datamapper/NGDP_RPCH@WEO"
+    }
+  },
+  {
+    "iso2": "NG",
+    "name": "Nigeria",
+    "risk": 0.90,
+    "growth": 0.025,
+    "baseReturn": 0.13,
+    "sources": {
+      "riskUrl": "https://www.atradius.com/en/economic-research/country-report/nigeria.html",
+      "growthUrl": "https://www.imf.org/external/datamapper/NGDP_RPCH@WEO"
+    }
+  },
+  {
+    "iso2": "US",
+    "name": "Estados Unidos",
+    "risk": 0.20,
+    "growth": 0.020,
+    "baseReturn": 0.04,
+    "sources": {
+      "riskUrl": "https://www.atradius.com/en/economic-research/country-report/united-states.html",
+      "growthUrl": "https://www.imf.org/external/datamapper/NGDP_RPCH@WEO"
+    }
+  },
+  {
+    "iso2": "TR",
+    "name": "Turquía",
+    "risk": 0.70,
+    "growth": 0.035,
+    "baseReturn": 0.11,
+    "sources": {
+      "riskUrl": "https://www.atradius.com/en/economic-research/country-report/turkey.html",
+      "growthUrl": "https://www.imf.org/external/datamapper/NGDP_RPCH@WEO"
+    }
+  },
+  {
+    "iso2": "EC",
+    "name": "Ecuador",
+    "risk": 0.80,
+    "growth": 0.020,
+    "baseReturn": 0.12,
+    "sources": {
+      "riskUrl": "https://www.atradius.com/en/economic-research/country-report/ecuador.html",
+      "growthUrl": "https://www.imf.org/external/datamapper/NGDP_RPCH@WEO"
+    }
+  },
+  {
+    "iso2": "DE",
+    "name": "Alemania",
+    "risk": 0.20,
+    "growth": 0.015,
+    "baseReturn": 0.05,
+    "sources": {
+      "riskUrl": "https://www.atradius.com/en/economic-research/country-report/germany.html",
+      "growthUrl": "https://www.imf.org/external/datamapper/NGDP_RPCH@WEO"
+    }
+  },
+  {
+    "iso2": "BR",
+    "name": "Brasil",
+    "risk": 0.60,
+    "growth": 0.028,
+    "baseReturn": 0.08,
+    "sources": {
+      "riskUrl": "https://www.atradius.com/en/economic-research/country-report/brazil.html",
+      "growthUrl": "https://www.imf.org/external/datamapper/NGDP_RPCH@WEO"
+    }
+  },
+  {
+    "iso2": "CN",
+    "name": "China",
+    "risk": 0.45,
+    "growth": 0.048,
+    "baseReturn": 0.07,
+    "sources": {
+      "riskUrl": "https://www.atradius.com/en/economic-research/country-report/china.html",
+      "growthUrl": "https://www.imf.org/external/datamapper/NGDP_RPCH@WEO"
+    }
+  },
+  {
+    "iso2": "AR",
+    "name": "Argentina",
+    "risk": 0.85,
+    "growth": 0.015,
+    "baseReturn": 0.14,
+    "sources": {
+      "riskUrl": "https://www.atradius.com/en/economic-research/country-report/argentina.html",
+      "growthUrl": "https://www.imf.org/external/datamapper/NGDP_RPCH@WEO"
+    }
+  },
+  {
+    "iso2": "SG",
+    "name": "Singapur",
+    "risk": 0.15,
+    "growth": 0.025,
+    "baseReturn": 0.03,
+    "sources": {
+      "riskUrl": "https://www.atradius.com/en/economic-research/country-report/singapore.html",
+      "growthUrl": "https://www.imf.org/external/datamapper/NGDP_RPCH@WEO"
+    }
+  }
+]

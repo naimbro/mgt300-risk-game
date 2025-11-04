@@ -1,0 +1,21 @@
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Join } from './pages/Join';
+import { Lobby } from './pages/Lobby-Multiplayer';
+import { Round } from './pages/Round';
+import { Leaderboard } from './pages/Leaderboard-Ultra-Safe';
+import { Admin } from './pages/Admin';
+
+export default function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Navigate to="/join" replace />} />
+        <Route path="/join" element={<Join />} />
+        <Route path="/game/:gameId/lobby" element={<Lobby />} />
+        <Route path="/game/:gameId/round" element={<Round />} />
+        <Route path="/game/:gameId/leaderboard" element={<Leaderboard />} />
+        <Route path="/admin" element={<Admin />} />
+      </Routes>
+    </Router>
+  );
+}

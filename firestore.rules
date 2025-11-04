@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthed() { 
+      return request.auth != null; 
+    }
+    
+    function isValidTimeWindow(gameId, roundIndex) {
+      let round = get(/databases/$(database)/documents/games/$(gameId)/rounds/$(roundIndex));
+      return round != null && 
+             request.time >= round.data.startsAt && 
+             request.time <= round.data.endsAt;
+    }
+
+    // Games collection - public read for basic info
+    match /games/{gameId} {
+      allow read: if true;
+      allow write: if false; // Only admin via Functions
+      
+      // Users subcollection
+      match /users/{userId} {
+        allow read, write: if isAuthed() && request.auth.uid == userId;
+      }
+      
+      // Submissions subcollection
+      match /submissions/{submissionId} {
+        allow create: if isAuthed() && 
+                        request.resource.data.userId == request.auth.uid &&
+                        isValidTimeWindow(gameId, request.resource.data.roundIndex);
+        allow read: if isAuthed() && resource.data.userId == request.auth.uid;
+        allow update, delete: if false; // Submissions are immutable
+      }
+      
+      // Results subcollection - read only for users
+      match /results/{resultId} {
+        allow read: if isAuthed() && resource.data.userId == request.auth.uid;
+        allow write: if false; // Only Functions can write
+      }
+      
+      // Rounds subcollection
+      match /rounds/{roundId} {
+        allow read: if true;
+        allow write: if false; // Admin via Functions
+      }
+      
+      // User round pairs (for personalized country options)
+      match /userRoundPairs/{pairId} {
+        allow read: if isAuthed() && 
+                      pairId.matches('.*_' + request.auth.uid + '_.*');
+        allow write: if false; // Only Functions
+      }
+    }
+    
+    // Catalog collection - public read
+    match /catalog/{document=**} { 
+      allow read: if true; 
+      allow write: if false; // Admin only
+    }
+  }
+}
