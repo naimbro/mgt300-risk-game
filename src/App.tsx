@@ -6,8 +6,10 @@ import { Leaderboard } from './pages/Leaderboard-Ultra-Safe';
 import { Admin } from './pages/Admin';
 
 export default function App() {
+  const basename = import.meta.env.BASE_URL || '/';
+  
   return (
-    <Router>
+    <Router basename={basename}>
       <Routes>
         <Route path="/" element={<Navigate to="/join" replace />} />
         <Route path="/join" element={<Join />} />
