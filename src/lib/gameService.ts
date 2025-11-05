@@ -86,7 +86,7 @@ class GameService {
       name: adminName,
       capital: gameData.settings.initialCapital,
       isAdmin: true,
-      joinedAt: serverTimestamp() as Timestamp,
+      joinedAt: Timestamp.now(),
       submissions: []
     };
 
@@ -118,7 +118,7 @@ class GameService {
       name: playerName,
       capital: gameData.settings.initialCapital,
       isAdmin: false,
-      joinedAt: serverTimestamp() as Timestamp,
+      joinedAt: Timestamp.now(),
       submissions: []
     };
 
@@ -217,15 +217,19 @@ class GameService {
       throw new Error('Ya enviaste tu inversión para esta ronda');
     }
 
-    // Crear submission
+    // Crear submission con timestamp actual (no serverTimestamp en arrayUnion)
     const submission: RoundSubmission = {
       round,
       allocation,
-      submittedAt: serverTimestamp() as Timestamp
+      submittedAt: Timestamp.now()
     };
 
+    // Actualizar submissions del jugador
+    const currentSubmissions = player.submissions || [];
+    const newSubmissions = [...currentSubmissions, submission];
+
     await updateDoc(gameRef, {
-      [`players.${user.uid}.submissions`]: arrayUnion(submission)
+      [`players.${user.uid}.submissions`]: newSubmissions
     });
 
     console.log('💰 Investment submitted:', allocation);
