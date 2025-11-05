@@ -6,7 +6,9 @@
     "growth": 0.022,
     "baseReturn": 0.07,
     "expropriationProb": 0.02,
-    "dataSource": "World Bank 2024, FSI 2023"
+    "dataSource": "World Bank 2024, FSI 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/united-states",
+    "economicDataUrl": "https://data.worldbank.org/country/united-states"
   },
   {
     "iso2": "CN",
@@ -15,7 +17,9 @@
     "growth": 0.049,
     "baseReturn": 0.12,
     "expropriationProb": 0.1,
-    "dataSource": "World Bank 2024, FSI 2023"
+    "dataSource": "World Bank 2024, FSI 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/china",
+    "economicDataUrl": "https://data.worldbank.org/country/china"
   },
   {
     "iso2": "BR",
@@ -24,7 +28,9 @@
     "growth": 0.028,
     "baseReturn": 0.11,
     "expropriationProb": 0.15,
-    "dataSource": "World Bank 2024, TheGlobalEconomy 2023"
+    "dataSource": "World Bank 2024, TheGlobalEconomy 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/brazil",
+    "economicDataUrl": "https://data.worldbank.org/es/country/brazil"
   },
   {
     "iso2": "IN",
@@ -33,7 +39,9 @@
     "growth": 0.065,
     "baseReturn": 0.15,
     "expropriationProb": 0.1,
-    "dataSource": "World Bank 2024, FSI 2023"
+    "dataSource": "World Bank 2024, FSI 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/india",
+    "economicDataUrl": "https://data.worldbank.org/country/india"
   },
   {
     "iso2": "RU",
@@ -42,7 +50,9 @@
     "growth": 0.017,
     "baseReturn": 0.09,
     "expropriationProb": 0.45,
-    "dataSource": "World Bank 2024, FSI 2023"
+    "dataSource": "World Bank 2024, FSI 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/russia",
+    "economicDataUrl": "https://data.worldbank.org/country/russian-federation"
   },
   {
     "iso2": "ZA",
@@ -51,7 +61,9 @@
     "growth": 0.013,
     "baseReturn": 0.08,
     "expropriationProb": 0.2,
-    "dataSource": "World Bank 2024, FSI 2023"
+    "dataSource": "World Bank 2024, FSI 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/south-africa",
+    "economicDataUrl": "https://data.worldbank.org/country/south-africa"
   },
   {
     "iso2": "MX",
@@ -60,7 +72,9 @@
     "growth": 0.025,
     "baseReturn": 0.1,
     "expropriationProb": 0.12,
-    "dataSource": "World Bank 2024, FSI 2023"
+    "dataSource": "World Bank 2024, FSI 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/mexico",
+    "economicDataUrl": "https://data.worldbank.org/es/country/mexico"
   },
   {
     "iso2": "AR",
@@ -69,88 +83,9 @@
     "growth": -0.01,
     "baseReturn": 0.07,
     "expropriationProb": 0.4,
-    "dataSource": "World Bank 2024, FSI 2023"
-  },
-  {
-    "iso2": "CL",
-    "name": "Chile",
-    "risk": 4.0,
-    "growth": 0.018,
-    "baseReturn": 0.09,
-    "expropriationProb": 0.08,
-    "dataSource": "World Bank 2024, TheGlobalEconomy 2023"
-  },
-  {
-    "iso2": "CO",
-    "name": "Colombia",
-    "risk": 6.2,
-    "growth": 0.029,
-    "baseReturn": 0.1,
-    "expropriationProb": 0.14,
-    "dataSource": "World Bank 2024, FSI 2023"
-  },
-  {
-    "iso2": "JP",
-    "name": "Japón",
-    "risk": 2.3,
-    "growth": 0.011,
-    "baseReturn": 0.06,
-    "expropriationProb": 0.01,
-    "dataSource": "World Bank 2024, FSI 2023"
-  },
-  {
-    "iso2": "KR",
-    "name": "Corea del Sur",
-    "risk": 3.5,
-    "growth": 0.021,
-    "baseReturn": 0.08,
-    "expropriationProb": 0.03,
-    "dataSource": "World Bank 2024, FSI 2023"
-  },
-  {
-    "iso2": "DE",
-    "name": "Alemania",
-    "risk": 2.5,
-    "growth": 0.012,
-    "baseReturn": 0.07,
-    "expropriationProb": 0.02,
-    "dataSource": "World Bank 2024, FSI 2023"
-  },
-  {
-    "iso2": "FR",
-    "name": "Francia",
-    "risk": 2.8,
-    "growth": 0.014,
-    "baseReturn": 0.07,
-    "expropriationProb": 0.02,
-    "dataSource": "World Bank 2024, FSI 2023"
-  },
-  {
-    "iso2": "GB",
-    "name": "Reino Unido",
-    "risk": 3.0,
-    "growth": 0.016,
-    "baseReturn": 0.07,
-    "expropriationProb": 0.02,
-    "dataSource": "World Bank 2024, FSI 2023"
-  },
-  {
-    "iso2": "NG",
-    "name": "Nigeria",
-    "risk": 9.0,
-    "growth": 0.024,
-    "baseReturn": 0.13,
-    "expropriationProb": 0.35,
-    "dataSource": "World Bank 2024, FSI 2023"
-  },
-  {
-    "iso2": "EG",
-    "name": "Egipto",
-    "risk": 7.5,
-    "growth": 0.038,
-    "baseReturn": 0.12,
-    "expropriationProb": 0.25,
-    "dataSource": "World Bank 2024, TheGlobalEconomy 2023"
+    "dataSource": "World Bank 2024, FSI 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/argentina",
+    "economicDataUrl": "https://data.worldbank.org/es/country/argentina"
   },
   {
     "iso2": "TR",
@@ -159,16 +94,9 @@
     "growth": 0.045,
     "baseReturn": 0.13,
     "expropriationProb": 0.22,
-    "dataSource": "World Bank 2024, FSI 2023"
-  },
-  {
-    "iso2": "VN",
-    "name": "Vietnam",
-    "risk": 5.3,
-    "growth": 0.053,
-    "baseReturn": 0.14,
-    "expropriationProb": 0.1,
-    "dataSource": "World Bank 2024, FSI 2023"
+    "dataSource": "World Bank 2024, FSI 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/turkey",
+    "economicDataUrl": "https://data.worldbank.org/country/turkiye"
   },
   {
     "iso2": "ID",
@@ -177,7 +105,130 @@
     "growth": 0.047,
     "baseReturn": 0.13,
     "expropriationProb": 0.12,
-    "dataSource": "World Bank 2024, TheGlobalEconomy 2023"
+    "dataSource": "World Bank 2024, TheGlobalEconomy 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/indonesia",
+    "economicDataUrl": "https://data.worldbank.org/country/indonesia"
+  },
+  {
+    "iso2": "NG",
+    "name": "Nigeria",
+    "risk": 9.0,
+    "growth": 0.024,
+    "baseReturn": 0.13,
+    "expropriationProb": 0.35,
+    "dataSource": "World Bank 2024, FSI 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/nigeria",
+    "economicDataUrl": "https://data.worldbank.org/country/nigeria"
+  },
+  {
+    "iso2": "EG",
+    "name": "Egipto",
+    "risk": 7.5,
+    "growth": 0.038,
+    "baseReturn": 0.12,
+    "expropriationProb": 0.25,
+    "dataSource": "World Bank 2024, TheGlobalEconomy 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/egypt",
+    "economicDataUrl": "https://data.worldbank.org/country/egypt-arab-republic"
+  },
+  {
+    "iso2": "TH",
+    "name": "Tailandia",
+    "risk": 5.2,
+    "growth": 0.034,
+    "baseReturn": 0.11,
+    "expropriationProb": 0.1,
+    "dataSource": "World Bank 2024, FSI 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/thailand",
+    "economicDataUrl": "https://data.worldbank.org/country/thailand"
+  },
+  {
+    "iso2": "MY",
+    "name": "Malasia",
+    "risk": 4.5,
+    "growth": 0.039,
+    "baseReturn": 0.11,
+    "expropriationProb": 0.08,
+    "dataSource": "World Bank 2024, TheGlobalEconomy 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/malaysia",
+    "economicDataUrl": "https://data.worldbank.org/country/malaysia"
+  },
+  {
+    "iso2": "CL",
+    "name": "Chile",
+    "risk": 4.0,
+    "growth": 0.018,
+    "baseReturn": 0.09,
+    "expropriationProb": 0.08,
+    "dataSource": "World Bank 2024, TheGlobalEconomy 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/chile",
+    "economicDataUrl": "https://data.worldbank.org/es/country/chile"
+  },
+  {
+    "iso2": "CO",
+    "name": "Colombia",
+    "risk": 6.2,
+    "growth": 0.029,
+    "baseReturn": 0.1,
+    "expropriationProb": 0.14,
+    "dataSource": "World Bank 2024, FSI 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/colombia",
+    "economicDataUrl": "https://data.worldbank.org/es/country/colombia"
+  },
+  {
+    "iso2": "PE",
+    "name": "Perú",
+    "risk": 5.8,
+    "growth": 0.027,
+    "baseReturn": 0.1,
+    "expropriationProb": 0.13,
+    "dataSource": "World Bank 2024, TheGlobalEconomy 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/peru",
+    "economicDataUrl": "https://data.worldbank.org/es/country/peru"
+  },
+  {
+    "iso2": "PL",
+    "name": "Polonia",
+    "risk": 4.3,
+    "growth": 0.031,
+    "baseReturn": 0.1,
+    "expropriationProb": 0.07,
+    "dataSource": "World Bank 2024, FSI 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/poland",
+    "economicDataUrl": "https://data.worldbank.org/country/poland"
+  },
+  {
+    "iso2": "CZ",
+    "name": "República Checa",
+    "risk": 3.5,
+    "growth": 0.023,
+    "baseReturn": 0.09,
+    "expropriationProb": 0.05,
+    "dataSource": "World Bank 2024, FSI 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/czech-republic",
+    "economicDataUrl": "https://data.worldbank.org/country/czechia"
+  },
+  {
+    "iso2": "HU",
+    "name": "Hungría",
+    "risk": 4.8,
+    "growth": 0.028,
+    "baseReturn": 0.1,
+    "expropriationProb": 0.08,
+    "dataSource": "World Bank 2024, FSI 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/hungary",
+    "economicDataUrl": "https://data.worldbank.org/country/hungary"
+  },
+  {
+    "iso2": "UA",
+    "name": "Ucrania",
+    "risk": 9.2,
+    "growth": -0.03,
+    "baseReturn": 0.08,
+    "expropriationProb": 0.5,
+    "dataSource": "World Bank 2024, FSI 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/ukraine",
+    "economicDataUrl": "https://data.worldbank.org/country/ukraine"
   },
   {
     "iso2": "KE",
@@ -186,24 +237,19 @@
     "growth": 0.043,
     "baseReturn": 0.12,
     "expropriationProb": 0.2,
-    "dataSource": "World Bank 2024, FSI 2023"
+    "dataSource": "World Bank 2024, FSI 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/kenya",
+    "economicDataUrl": "https://data.worldbank.org/country/kenya"
   },
   {
-    "iso2": "AU",
-    "name": "Australia",
-    "risk": 1.8,
-    "growth": 0.019,
-    "baseReturn": 0.07,
-    "expropriationProb": 0.01,
-    "dataSource": "World Bank 2024, FSI 2023"
-  },
-  {
-    "iso2": "CA",
-    "name": "Canadá",
-    "risk": 2.2,
-    "growth": 0.016,
-    "baseReturn": 0.07,
-    "expropriationProb": 0.01,
-    "dataSource": "World Bank 2024, FSI 2023"
+    "iso2": "GH",
+    "name": "Ghana",
+    "risk": 7.2,
+    "growth": 0.036,
+    "baseReturn": 0.11,
+    "expropriationProb": 0.22,
+    "dataSource": "World Bank 2024, FSI 2023",
+    "riskAnalysisUrl": "https://tradingeconomics.com/ghana",
+    "economicDataUrl": "https://data.worldbank.org/country/ghana"
   }
 ]

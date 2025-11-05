@@ -6,6 +6,8 @@ export interface Country {
   baseReturn: number; // 0..0.20 (base annual return)
   expropriationProb: number; // 0..1 (probability of expropriation)
   dataSource?: string; // Source of the data
+  riskAnalysisUrl?: string; // Link to risk analysis
+  economicDataUrl?: string; // Link to economic data
   sources?: {
     riskUrl?: string;
     growthUrl?: string;

@@ -15,9 +15,6 @@ export const CountryCard: React.FC<CountryCardProps> = ({
   onAllocationChange,
   disabled = false
 }) => {
-  const riskLevel = country.risk >= 7 ? '🔴 Alto' : country.risk >= 4 ? '🟡 Medio' : '🟢 Bajo';
-  const riskColor = country.risk >= 7 ? 'text-red-600' : country.risk >= 4 ? 'text-yellow-600' : 'text-green-600';
-  
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-gray-200">
       <div className="flex items-center justify-between mb-4">
@@ -27,24 +24,34 @@ export const CountryCard: React.FC<CountryCardProps> = ({
         <span className="text-3xl">🏳️</span>
       </div>
       
-      <div className="space-y-3 mb-6">
-        <div className="flex justify-between">
-          <span className="text-gray-600">Riesgo Político:</span>
-          <span className={`font-semibold ${riskColor}`}>
-            {riskLevel} ({country.risk.toFixed(1)}/10)
-          </span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-600">📈 Crecimiento:</span>
-          <span className="font-semibold text-blue-600">
-            {(country.growth * 100).toFixed(1)}%
-          </span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-600">💼 Retorno Base:</span>
-          <span className="font-semibold">
-            {(country.baseReturn * 100).toFixed(1)}%
-          </span>
+      <div className="mb-6">
+        <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500">
+          <h4 className="font-semibold text-blue-800 mb-2">🔍 Investiga antes de invertir</h4>
+          <p className="text-sm text-blue-700 mb-3">
+            Busca información sobre riesgo político, crecimiento económico y oportunidades de inversión en {country.name}.
+          </p>
+          <div className="space-y-2">
+            {country.riskAnalysisUrl && (
+              <a
+                href={country.riskAnalysisUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 text-center transition-colors"
+              >
+                📊 Análisis de Riesgo País
+              </a>
+            )}
+            {country.economicDataUrl && (
+              <a
+                href={country.economicDataUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 text-center transition-colors"
+              >
+                📈 Datos Económicos Actuales
+              </a>
+            )}
+          </div>
         </div>
       </div>
       
@@ -68,30 +75,6 @@ export const CountryCard: React.FC<CountryCardProps> = ({
         </div>
       </div>
       
-      {country.sources && (
-        <div className="flex gap-2">
-          {country.sources.riskUrl && (
-            <a
-              href={country.sources.riskUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-blue-600 hover:text-blue-800 underline"
-            >
-              Ver análisis de riesgo
-            </a>
-          )}
-          {country.sources.growthUrl && (
-            <a
-              href={country.sources.growthUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-blue-600 hover:text-blue-800 underline"
-            >
-              Ver datos de crecimiento
-            </a>
-          )}
-        </div>
-      )}
     </div>
   );
 };
