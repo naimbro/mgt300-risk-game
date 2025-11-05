@@ -21,7 +21,7 @@ export const Leaderboard = () => {
   const [startingNextRound, setStartingNextRound] = useState(false);
   const [timeToNext, setTimeToNext] = useState(15);
 
-  // Timer para próxima ronda o procesamiento
+  // Procesar resultados automáticamente cuando llega el admin
   useEffect(() => {
     if (!gameData || !currentUser) return;
     
@@ -32,10 +32,19 @@ export const Leaderboard = () => {
       return;
     }
 
+    // Si es admin y no está procesando, procesar inmediatamente
+    if (isAdmin && !processingResults && !startingNextRound) {
+      console.log('🔧 Admin detected, processing results immediately...');
+      // Dar un momento para que se cargue todo y luego procesar
+      setTimeout(() => {
+        handleProcessAndContinue();
+      }, 2000);
+    }
+
+    // Timer de respaldo para no-admin
     const interval = setInterval(() => {
       setTimeToNext(prev => {
         if (prev <= 1) {
-          // Solo el admin procesa resultados e inicia la siguiente ronda
           if (isAdmin && !processingResults && !startingNextRound) {
             handleProcessAndContinue();
           }
@@ -46,25 +55,46 @@ export const Leaderboard = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [gameData, currentUser, isAdmin, processingResults, startingNextRound]);
+  }, [gameData, currentUser, isAdmin]);
 
   const handleProcessAndContinue = async () => {
-    if (!isAdmin || processingResults || startingNextRound) return;
+    if (!isAdmin || processingResults || startingNextRound) {
+      console.log('⏭️ Skipping process - not admin or already processing', { isAdmin, processingResults, startingNextRound });
+      return;
+    }
 
     try {
+      console.log('🔄 Starting handleProcessAndContinue...', { 
+        gameData: gameData?.currentRound, 
+        totalRounds: gameData?.totalRounds,
+        playerCount: Object.keys(gameData?.players || {}).length 
+      });
+
       // Primero procesar resultados
       setProcessingResults(true);
       console.log('📊 Processing round results...');
       await processRoundResults();
+      console.log('✅ Round results processed successfully');
+      
+      // Verificar si el juego debe continuar
+      if ((gameData?.currentRound || 0) >= (gameData?.totalRounds || 5)) {
+        console.log('🎉 Game finished after processing results');
+        setProcessingResults(false);
+        return;
+      }
       
       // Luego iniciar siguiente ronda
       setStartingNextRound(true);
       console.log('🚀 Starting next round...');
       await startNextRound();
+      console.log('✅ Next round started successfully');
       
-      // La navegación ocurrirá automáticamente cuando cambie gameData
+      // Reset states
+      setProcessingResults(false);
+      setStartingNextRound(false);
+      
     } catch (err) {
-      console.error('Error processing results:', err);
+      console.error('❌ Error processing results:', err);
       setProcessingResults(false);
       setStartingNextRound(false);
     }

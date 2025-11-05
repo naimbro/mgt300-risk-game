@@ -258,58 +258,97 @@ class GameService {
     const user = await ensureAnon();
     const gameRef = doc(db, 'games', gameId);
     
-    const gameSnap = await getDoc(gameRef);
-    if (!gameSnap.exists()) {
-      throw new Error('Partida no encontrada');
-    }
-
-    const gameData = gameSnap.data() as GameData;
-    
-    // Verificar que es admin
-    if (!gameData.players[user.uid]?.isAdmin) {
-      throw new Error('Solo el admin puede procesar resultados');
-    }
-
-    const roundData = gameData.rounds[round];
-    const updates: any = {};
-
-    // Procesar cada jugador
-    for (const [uid, player] of Object.entries(gameData.players)) {
-      const submission = player.submissions.find(sub => sub.round === round);
+    try {
+      console.log('🔥 Starting processRoundResults', { gameId, round, adminUid: user.uid });
       
-      if (submission && !submission.result) {
-        // Calcular resultados
-        const resultA = submission.allocation.A > 0 ? 
-          calculateInvestmentResult(roundData.countries.A, submission.allocation.A, `${round}-${uid}-A`) :
-          { finalAmount: 0, outcome: 'success' as const };
-          
-        const resultB = submission.allocation.B > 0 ? 
-          calculateInvestmentResult(roundData.countries.B, submission.allocation.B, `${round}-${uid}-B`) :
-          { finalAmount: 0, outcome: 'success' as const };
-
-        const totalPayout = resultA.finalAmount + resultB.finalAmount;
-        const totalInvestment = submission.allocation.A + submission.allocation.B;
-        const netGain = totalPayout - totalInvestment;
-        const newCapital = player.capital - totalInvestment + totalPayout;
-
-        // Actualizar submission con resultado
-        const submissionIndex = player.submissions.findIndex(sub => sub.round === round);
-        updates[`players.${uid}.submissions.${submissionIndex}.result`] = {
-          payout: totalPayout,
-          netGain,
-          newCapital
-        };
-        
-        // Actualizar capital del jugador
-        updates[`players.${uid}.capital`] = newCapital;
+      const gameSnap = await getDoc(gameRef);
+      if (!gameSnap.exists()) {
+        throw new Error('Partida no encontrada');
       }
+
+      const gameData = gameSnap.data() as GameData;
+      
+      // Verificar que es admin
+      if (!gameData.players[user.uid]?.isAdmin) {
+        throw new Error('Solo el admin puede procesar resultados');
+      }
+
+      const roundData = gameData.rounds[round];
+      if (!roundData) {
+        throw new Error(`Round ${round} not found`);
+      }
+
+      console.log('📊 Processing round data:', { 
+        round, 
+        countries: roundData.countries,
+        playerCount: Object.keys(gameData.players).length 
+      });
+
+      const updates: any = {};
+      let processedCount = 0;
+
+      // Procesar cada jugador
+      for (const [uid, player] of Object.entries(gameData.players)) {
+        console.log(`👤 Processing player ${player.name} (${uid})`);
+        
+        const submission = player.submissions?.find(sub => sub.round === round);
+        
+        if (submission && !submission.result) {
+          console.log(`💰 Found submission for ${player.name}:`, submission.allocation);
+          
+          // Calcular resultados
+          const resultA = submission.allocation.A > 0 ? 
+            calculateInvestmentResult(roundData.countries.A, submission.allocation.A, `${round}-${uid}-A`) :
+            { finalAmount: 0, outcome: 'success' as const };
+            
+          const resultB = submission.allocation.B > 0 ? 
+            calculateInvestmentResult(roundData.countries.B, submission.allocation.B, `${round}-${uid}-B`) :
+            { finalAmount: 0, outcome: 'success' as const };
+
+          const totalPayout = resultA.finalAmount + resultB.finalAmount;
+          const totalInvestment = submission.allocation.A + submission.allocation.B;
+          const netGain = totalPayout - totalInvestment;
+          const newCapital = player.capital - totalInvestment + totalPayout;
+
+          console.log(`📈 Calculated results for ${player.name}:`, {
+            investment: totalInvestment,
+            payout: totalPayout,
+            netGain,
+            oldCapital: player.capital,
+            newCapital
+          });
+
+          // Actualizar submission con resultado
+          const submissionIndex = player.submissions.findIndex(sub => sub.round === round);
+          updates[`players.${uid}.submissions.${submissionIndex}.result`] = {
+            payout: totalPayout,
+            netGain,
+            newCapital
+          };
+          
+          // Actualizar capital del jugador
+          updates[`players.${uid}.capital`] = newCapital;
+          processedCount++;
+          
+        } else if (!submission) {
+          console.log(`⚠️ No submission found for ${player.name} in round ${round}`);
+        } else {
+          console.log(`✅ ${player.name} already has results for round ${round}`);
+        }
+      }
+
+      // Marcar ronda como inactiva
+      updates[`rounds.${round}.isActive`] = false;
+
+      console.log(`🔄 Applying ${Object.keys(updates).length} updates for ${processedCount} players`);
+      await updateDoc(gameRef, updates);
+      
+      console.log(`✅ Round ${round} results processed successfully for ${processedCount} players`);
+      
+    } catch (error) {
+      console.error('❌ Error in processRoundResults:', error);
+      throw error;
     }
-
-    // Marcar ronda como inactiva
-    updates[`rounds.${round}.isActive`] = false;
-
-    await updateDoc(gameRef, updates);
-    console.log(`✅ Round ${round} results processed`);
   }
 
   // Escuchar cambios del juego

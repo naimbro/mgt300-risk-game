@@ -21,7 +21,6 @@ export const Round = () => {
 
   const [allocation, setAllocation] = useState({ A: 0, B: 0 });
   const [submitted, setSubmitted] = useState(false);
-  const [showResult, setShowResult] = useState(false);
 
   // Navegar si no hay ronda activa
   useEffect(() => {
@@ -34,13 +33,14 @@ export const Round = () => {
     }
   }, [gameData, currentRound, loading, navigate, gameId]);
 
-  // Marcar como enviado si ya envió
+  // Marcar como enviado si ya envió y navegar a leaderboard
   useEffect(() => {
     if (hasSubmitted && !submitted) {
       setSubmitted(true);
-      setShowResult(true);
+      console.log('📊 Player already submitted, navigating to leaderboard');
+      navigate(`/game/${gameId}/leaderboard`);
     }
-  }, [hasSubmitted, submitted]);
+  }, [hasSubmitted, submitted, navigate, gameId]);
 
   const handleAllocationChange = (country: 'A' | 'B', value: number) => {
     if (submitted) return;
@@ -65,12 +65,10 @@ export const Round = () => {
       await submitInvestment(allocation);
       
       setSubmitted(true);
-      setShowResult(true);
+      console.log('✅ Investment submitted, navigating to leaderboard immediately');
       
-      // Navegar al leaderboard después de 5 segundos
-      setTimeout(() => {
-        navigate(`/game/${gameId}/leaderboard`);
-      }, 5000);
+      // Navegar al leaderboard inmediatamente
+      navigate(`/game/${gameId}/leaderboard`);
       
     } catch (err) {
       console.error('Error submitting investment:', err);
@@ -110,35 +108,6 @@ export const Round = () => {
     );
   }
 
-  if (showResult) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-100 flex items-center justify-center p-4">
-        <div className="bg-white rounded-xl shadow-xl p-8 max-w-lg w-full text-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
-            ¡Inversión Enviada!
-          </h2>
-          <div className="text-left bg-gray-50 p-4 rounded-lg mb-6">
-            <p className="text-gray-700">
-              <span className="font-semibold">País A ({currentRound.countries.A.name}):</span> ${allocation.A.toLocaleString()}
-            </p>
-            <p className="text-gray-700 mt-2">
-              <span className="font-semibold">País B ({currentRound.countries.B.name}):</span> ${allocation.B.toLocaleString()}
-            </p>
-            <p className="text-gray-700 mt-2 font-bold">
-              Total invertido: ${(allocation.A + allocation.B).toLocaleString()}
-            </p>
-          </div>
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="text-sm text-gray-600 mt-4">
-            Esperando a que todos los jugadores envíen sus inversiones...
-          </p>
-          <p className="text-xs text-gray-500 mt-2">
-            Serás redirigido al leaderboard automáticamente
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   const totalAllocated = allocation.A + allocation.B;
   const remaining = currentUser.capital - totalAllocated;
