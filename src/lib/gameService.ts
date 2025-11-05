@@ -330,10 +330,10 @@ class GameService {
               payout: totalPayout,
               netGain,
               newCapital,
-              messageA: submission.allocation.A > 0 ? resultA.message : null,
-              messageB: submission.allocation.B > 0 ? resultB.message : null,
-              outcomeA: submission.allocation.A > 0 ? resultA.outcome : null,
-              outcomeB: submission.allocation.B > 0 ? resultB.outcome : null
+              messageA: resultA.message, // Siempre incluir mensaje, incluso si no se invirtió
+              messageB: resultB.message, // Siempre incluir mensaje, incluso si no se invirtió  
+              outcomeA: resultA.outcome,
+              outcomeB: resultB.outcome
             };
           }
           

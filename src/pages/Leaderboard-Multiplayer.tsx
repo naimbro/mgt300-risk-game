@@ -398,7 +398,7 @@ export const Leaderboard = () => {
                       </div>
                       
                       {/* Investment Feedback Messages */}
-                      {player.uid === currentUser.uid && lastResult && (lastResult.messageA || lastResult.messageB) && (
+                      {player.uid === currentUser.uid && lastResult && (
                         <div className="mt-3 p-3 bg-gray-50 rounded-lg border-l-4 border-blue-500">
                           <h4 className="text-sm font-semibold text-gray-800 mb-2">📊 Análisis de tu inversión:</h4>
                           {lastResult.messageA && (
