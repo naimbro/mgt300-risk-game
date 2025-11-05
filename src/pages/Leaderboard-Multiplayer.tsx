@@ -100,7 +100,7 @@ export const Leaderboard = () => {
     }
   };
 
-  // Navegar a la ronda si está activa Y el usuario no ha enviado inversión
+  // Navegar a la ronda solo si está activa y el usuario NO ha enviado inversión
   useEffect(() => {
     if (!gameData || !currentUser) return;
     
@@ -116,7 +116,7 @@ export const Leaderboard = () => {
         console.log('🎮 Active round detected and user has not submitted, navigating to round...');
         navigate(`/game/${gameId}/round`);
       } else {
-        console.log('🎮 Active round detected but user already submitted, staying on leaderboard');
+        console.log('🎮 Active round but user already submitted, staying in leaderboard until round ends');
       }
     }
   }, [gameData, currentUser, gameId, navigate]);

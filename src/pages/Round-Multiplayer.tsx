@@ -22,23 +22,16 @@ export const Round = () => {
   const [allocation, setAllocation] = useState({ A: 0, B: 0 });
   const [submitted, setSubmitted] = useState(false);
 
-  // Navegar si no hay ronda activa o si ya envió inversión
+  // Solo navegar si no hay ronda activa (no navegar si ya envió - esperar a otros)
   useEffect(() => {
     if (!loading && gameData) {
-      // Si no hay ronda activa o ya terminó
+      // Si no hay ronda activa o ya terminó, ir al leaderboard
       if (!currentRound || !currentRound.isActive) {
-        console.log('📊 No active round, navigating to leaderboard');
-        navigate(`/game/${gameId}/leaderboard`);
-        return;
-      }
-      
-      // Si ya envió inversión para esta ronda, ir al leaderboard
-      if (hasSubmitted) {
-        console.log('📊 Already submitted for this round, navigating to leaderboard');
+        console.log('📊 Round finished/inactive, navigating to leaderboard');
         navigate(`/game/${gameId}/leaderboard`);
       }
     }
-  }, [gameData, currentRound, hasSubmitted, loading, navigate, gameId]);
+  }, [gameData, currentRound, loading, navigate, gameId]);
 
   // Marcar como enviado si ya envió (navegación se maneja arriba)
   useEffect(() => {
@@ -70,10 +63,7 @@ export const Round = () => {
       await submitInvestment(allocation);
       
       setSubmitted(true);
-      console.log('✅ Investment submitted, navigating to leaderboard immediately');
-      
-      // Navegar al leaderboard inmediatamente
-      navigate(`/game/${gameId}/leaderboard`);
+      console.log('✅ Investment submitted, waiting for others or round end');
       
     } catch (err) {
       console.error('Error submitting investment:', err);
@@ -203,6 +193,35 @@ export const Round = () => {
             </p>
           )}
         </div>
+
+        {/* Waiting State - Show after submission */}
+        {submitted && (
+          <div className="mt-6 bg-green-50 border border-green-200 rounded-xl p-6 text-center">
+            <h3 className="text-lg font-semibold text-green-800 mb-3">
+              ¡Inversión Enviada! ✅
+            </h3>
+            <div className="text-left bg-white p-4 rounded-lg mb-4 max-w-md mx-auto">
+              <p className="text-gray-700">
+                <span className="font-semibold">{currentRound.countries.A.name}:</span> ${allocation.A.toLocaleString()}
+              </p>
+              <p className="text-gray-700 mt-1">
+                <span className="font-semibold">{currentRound.countries.B.name}:</span> ${allocation.B.toLocaleString()}
+              </p>
+              <p className="text-gray-700 mt-2 pt-2 border-t border-gray-200 font-bold">
+                Total: ${(allocation.A + allocation.B).toLocaleString()}
+              </p>
+            </div>
+            <div className="flex items-center justify-center space-x-2 text-blue-600">
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+              <p className="text-sm">
+                Esperando a que todos los jugadores envíen sus inversiones...
+              </p>
+            </div>
+            <p className="text-xs text-gray-500 mt-2">
+              La ronda terminará automáticamente cuando expire el tiempo o cuando todos hayan enviado
+            </p>
+          </div>
+        )}
 
         {/* Error */}
         {error && (
