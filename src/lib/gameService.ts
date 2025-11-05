@@ -287,7 +287,8 @@ class GameService {
       for (const [uid, player] of Object.entries(gameData.players)) {
         console.log(`👤 Processing player ${player.name} (${uid})`);
         
-        const submission = player.submissions?.find(sub => sub.round === round);
+        const submission = player.submissions && Array.isArray(player.submissions) ? 
+          player.submissions.find(sub => sub.round === round) : null;
         
         if (submission && !submission.result) {
           console.log(`💰 Found submission for ${player.name}:`, submission.allocation);
@@ -315,12 +316,16 @@ class GameService {
           });
 
           // Actualizar submission con resultado
-          const submissionIndex = player.submissions.findIndex(sub => sub.round === round);
-          updates[`players.${uid}.submissions.${submissionIndex}.result`] = {
-            payout: totalPayout,
-            netGain,
-            newCapital
-          };
+          const submissionIndex = player.submissions && Array.isArray(player.submissions) ? 
+            player.submissions.findIndex(sub => sub.round === round) : -1;
+          
+          if (submissionIndex >= 0) {
+            updates[`players.${uid}.submissions.${submissionIndex}.result`] = {
+              payout: totalPayout,
+              netGain,
+              newCapital
+            };
+          }
           
           // Actualizar capital del jugador
           updates[`players.${uid}.capital`] = newCapital;
