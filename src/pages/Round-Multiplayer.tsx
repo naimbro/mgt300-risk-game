@@ -22,25 +22,30 @@ export const Round = () => {
   const [allocation, setAllocation] = useState({ A: 0, B: 0 });
   const [submitted, setSubmitted] = useState(false);
 
-  // Navegar si no hay ronda activa
+  // Navegar si no hay ronda activa o si ya envió inversión
   useEffect(() => {
     if (!loading && gameData) {
       // Si no hay ronda activa o ya terminó
       if (!currentRound || !currentRound.isActive) {
         console.log('📊 No active round, navigating to leaderboard');
         navigate(`/game/${gameId}/leaderboard`);
+        return;
+      }
+      
+      // Si ya envió inversión para esta ronda, ir al leaderboard
+      if (hasSubmitted) {
+        console.log('📊 Already submitted for this round, navigating to leaderboard');
+        navigate(`/game/${gameId}/leaderboard`);
       }
     }
-  }, [gameData, currentRound, loading, navigate, gameId]);
+  }, [gameData, currentRound, hasSubmitted, loading, navigate, gameId]);
 
-  // Marcar como enviado si ya envió y navegar a leaderboard
+  // Marcar como enviado si ya envió (navegación se maneja arriba)
   useEffect(() => {
     if (hasSubmitted && !submitted) {
       setSubmitted(true);
-      console.log('📊 Player already submitted, navigating to leaderboard');
-      navigate(`/game/${gameId}/leaderboard`);
     }
-  }, [hasSubmitted, submitted, navigate, gameId]);
+  }, [hasSubmitted, submitted]);
 
   const handleAllocationChange = (country: 'A' | 'B', value: number) => {
     if (submitted) return;

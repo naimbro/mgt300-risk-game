@@ -100,16 +100,26 @@ export const Leaderboard = () => {
     }
   };
 
-  // Navegar a la ronda si está activa
+  // Navegar a la ronda si está activa Y el usuario no ha enviado inversión
   useEffect(() => {
-    if (!gameData) return;
+    if (!gameData || !currentUser) return;
     
     const currentRoundData = gameData.rounds[gameData.currentRound];
+    
     if (currentRoundData?.isActive) {
-      console.log('🎮 Active round detected, navigating...');
-      navigate(`/game/${gameId}/round`);
+      // Solo navegar si el usuario NO ha enviado su inversión para esta ronda
+      const hasSubmittedThisRound = currentUser.submissions?.some(
+        sub => sub.round === gameData.currentRound
+      ) || false;
+      
+      if (!hasSubmittedThisRound) {
+        console.log('🎮 Active round detected and user has not submitted, navigating to round...');
+        navigate(`/game/${gameId}/round`);
+      } else {
+        console.log('🎮 Active round detected but user already submitted, staying on leaderboard');
+      }
     }
-  }, [gameData, gameId, navigate]);
+  }, [gameData, currentUser, gameId, navigate]);
 
   if (loading || !gameData || !currentUser) {
     return (
