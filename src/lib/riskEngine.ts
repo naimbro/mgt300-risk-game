@@ -73,11 +73,12 @@ export const calculateInvestmentResult = (
   const random3 = seededRandom(seed + 2);
 
   // Calcular probabilidad de éxito
-  const riskFactor = 0.7; // Peso del riesgo político
+  const riskFactor = 0.6; // Peso del riesgo político
   const growthFactor = 0.3; // Peso del crecimiento económico
+  const baseBonus = 0.2; // Bonus base para hacer el juego menos punitivo
   
   const normalizedGrowth = Math.max(0, Math.min(1, (country.growth + 0.05) / 0.15));
-  const successProbability = (1 - country.risk) * riskFactor + normalizedGrowth * growthFactor;
+  const successProbability = (1 - country.risk / 10) * riskFactor + normalizedGrowth * growthFactor + baseBonus;
   
   // Usar la probabilidad de expropiación real del país
   const expropriationProbability = country.expropriationProb || 0;
@@ -95,7 +96,7 @@ export const calculateInvestmentResult = (
   } else if (random1 < successProbability) {
     // Éxito
     const baseReturn = country.baseReturn;
-    const riskPremium = country.risk * 0.04; // Mayor riesgo = mayor retorno potencial (4% por punto de riesgo)
+    const riskPremium = (country.risk / 10) * 0.04; // Mayor riesgo = mayor retorno potencial (4% por punto de riesgo normalizado)
     const growthBonus = Math.max(0, country.growth) * 0.8;
     const volatility = 0.3 * (random2 - 0.5); // ±15% de volatilidad
     
@@ -111,7 +112,7 @@ export const calculateInvestmentResult = (
     };
   } else {
     // Fallo
-    const baseLoss = -0.1 - (country.risk * 0.05); // -10% a -60% dependiendo del riesgo
+    const baseLoss = -0.1 - ((country.risk / 10) * 0.5); // -10% a -60% dependiendo del riesgo normalizado
     const economicFactor = Math.min(0, country.growth) * 2; // Crecimiento negativo empeora las pérdidas
     const volatility = 0.2 * (random2 - 0.5); // ±10% de volatilidad
     

@@ -63,10 +63,24 @@ export const Join = () => {
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-md">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
+      <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-lg">
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-4">
           Simulador de Inversión Global
         </h1>
+        
+        {/* Explicación del juego */}
+        <div className="mb-6 p-4 bg-gray-50 rounded-lg text-sm text-gray-700">
+          <h3 className="font-semibold text-gray-800 mb-2">📊 ¿Cómo funciona?</h3>
+          <p className="mb-3">
+            Simula inversiones en países reales durante 5 rondas. Cada ronda recibes 2 países con datos reales de riesgo político, crecimiento económico y retorno base.
+          </p>
+          <p className="mb-3">
+            <strong>Cálculo de probabilidades:</strong> Tu éxito depende de una fórmula que considera el riesgo político del país (escala 0-10), su crecimiento económico, y añade un bonus base del 20% para balancear el juego. Países menos riesgosos como Estados Unidos tienen ~90% probabilidad de éxito, mientras que países de alto riesgo como Rusia tienen ~42%.
+          </p>
+          <p className="text-xs text-gray-600">
+            Los datos provienen del Banco Mundial 2024 y el Fragile States Index 2023. El riesgo de expropiación se calcula según datos históricos por país.
+          </p>
+        </div>
         
         {/* Nombre del jugador */}
         <div className="mb-6">

@@ -361,7 +361,8 @@ export const Leaderboard = () => {
                   };
 
                   // Obtener resultado de la última ronda
-                  const lastSubmission = player.submissions[lastCompletedRound - 1];
+                  const lastSubmission = player.submissions && Array.isArray(player.submissions) ? 
+                    player.submissions.find(sub => sub.round === lastCompletedRound) : null;
                   const lastResult = lastSubmission?.result;
 
                   return (

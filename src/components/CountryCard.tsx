@@ -15,8 +15,8 @@ export const CountryCard: React.FC<CountryCardProps> = ({
   onAllocationChange,
   disabled = false
 }) => {
-  const riskLevel = country.risk >= 0.7 ? '🔴 Alto' : country.risk >= 0.4 ? '🟡 Medio' : '🟢 Bajo';
-  const riskColor = country.risk >= 0.7 ? 'text-red-600' : country.risk >= 0.4 ? 'text-yellow-600' : 'text-green-600';
+  const riskLevel = country.risk >= 7 ? '🔴 Alto' : country.risk >= 4 ? '🟡 Medio' : '🟢 Bajo';
+  const riskColor = country.risk >= 7 ? 'text-red-600' : country.risk >= 4 ? 'text-yellow-600' : 'text-green-600';
   
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-gray-200">
@@ -31,7 +31,7 @@ export const CountryCard: React.FC<CountryCardProps> = ({
         <div className="flex justify-between">
           <span className="text-gray-600">Riesgo Político:</span>
           <span className={`font-semibold ${riskColor}`}>
-            {riskLevel} ({(country.risk * 100).toFixed(0)}%)
+            {riskLevel} ({country.risk.toFixed(1)}/10)
           </span>
         </div>
         <div className="flex justify-between">
