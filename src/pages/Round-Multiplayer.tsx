@@ -202,7 +202,7 @@ export const Round = () => {
         </div>
         
         {/* Submit Button */}
-        <div className="text-center">
+        <div className="text-center space-y-4">
           <button
             onClick={handleSubmit}
             disabled={submitted || totalAllocated === 0}
@@ -214,6 +214,30 @@ export const Round = () => {
             <p className="text-red-600 text-sm mt-2">
               Debes invertir al menos algo de dinero
             </p>
+          )}
+          
+          {/* Admin Controls */}
+          {isAdmin && (
+            <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <h3 className="text-sm font-semibold text-yellow-800 mb-3">👨‍🏫 Controles de Profesor</h3>
+              <button
+                onClick={() => {
+                  // Procesar resultados directamente y ir al leaderboard
+                  console.log('🔧 Professor forcing round end...');
+                  processRoundResults().then(() => {
+                    navigate(`/game/${gameId}/leaderboard`);
+                  }).catch(err => {
+                    console.error('Error forcing round end:', err);
+                  });
+                }}
+                className="w-full px-4 py-2 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 transition-all duration-200 text-sm"
+              >
+                ⏭️ Terminar Ronda Ahora
+              </button>
+              <p className="text-xs text-yellow-700 mt-2">
+                Procesa resultados inmediatamente sin esperar timer o submissions
+              </p>
+            </div>
           )}
         </div>
 

@@ -120,6 +120,7 @@ export const useGame = (gameId?: string) => {
       setLoading(true);
       setError(null);
       const nextRound = gameData.currentRound + 1;
+      console.log(`🚀 Starting next round: ${nextRound} (current was ${gameData.currentRound})`);
       await gameService.startRound(gameId, nextRound);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Error iniciando nueva ronda';

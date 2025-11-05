@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAudio } from '../lib/audio';
 import { useGame } from '../hooks/useGame';
+import { gameService } from '../lib/gameService';
 
 export const Leaderboard = () => {
   const navigate = useNavigate();
@@ -58,8 +59,22 @@ export const Leaderboard = () => {
       await processRoundResults();
       console.log('✅ Round results processed successfully');
       
-      // Verificar si el juego debe continuar
-      if ((gameData?.currentRound || 0) >= (gameData?.totalRounds || 5)) {
+      // Verificar si el juego debe continuar (después de procesar, el currentRound se actualiza)
+      // Esperamos un momento para que Firebase se actualice y luego revisamos
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const gameSnap = await gameService.getGame(gameId!);
+      if (!gameSnap) {
+        throw new Error('No se pudo obtener datos del juego');
+      }
+      
+      console.log('🔍 Checking game status after processing:', {
+        currentRound: gameSnap.currentRound,
+        totalRounds: gameSnap.totalRounds,
+        shouldContinue: gameSnap.currentRound < gameSnap.totalRounds
+      });
+      
+      if (gameSnap.currentRound >= gameSnap.totalRounds) {
         console.log('🎉 Game finished after processing results');
         setProcessingResults(false);
         return;
