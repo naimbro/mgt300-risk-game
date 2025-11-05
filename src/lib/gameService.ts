@@ -78,7 +78,7 @@ class GameService {
       rounds: {},
       settings: {
         roundDuration: 120, // 2 minutos por ronda
-        initialCapital: 100000000
+        initialCapital: 100
       }
     };
 

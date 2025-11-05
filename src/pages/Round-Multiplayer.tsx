@@ -66,7 +66,7 @@ export const Round = () => {
   const handleAllocationChange = (country: 'A' | 'B', value: number) => {
     if (submitted) return;
     
-    const currentCapital = currentUser?.capital || 100000000;
+    const currentCapital = currentUser?.capital || 100;
     const maxValue = currentCapital - allocation[country === 'A' ? 'B' : 'A'];
     const clampedValue = Math.min(Math.max(0, value), maxValue);
     

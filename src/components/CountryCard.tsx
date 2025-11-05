@@ -55,8 +55,8 @@ export const CountryCard: React.FC<CountryCardProps> = ({
         <input
           type="number"
           min="0"
-          max="100000000"
-          step="1000000"
+          max="100"
+          step="1"
           value={allocation}
           onChange={(e) => onAllocationChange(Number(e.target.value))}
           disabled={disabled}
@@ -64,7 +64,7 @@ export const CountryCard: React.FC<CountryCardProps> = ({
           placeholder="0"
         />
         <div className="text-sm text-gray-600 mt-1">
-          ${allocation.toLocaleString()}
+          ${allocation} USD
         </div>
       </div>
       

@@ -158,7 +158,7 @@ export const Leaderboard = () => {
                     </div>
                     <div className="text-4xl mb-2">🥈</div>
                     <p className="font-bold text-lg text-gray-800">{playersRanking[1].name}</p>
-                    <p className="text-sm text-gray-600">${playersRanking[1].capital.toLocaleString()}</p>
+                    <p className="text-sm text-gray-600">${playersRanking[1].capital} USD</p>
                     {playersRanking[1].uid === currentUser.uid && (
                       <div className="mt-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">¡Eres tú!</div>
                     )}
@@ -173,7 +173,7 @@ export const Leaderboard = () => {
                     </div>
                     <div className="text-6xl mb-4">🥇</div>
                     <p className="font-bold text-2xl text-yellow-600">{playersRanking[0].name}</p>
-                    <p className="text-lg text-gray-700">${playersRanking[0].capital.toLocaleString()}</p>
+                    <p className="text-lg text-gray-700">${playersRanking[0].capital} USD</p>
                     {playersRanking[0].uid === currentUser.uid && (
                       <div className="mt-3 px-4 py-2 bg-yellow-200 text-yellow-800 rounded-full font-bold">¡CAMPEÓN!</div>
                     )}
@@ -188,7 +188,7 @@ export const Leaderboard = () => {
                     </div>
                     <div className="text-4xl mb-2">🥉</div>
                     <p className="font-bold text-lg text-gray-800">{playersRanking[2].name}</p>
-                    <p className="text-sm text-gray-600">${playersRanking[2].capital.toLocaleString()}</p>
+                    <p className="text-sm text-gray-600">${playersRanking[2].capital} USD</p>
                     {playersRanking[2].uid === currentUser.uid && (
                       <div className="mt-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">¡Eres tú!</div>
                     )}
@@ -208,16 +208,16 @@ export const Leaderboard = () => {
                 <div className="bg-white rounded-lg p-4">
                   <p className="text-sm text-gray-600">Capital Final</p>
                   <p className="text-2xl font-bold text-green-600">
-                    ${currentUser.capital.toLocaleString()}
+                    ${currentUser.capital} USD
                   </p>
                 </div>
                 <div className="bg-white rounded-lg p-4">
                   <p className="text-sm text-gray-600">Ganancia Total</p>
                   <p className={`text-2xl font-bold ${
-                    currentUser.capital >= 100000000 ? 'text-green-600' : 'text-red-600'
+                    currentUser.capital >= 100 ? 'text-green-600' : 'text-red-600'
                   }`}>
-                    {currentUser.capital >= 100000000 ? '+' : ''}
-                    ${(currentUser.capital - 100000000).toLocaleString()}
+                    {currentUser.capital >= 100 ? '+' : ''}
+                    ${(currentUser.capital - 100)} USD
                   </p>
                 </div>
               </div>
@@ -244,7 +244,7 @@ export const Leaderboard = () => {
                         </p>
                       </div>
                     </div>
-                    <p className="font-bold text-lg">${player.capital.toLocaleString()}</p>
+                    <p className="font-bold text-lg">${player.capital} USD</p>
                   </div>
                 ))}
               </div>
@@ -383,7 +383,7 @@ export const Leaderboard = () => {
                               {player.uid === currentUser.uid && ' (Tú)'}
                               {player.isAdmin && ' 👨‍🏫'}
                             </p>
-                            <p className="text-sm text-gray-600">Capital: ${player.capital.toLocaleString()}</p>
+                            <p className="text-sm text-gray-600">Capital: ${player.capital} USD</p>
                           </div>
                         </div>
                         <div className="text-right">
@@ -391,7 +391,7 @@ export const Leaderboard = () => {
                             <p className={`text-sm font-medium ${
                               lastResult.netGain >= 0 ? 'text-green-600' : 'text-red-600'
                             }`}>
-                              {lastResult.netGain >= 0 ? '+' : ''}${lastResult.netGain.toLocaleString()}
+                              {lastResult.netGain >= 0 ? '+' : ''}${lastResult.netGain.toFixed(2)} USD
                             </p>
                           )}
                         </div>
