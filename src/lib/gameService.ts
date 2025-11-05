@@ -223,17 +223,13 @@ class GameService {
       }
 
       // Crear submission con estructura mínima
-      const now = new Date();
       const submission = {
         round: round,
         allocation: {
           A: allocation.A,
           B: allocation.B
         },
-        submittedAt: {
-          seconds: Math.floor(now.getTime() / 1000),
-          nanoseconds: 0
-        }
+        submittedAt: Timestamp.now()
       };
 
       // Usar la estrategia más simple: obtener, modificar, guardar
