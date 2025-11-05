@@ -134,12 +134,14 @@ export const useGame = (gameId?: string) => {
   const isAdmin = currentUser?.isAdmin || false;
   const playerCount = gameData ? Object.keys(gameData.players).length : 0;
   const currentRound = gameData?.rounds[gameData.currentRound];
-  const hasSubmitted = currentUser?.submissions.some(sub => sub.round === gameData?.currentRound) || false;
+  const hasSubmitted = currentUser?.submissions && Array.isArray(currentUser.submissions) ? 
+    currentUser.submissions.some(sub => sub.round === gameData?.currentRound) : false;
   
   // Verificar si todos han enviado sus inversiones para la ronda actual
   const allPlayersSubmitted = gameData && currentRound ? 
     Object.values(gameData.players).every(player => 
-      player.submissions?.some(sub => sub.round === gameData.currentRound) || false
+      player.submissions && Array.isArray(player.submissions) ? 
+        player.submissions.some(sub => sub.round === gameData.currentRound) : false
     ) : false;
   
   // Verificar si el tiempo de la ronda expiró
@@ -154,7 +156,8 @@ export const useGame = (gameId?: string) => {
   useEffect(() => {
     if (gameData && currentRound) {
       const submittedPlayers = Object.values(gameData.players).filter(player => 
-        player.submissions?.some(sub => sub.round === gameData.currentRound)
+        player.submissions && Array.isArray(player.submissions) ? 
+          player.submissions.some(sub => sub.round === gameData.currentRound) : false
       );
       
       console.log('🔍 Round state check:', {

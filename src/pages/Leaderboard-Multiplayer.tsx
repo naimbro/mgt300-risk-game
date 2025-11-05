@@ -108,9 +108,8 @@ export const Leaderboard = () => {
     
     if (currentRoundData?.isActive) {
       // Solo navegar si el usuario NO ha enviado su inversión para esta ronda
-      const hasSubmittedThisRound = currentUser.submissions?.some(
-        sub => sub.round === gameData.currentRound
-      ) || false;
+      const hasSubmittedThisRound = currentUser.submissions && Array.isArray(currentUser.submissions) ? 
+        currentUser.submissions.some(sub => sub.round === gameData.currentRound) : false;
       
       if (!hasSubmittedThisRound) {
         console.log('🎮 Active round detected and user has not submitted, navigating to round...');

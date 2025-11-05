@@ -240,7 +240,8 @@ export const Round = () => {
               <div className="flex justify-between text-sm text-gray-600 mb-2">
                 <span>Progreso de la ronda</span>
                 <span>{Object.values(gameData?.players || {}).filter(p => 
-                  p.submissions?.some(sub => sub.round === gameData?.currentRound)
+                  p.submissions && Array.isArray(p.submissions) ? 
+                    p.submissions.some(sub => sub.round === gameData?.currentRound) : false
                 ).length} / {Object.keys(gameData?.players || {}).length} jugadores</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
@@ -248,7 +249,8 @@ export const Round = () => {
                   className="bg-blue-600 h-2 rounded-full transition-all duration-500"
                   style={{ 
                     width: `${(Object.values(gameData?.players || {}).filter(p => 
-                      p.submissions?.some(sub => sub.round === gameData?.currentRound)
+                      p.submissions && Array.isArray(p.submissions) ? 
+                        p.submissions.some(sub => sub.round === gameData?.currentRound) : false
                     ).length / Object.keys(gameData?.players || {}).length) * 100}%` 
                   }}
                 ></div>
@@ -272,7 +274,8 @@ export const Round = () => {
                   <p className="text-sm">
                     {allPlayersSubmitted ? 'Todos enviaron! Terminando ronda...' :
                      `Esperando a ${Object.keys(gameData?.players || {}).length - Object.values(gameData?.players || {}).filter(p => 
-                       p.submissions?.some(sub => sub.round === gameData?.currentRound)
+                       p.submissions && Array.isArray(p.submissions) ? 
+                         p.submissions.some(sub => sub.round === gameData?.currentRound) : false
                      ).length} jugadores más...`}
                   </p>
                 </>
