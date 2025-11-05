@@ -395,6 +395,25 @@ export const Leaderboard = () => {
                           )}
                         </div>
                       </div>
+                      
+                      {/* Investment Feedback Messages */}
+                      {player.uid === currentUser.uid && lastResult && (lastResult.messageA || lastResult.messageB) && (
+                        <div className="mt-3 p-3 bg-gray-50 rounded-lg border-l-4 border-blue-500">
+                          <h4 className="text-sm font-semibold text-gray-800 mb-2">📊 Análisis de tu inversión:</h4>
+                          {lastResult.messageA && (
+                            <div className="mb-2">
+                              <span className="text-xs font-medium text-gray-600">País A:</span>
+                              <p className="text-xs text-gray-700 leading-relaxed">{lastResult.messageA}</p>
+                            </div>
+                          )}
+                          {lastResult.messageB && (
+                            <div>
+                              <span className="text-xs font-medium text-gray-600">País B:</span>
+                              <p className="text-xs text-gray-700 leading-relaxed">{lastResult.messageB}</p>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   );
                 })}

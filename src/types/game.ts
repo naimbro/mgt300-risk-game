@@ -1,9 +1,11 @@
 export interface Country {
   iso2: string;
   name: string;
-  risk: number; // 0..1 (higher = more political risk)
+  risk: number; // 0..10 (higher = more political risk)
   growth: number; // -0.1..0.15 (GDP growth rate)
-  baseReturn: number; // 0..0.15 (base annual return)
+  baseReturn: number; // 0..0.20 (base annual return)
+  expropriationProb: number; // 0..1 (probability of expropriation)
+  dataSource?: string; // Source of the data
   sources?: {
     riskUrl?: string;
     growthUrl?: string;

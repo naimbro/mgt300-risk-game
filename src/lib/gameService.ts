@@ -28,6 +28,10 @@ export interface RoundSubmission {
     payout: number;
     netGain: number;
     newCapital: number;
+    messageA?: string | null;
+    messageB?: string | null;
+    outcomeA?: 'success' | 'fail' | 'expropiation' | null;
+    outcomeB?: 'success' | 'fail' | 'expropiation' | null;
   };
 }
 
@@ -298,11 +302,11 @@ class GameService {
           // Calcular resultados
           const resultA = submission.allocation.A > 0 ? 
             calculateInvestmentResult(roundData.countries.A, submission.allocation.A, `${round}-${uid}-A`) :
-            { finalAmount: 0, outcome: 'success' as const };
+            { finalAmount: 0, outcome: 'success' as const, message: '', success: true, returnRate: 0 };
             
           const resultB = submission.allocation.B > 0 ? 
             calculateInvestmentResult(roundData.countries.B, submission.allocation.B, `${round}-${uid}-B`) :
-            { finalAmount: 0, outcome: 'success' as const };
+            { finalAmount: 0, outcome: 'success' as const, message: '', success: true, returnRate: 0 };
 
           const totalPayout = resultA.finalAmount + resultB.finalAmount;
           const totalInvestment = submission.allocation.A + submission.allocation.B;
@@ -325,7 +329,11 @@ class GameService {
             updates[`players.${uid}.submissions.${submissionIndex}.result`] = {
               payout: totalPayout,
               netGain,
-              newCapital
+              newCapital,
+              messageA: submission.allocation.A > 0 ? resultA.message : null,
+              messageB: submission.allocation.B > 0 ? resultB.message : null,
+              outcomeA: submission.allocation.A > 0 ? resultA.outcome : null,
+              outcomeB: submission.allocation.B > 0 ? resultB.outcome : null
             };
           }
           
