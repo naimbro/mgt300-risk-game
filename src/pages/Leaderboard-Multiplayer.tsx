@@ -19,11 +19,9 @@ export const Leaderboard = () => {
 
   const [processingResults, setProcessingResults] = useState(false);
   const [startingNextRound, setStartingNextRound] = useState(false);
-  const [timeToNext, setTimeToNext] = useState(15);
   const [processingError, setProcessingError] = useState<string | null>(null);
-  const [retryCount, setRetryCount] = useState(0);
 
-  // Procesar resultados automáticamente cuando llega el admin
+  // NO auto-procesar - solo mostrar controles para admin
   useEffect(() => {
     if (!gameData || !currentUser) return;
     
@@ -34,33 +32,12 @@ export const Leaderboard = () => {
       return;
     }
 
-    // Si es admin y no está procesando, procesar inmediatamente (máximo 3 intentos)
-    if (isAdmin && !processingResults && !startingNextRound && retryCount < 3) {
-      console.log('🔧 Admin detected, processing results immediately...', { retryCount });
-      // Dar un momento para que se cargue todo y luego procesar
-      setTimeout(() => {
-        handleProcessAndContinue();
-      }, 2000);
-    } else if (retryCount >= 3) {
-      setProcessingError('Error procesando resultados después de 3 intentos. Recarga la página.');
-      console.error('❌ Max retry attempts reached, stopping auto-processing');
+    // Solo log - no auto-procesamiento
+    if (isAdmin) {
+      console.log('🎮 Admin in leaderboard - manual controls available');
     }
 
-    // Timer de respaldo para no-admin
-    const interval = setInterval(() => {
-      setTimeToNext(prev => {
-        if (prev <= 1) {
-          if (isAdmin && !processingResults && !startingNextRound) {
-            handleProcessAndContinue();
-          }
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [gameData, currentUser, isAdmin, retryCount]);
+  }, [gameData, currentUser, isAdmin]);
 
   const handleProcessAndContinue = async () => {
     if (!isAdmin || processingResults || startingNextRound) {
@@ -100,7 +77,6 @@ export const Leaderboard = () => {
       
     } catch (err) {
       console.error('❌ Error processing results:', err);
-      setRetryCount(prev => prev + 1);
       setProcessingResults(false);
       setStartingNextRound(false);
       setProcessingError(err instanceof Error ? err.message : 'Error desconocido');
@@ -287,11 +263,9 @@ export const Leaderboard = () => {
                 <div className="mb-4 bg-red-50 border border-red-200 rounded-lg p-4 text-center">
                   <h3 className="text-lg font-semibold text-red-800 mb-2">⚠️ Error de Procesamiento</h3>
                   <p className="text-red-700 text-sm">{processingError}</p>
-                  <p className="text-red-600 text-xs mt-2">Intentos: {retryCount}/3</p>
                   <button
                     onClick={() => {
                       setProcessingError(null);
-                      setRetryCount(0);
                     }}
                     className="mt-3 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"
                   >
@@ -314,12 +288,37 @@ export const Leaderboard = () => {
                 </div>
               ) : (
                 <div>
-                  <p className="text-sm text-gray-600 mb-2">Próxima ronda en</p>
-                  <p className="text-3xl font-bold text-blue-600">{timeToNext}s</p>
-                  {isAdmin && (
-                    <p className="text-xs text-gray-500 mt-2">
-                      Como admin, iniciarás automáticamente la siguiente ronda
-                    </p>
+                  {isAdmin ? (
+                    <div className="text-center">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                        🎮 Controles de Admin
+                      </h3>
+                      <div className="space-y-3">
+                        <button
+                          onClick={handleProcessAndContinue}
+                          disabled={processingResults || startingNextRound}
+                          className="w-full px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200"
+                        >
+                          {processingResults || startingNextRound ? 
+                            '⏳ Procesando...' : 
+                            '🚀 Continuar a Siguiente Ronda'
+                          }
+                        </button>
+                        <p className="text-xs text-gray-600">
+                          Esto procesará los resultados e iniciará la ronda {gameData.currentRound + 1}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <p className="text-sm text-gray-600 mb-2">Esperando al profesor...</p>
+                      <div className="flex items-center justify-center space-x-2">
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+                        <p className="text-lg font-medium text-gray-700">
+                          El profesor iniciará la siguiente ronda
+                        </p>
+                      </div>
+                    </div>
                   )}
                 </div>
               )}
