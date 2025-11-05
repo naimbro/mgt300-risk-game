@@ -4,8 +4,6 @@ import {
   getDoc, 
   updateDoc, 
   onSnapshot, 
-  arrayUnion,
-  serverTimestamp,
   Timestamp
 } from 'firebase/firestore';
 import { db, ensureAnon } from './firebase';
@@ -70,7 +68,7 @@ class GameService {
       status: 'waiting',
       currentRound: 0,
       totalRounds: 5,
-      createdAt: serverTimestamp() as Timestamp,
+      createdAt: Timestamp.now(),
       createdBy: user.uid,
       players: {},
       rounds: {},
