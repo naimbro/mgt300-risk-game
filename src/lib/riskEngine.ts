@@ -110,7 +110,7 @@ export const calculateInvestmentResult = (
     const volatility = 0.3 * (random2 - 0.5); // ±15% de volatilidad
     
     const totalReturn = baseReturn + riskPremium + growthBonus + volatility;
-    const finalAmount = investment * (1 + Math.max(-0.5, totalReturn)); // Limitar pérdidas al 50% en éxito
+    const finalAmount = Math.round(investment * (1 + Math.max(-0.5, totalReturn))); // Limitar pérdidas al 50% en éxito
     
     return {
       success: true,
@@ -126,7 +126,7 @@ export const calculateInvestmentResult = (
     const volatility = 0.2 * (random2 - 0.5); // ±10% de volatilidad
     
     const totalLoss = baseLoss + economicFactor + volatility;
-    const finalAmount = investment * (1 + Math.max(-0.8, totalLoss)); // Máximo 80% de pérdida
+    const finalAmount = Math.round(investment * (1 + Math.max(-0.8, totalLoss))); // Máximo 80% de pérdida
     
     return {
       success: false,

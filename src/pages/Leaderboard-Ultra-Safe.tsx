@@ -45,9 +45,9 @@ export const Leaderboard = () => {
   }, [gameId, navigate, audio]);
 
   // Datos seguros con fallbacks (mover antes del check final)
-  const safeCapital = gameState?.capital || 100000000;
+  const safeCapital = gameState?.capital || 100;
   const safeCurrentRound = gameState?.currentRound || 1;
-  const safeTotalRounds = gameState?.totalRounds || 5;
+  const safeTotalRounds = gameState?.totalRounds || 10;
   const safeRoundHistory = gameState?.roundHistory || [];
   
   // Si el juego terminó, mostrar pantalla final con podio

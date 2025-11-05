@@ -20,8 +20,8 @@ const STORAGE_KEY = 'mgt300_game_state';
 export const getGameState = (): GameState => {
   const defaultState = {
     currentRound: 1,
-    totalRounds: 5,
-    capital: 100000000,
+    totalRounds: 10,
+    capital: 100,
     roundHistory: []
   };
 

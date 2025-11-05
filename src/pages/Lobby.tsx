@@ -112,8 +112,8 @@ export const Lobby = () => {
                 <div className="p-4 bg-yellow-50 rounded-lg">
                   <h3 className="font-semibold text-yellow-800">Reglas del Juego</h3>
                   <ul className="text-sm text-yellow-700 mt-2 space-y-1">
-                    <li>• Presupuesto inicial: $100 millones USD</li>
-                    <li>• 5 rondas de inversión</li>
+                    <li>• Presupuesto inicial: $100 USD</li>
+                    <li>• 10 rondas de inversión</li>
                     <li>• 2 minutos por ronda</li>
                     <li>• Elige entre 2 países por ronda</li>
                     <li>• Retornos basados en riesgo político</li>
@@ -123,7 +123,7 @@ export const Lobby = () => {
                 <div className="p-4 bg-green-50 rounded-lg">
                   <h3 className="font-semibold text-green-800">Objetivo</h3>
                   <p className="text-sm text-green-700 mt-2">
-                    Maximiza tu capital al final de las 5 rondas. El jugador con más dinero gana.
+                    Maximiza tu capital al final de las 10 rondas. El jugador con más dinero gana.
                   </p>
                 </div>
               </div>

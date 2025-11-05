@@ -391,7 +391,7 @@ export const Leaderboard = () => {
                             <p className={`text-sm font-medium ${
                               lastResult.netGain >= 0 ? 'text-green-600' : 'text-red-600'
                             }`}>
-                              {lastResult.netGain >= 0 ? '+' : ''}${lastResult.netGain.toFixed(2)} USD
+                              {lastResult.netGain >= 0 ? '+' : ''}${Math.round(lastResult.netGain)} USD
                             </p>
                           )}
                         </div>

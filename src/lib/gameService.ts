@@ -71,7 +71,7 @@ class GameService {
       code: gameCode,
       status: 'waiting',
       currentRound: 0,
-      totalRounds: 5,
+      totalRounds: 10,
       createdAt: Timestamp.now(),
       createdBy: user.uid,
       players: {},
@@ -308,10 +308,10 @@ class GameService {
             calculateInvestmentResult(roundData.countries.B, submission.allocation.B, `${round}-${uid}-B`) :
             { finalAmount: 0, outcome: 'success' as const, message: '', success: true, returnRate: 0 };
 
-          const totalPayout = resultA.finalAmount + resultB.finalAmount;
+          const totalPayout = Math.round(resultA.finalAmount + resultB.finalAmount);
           const totalInvestment = submission.allocation.A + submission.allocation.B;
-          const netGain = totalPayout - totalInvestment;
-          const newCapital = player.capital - totalInvestment + totalPayout;
+          const netGain = Math.round(totalPayout - totalInvestment);
+          const newCapital = Math.round(player.capital - totalInvestment + totalPayout);
 
           console.log(`📈 Calculated results for ${player.name}:`, {
             investment: totalInvestment,
