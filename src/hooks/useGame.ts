@@ -149,6 +149,28 @@ export const useGame = (gameId?: string) => {
   // La ronda debería terminar si todos enviaron O si expiró el tiempo
   const shouldEndRound = (allPlayersSubmitted || roundTimeExpired) && 
                           currentRound?.isActive === true;
+
+  // Debug logging
+  useEffect(() => {
+    if (gameData && currentRound) {
+      const submittedPlayers = Object.values(gameData.players).filter(player => 
+        player.submissions?.some(sub => sub.round === gameData.currentRound)
+      );
+      
+      console.log('🔍 Round state check:', {
+        currentRound: gameData.currentRound,
+        totalPlayers: Object.keys(gameData.players).length,
+        submittedPlayers: submittedPlayers.length,
+        playerNames: submittedPlayers.map(p => p.name),
+        allPlayersSubmitted,
+        roundTimeExpired,
+        shouldEndRound,
+        roundIsActive: currentRound.isActive,
+        endTime: currentRound.endTime.toDate(),
+        currentTime: new Date()
+      });
+    }
+  }, [gameData, currentRound, allPlayersSubmitted, roundTimeExpired, shouldEndRound]);
   
   // Ranking de jugadores
   const playersRanking = gameData ? 
