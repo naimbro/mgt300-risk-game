@@ -14,6 +14,11 @@ export const Round = () => {
     currentUser, 
     currentRound,
     hasSubmitted,
+    allPlayersSubmitted,
+    roundTimeExpired,
+    shouldEndRound,
+    isAdmin,
+    processRoundResults,
     submitInvestment,
     loading,
     error 
@@ -39,6 +44,24 @@ export const Round = () => {
       setSubmitted(true);
     }
   }, [hasSubmitted, submitted]);
+
+  // Auto-procesamiento para admin cuando la ronda debe terminar
+  useEffect(() => {
+    if (shouldEndRound && isAdmin) {
+      console.log('🔄 Round should end - auto-processing results...', {
+        allPlayersSubmitted,
+        roundTimeExpired,
+        currentRound: gameData?.currentRound
+      });
+      
+      // Dar un pequeño delay para que se actualice la UI
+      const timer = setTimeout(() => {
+        processRoundResults();
+      }, 2000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [shouldEndRound, isAdmin, allPlayersSubmitted, roundTimeExpired, gameData?.currentRound, processRoundResults]);
 
   const handleAllocationChange = (country: 'A' | 'B', value: number) => {
     if (submitted) return;
@@ -211,15 +234,56 @@ export const Round = () => {
                 Total: ${(allocation.A + allocation.B).toLocaleString()}
               </p>
             </div>
-            <div className="flex items-center justify-center space-x-2 text-blue-600">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
-              <p className="text-sm">
-                Esperando a que todos los jugadores envíen sus inversiones...
-              </p>
+            
+            {/* Estado del progreso */}
+            <div className="mb-4">
+              <div className="flex justify-between text-sm text-gray-600 mb-2">
+                <span>Progreso de la ronda</span>
+                <span>{Object.values(gameData?.players || {}).filter(p => 
+                  p.submissions?.some(sub => sub.round === gameData?.currentRound)
+                ).length} / {Object.keys(gameData?.players || {}).length} jugadores</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div 
+                  className="bg-blue-600 h-2 rounded-full transition-all duration-500"
+                  style={{ 
+                    width: `${(Object.values(gameData?.players || {}).filter(p => 
+                      p.submissions?.some(sub => sub.round === gameData?.currentRound)
+                    ).length / Object.keys(gameData?.players || {}).length) * 100}%` 
+                  }}
+                ></div>
+              </div>
             </div>
-            <p className="text-xs text-gray-500 mt-2">
-              La ronda terminará automáticamente cuando expire el tiempo o cuando todos hayan enviado
-            </p>
+            
+            {/* Mensaje dinámico */}
+            <div className="flex items-center justify-center space-x-2 text-blue-600">
+              {shouldEndRound ? (
+                <>
+                  <div className="animate-pulse">🔄</div>
+                  <p className="text-sm font-medium">
+                    {allPlayersSubmitted ? '¡Todos enviaron! Procesando resultados...' : 
+                     roundTimeExpired ? '¡Tiempo terminado! Procesando resultados...' : 
+                     'Procesando resultados...'}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+                  <p className="text-sm">
+                    {allPlayersSubmitted ? 'Todos enviaron! Terminando ronda...' :
+                     `Esperando a ${Object.keys(gameData?.players || {}).length - Object.values(gameData?.players || {}).filter(p => 
+                       p.submissions?.some(sub => sub.round === gameData?.currentRound)
+                     ).length} jugadores más...`}
+                  </p>
+                </>
+              )}
+            </div>
+            
+            {isAdmin && shouldEndRound && (
+              <p className="text-xs text-green-600 mt-2 font-medium">
+                Como admin, procesarás automáticamente los resultados
+              </p>
+            )}
           </div>
         )}
 

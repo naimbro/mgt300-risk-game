@@ -136,6 +136,20 @@ export const useGame = (gameId?: string) => {
   const currentRound = gameData?.rounds[gameData.currentRound];
   const hasSubmitted = currentUser?.submissions.some(sub => sub.round === gameData?.currentRound) || false;
   
+  // Verificar si todos han enviado sus inversiones para la ronda actual
+  const allPlayersSubmitted = gameData && currentRound ? 
+    Object.values(gameData.players).every(player => 
+      player.submissions?.some(sub => sub.round === gameData.currentRound) || false
+    ) : false;
+  
+  // Verificar si el tiempo de la ronda expiró
+  const roundTimeExpired = currentRound ? 
+    new Date() > currentRound.endTime.toDate() : false;
+  
+  // La ronda debería terminar si todos enviaron O si expiró el tiempo
+  const shouldEndRound = (allPlayersSubmitted || roundTimeExpired) && 
+                          currentRound?.isActive === true;
+  
   // Ranking de jugadores
   const playersRanking = gameData ? 
     Object.values(gameData.players)
@@ -163,6 +177,9 @@ export const useGame = (gameId?: string) => {
     playerCount,
     currentRound,
     hasSubmitted,
+    allPlayersSubmitted,
+    roundTimeExpired,
+    shouldEndRound,
     playersRanking,
     
     // Helpers
