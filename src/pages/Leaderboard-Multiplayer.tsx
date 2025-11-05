@@ -27,7 +27,7 @@ export const Leaderboard = () => {
     if (!gameData || !currentUser) return;
     
     // Si el juego terminó
-    if (gameData.currentRound > gameData.totalRounds) {
+    if (gameData.currentRound >= gameData.totalRounds) {
       console.log('🎉 Game finished!');
       audio.playGameEnd();
       return;
@@ -129,8 +129,8 @@ export const Leaderboard = () => {
     );
   }
 
-  const isGameFinished = gameData.currentRound > gameData.totalRounds;
-  const lastCompletedRound = gameData.currentRound - 1;
+  const isGameFinished = gameData.currentRound >= gameData.totalRounds;
+  const lastCompletedRound = Math.min(gameData.currentRound, gameData.totalRounds);
 
   // Pantalla final del juego
   if (isGameFinished) {
