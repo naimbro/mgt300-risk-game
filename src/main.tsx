@@ -6,7 +6,7 @@ import App from './App.tsx'
 // Version info for debugging
 console.log('🚀 MGT300 Risk Game - Version Info:');
 console.log('📅 Build Date:', new Date().toLocaleString());
-console.log('🔧 Last Commit:', 'e975a8b (2025-11-05 04:44:29) - Fix final podium not showing after round 5');
+console.log('🔧 Last Commit:', '9fbb115 (2025-11-05 05:35:00) - Add personalized educational feedback system');
 console.log('👨‍💻 Environment:', import.meta.env.MODE);
 console.log('🌐 Base URL:', import.meta.env.BASE_URL);
 
