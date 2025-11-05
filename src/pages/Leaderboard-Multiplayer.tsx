@@ -20,6 +20,8 @@ export const Leaderboard = () => {
   const [processingResults, setProcessingResults] = useState(false);
   const [startingNextRound, setStartingNextRound] = useState(false);
   const [timeToNext, setTimeToNext] = useState(15);
+  const [processingError, setProcessingError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
 
   // Procesar resultados automáticamente cuando llega el admin
   useEffect(() => {
@@ -32,13 +34,16 @@ export const Leaderboard = () => {
       return;
     }
 
-    // Si es admin y no está procesando, procesar inmediatamente
-    if (isAdmin && !processingResults && !startingNextRound) {
-      console.log('🔧 Admin detected, processing results immediately...');
+    // Si es admin y no está procesando, procesar inmediatamente (máximo 3 intentos)
+    if (isAdmin && !processingResults && !startingNextRound && retryCount < 3) {
+      console.log('🔧 Admin detected, processing results immediately...', { retryCount });
       // Dar un momento para que se cargue todo y luego procesar
       setTimeout(() => {
         handleProcessAndContinue();
       }, 2000);
+    } else if (retryCount >= 3) {
+      setProcessingError('Error procesando resultados después de 3 intentos. Recarga la página.');
+      console.error('❌ Max retry attempts reached, stopping auto-processing');
     }
 
     // Timer de respaldo para no-admin
@@ -55,7 +60,7 @@ export const Leaderboard = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [gameData, currentUser, isAdmin]);
+  }, [gameData, currentUser, isAdmin, retryCount]);
 
   const handleProcessAndContinue = async () => {
     if (!isAdmin || processingResults || startingNextRound) {
@@ -95,8 +100,10 @@ export const Leaderboard = () => {
       
     } catch (err) {
       console.error('❌ Error processing results:', err);
+      setRetryCount(prev => prev + 1);
       setProcessingResults(false);
       setStartingNextRound(false);
+      setProcessingError(err instanceof Error ? err.message : 'Error desconocido');
     }
   };
 
@@ -275,6 +282,24 @@ export const Leaderboard = () => {
             </h1>
             
             <div className="bg-blue-50 rounded-lg p-6 mb-8">
+              {/* Error de procesamiento */}
+              {processingError && (
+                <div className="mb-4 bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+                  <h3 className="text-lg font-semibold text-red-800 mb-2">⚠️ Error de Procesamiento</h3>
+                  <p className="text-red-700 text-sm">{processingError}</p>
+                  <p className="text-red-600 text-xs mt-2">Intentos: {retryCount}/3</p>
+                  <button
+                    onClick={() => {
+                      setProcessingError(null);
+                      setRetryCount(0);
+                    }}
+                    className="mt-3 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"
+                  >
+                    🔄 Reintentar
+                  </button>
+                </div>
+              )}
+              
               {/* Timer o estado de procesamiento */}
               {processingResults ? (
                 <div>
