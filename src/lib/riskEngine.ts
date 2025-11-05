@@ -13,40 +13,42 @@ const generatePersonalizedMessage = (
   country: Country, 
   outcome: 'success' | 'fail' | 'expropiation',
   _returnRate: number,
-  random: number
+  random: number,
+  _investment?: number
 ): string => {
   const riskCategory = country.risk <= 3 ? 'bajo' : country.risk <= 6 ? 'medio' : 'alto';
-  const returnCategory = country.baseReturn <= 0.07 ? 'conservador' : country.baseReturn <= 0.12 ? 'moderado' : 'alto';
-  const riskPercent = Math.round(country.risk * 10);
   const returnPercent = Math.round(country.baseReturn * 100);
   const expropPercent = Math.round(country.expropriationProb * 100);
   
   if (outcome === 'success') {
     const successMessages = [
-      `${country.name} mostró su potencial de retorno ${returnCategory} (${returnPercent}% esperado). Su riesgo político ${riskCategory} (${riskPercent}/100) se mantuvo controlado y tu inversión prosperó gracias a estabilidad institucional.`,
-      `¡Inversión exitosa en ${country.name}! A pesar del riesgo político ${riskCategory}, las políticas económicas favorables y el crecimiento del ${Math.round(country.growth * 100)}% del PIB impulsaron tus retornos.`,
-      `${country.name} demostró por qué es atractivo para inversores. Su retorno esperado del ${returnPercent}% se materializó gracias a reformas estructurales y estabilidad política relativa.`,
-      `Tu apuesta por ${country.name} fue acertada. El país superó las expectativas con políticas pro-inversión que compensaron su nivel de riesgo político ${riskCategory} (${riskPercent}/100).`
+      `🎉 ¡Jackpot en ${country.name}! Tu investigación previa valió la pena. El país mantuvo estabilidad política (riesgo ${riskCategory}) y las reformas económicas impulsaron el crecimiento al ${Math.round(country.growth * 100)}%. ¡Tu cartera sonríe!`,
+      `💰 ¡Excelente timing en ${country.name}! Aprovechaste una ventana de oportunidad: nuevos acuerdos comerciales, inversión en infraestructura y políticas fiscales favorables generaron retornos por encima del ${returnPercent}% esperado.`,
+      `🚀 ${country.name} te recompensó por confiar en su potencial. A pesar del riesgo político ${riskCategory}, las elecciones trajeron estabilidad y el gobierno cumplió sus promesas de crecimiento. ¡Decisión ganadora!`,
+      `📈 Tu apuesta estratégica en ${country.name} se materializó perfectamente. El descubrimiento de nuevos recursos naturales y la mejora en ratings crediticios internacionales dispararon los retornos. ¡Bien jugado!`,
+      `✨ ${country.name} demostró que los mercados emergentes pueden sorprender positivamente. La digitalización de la economía y nuevas alianzas comerciales superaron todas las expectativas iniciales.`
     ];
     return successMessages[Math.floor(random * successMessages.length)];
   }
   
   if (outcome === 'fail') {
     const failMessages = [
-      `${country.name} tiene retorno potencial ${returnCategory} (${returnPercent}%) pero su riesgo político ${riskCategory} (${riskPercent}/100) se materializó. Cambios regulatorios y protestas sociales afectaron tu inversión.`,
-      `Tu inversión en ${country.name} fue impactada por su riesgo político ${riskCategory}. Incertidumbre política y tensiones institucionales redujeron los retornos esperados del ${returnPercent}%.`,
-      `${country.name} experimentó volatilidad política típica de países con riesgo ${riskCategory} (${riskPercent}/100). Conflictos internos y políticas erráticas afectaron el clima de inversión.`,
-      `El riesgo político de ${country.name} (${riskPercent}/100) se tradujo en pérdidas. A pesar del potencial de retorno del ${returnPercent}%, la inestabilidad institucional predominó.`
+      `😬 Tropezón en ${country.name}. El riesgo político ${riskCategory} se materializó: protestas masivas, cambios regulatorios inesperados y turbulencia en los mercados afectaron tu inversión. ¡Lección aprendida!`,
+      `📉 ${country.name} te enseñó por qué se llaman "mercados volátiles". A pesar del potencial del ${returnPercent}%, escándalos de corrupción y tensiones geopolíticas redujeron los retornos. Es parte del juego.`,
+      `⚠️ Tormenta perfecta en ${country.name}: elecciones controversiales, caída en precios de commodities y salida de capitales extranjeros crearon el ambiente perfecto para pérdidas. No todas las apuestas salen bien.`,
+      `🌪️ ${country.name} experimentó turbulencia política que no viste venir. Cambios en el gabinete, nuevas regulaciones fiscales y huelgas generales golpearon el clima de inversión. A veces el riesgo se materializa.`,
+      `📊 El análisis previo sobre ${country.name} no consideró el cisne negro: una crisis bancaria local y depreciación monetaria arrasaron con los retornos esperados. Esto es inversión real, no simulación.`
     ];
     return failMessages[Math.floor(random * failMessages.length)];
   }
   
   // Expropiación
   const expropriationMessages = [
-    `¡Expropiación en ${country.name}! Con riesgo de expropiación del ${expropPercent}% y riesgo político ${riskCategory} (${riskPercent}/100), el gobierno nacionalizó tu inversión bajo políticas de "soberanía económica".`,
-    `Desastre total en ${country.name}. Su alto riesgo de expropiación (${expropPercent}%) se materializó: el estado confiscó activos extranjeros sin compensación, típico de países con instituciones débiles.`,
-    `${country.name} cumplió la pesadilla del inversor. Con riesgo político de ${riskPercent}/100 y probabilidad de expropiación del ${expropPercent}%, el gobierno cambió las reglas del juego y se apropió de tu inversión.`,
-    `Crisis política en ${country.name}: el nuevo régimen expropió todas las inversiones extranjeras. Los ${expropPercent}% de probabilidad de expropiación se convirtieron en realidad.`
+    `💥 ¡GAME OVER en ${country.name}! El nuevo presidente declaró: "Los recursos pertenecen al pueblo" y nacionalizó todas las inversiones extranjeras. Tu ${expropPercent}% de riesgo de expropiación se convirtió en 100% de realidad. ¡Ouch!`,
+    `🎭 Plot twist dramático en ${country.name}: un golpe de estado militar cambió las reglas del juego. El nuevo régimen confiscó todos los activos extranjeros "para proteger la soberanía nacional". Tu inversión se esfumó en el aire.`,
+    `⚡ Breaking news desde ${country.name}: "Gobierno anuncia la nacionalización del sector donde invertiste". Las advertencias sobre ${expropPercent}% de riesgo de expropiación no eran solo estadísticas. ¡La política puede ser brutal!`,
+    `🌋 Erupción política en ${country.name}: nueva constitución declara ilegales las inversiones extranjeras en sectores estratégicos. Tu investigación previa mencionaba el riesgo ${riskCategory}, pero esperabas que no pasara. ¡Sorpresa!`,
+    `🎪 El circo político de ${country.name} terminó con tu inversión como víctima colateral. Entre protestas populistas y nacionalismo económico, el gobierno decidió que tu dinero ahora es del Estado. Lección dura aprendida.`
   ];
   return expropriationMessages[Math.floor(random * expropriationMessages.length)];
 };
@@ -57,11 +59,18 @@ export const calculateInvestmentResult = (
   roundSeed: string
 ): RiskResult => {
   if (investment === 0) {
+    const noInvestMessages = [
+      `Decidiste no invertir en ${country.name}. ¿Una decisión cautelosa o una oportunidad perdida? Solo el tiempo lo dirá.`,
+      `Pasaste de largo en ${country.name}. A veces no arriesgar también es una estrategia.`,
+      `${country.name} quedó fuera de tu portafolio. La diversificación es clave, pero ¿fue la decisión correcta?`,
+      `No pusiste dinero en ${country.name}. En inversión, no hacer nada también cuenta como una decisión.`
+    ];
+    const randomIndex = Math.floor(seededRandom(hashString(roundSeed + country.iso2)) * noInvestMessages.length);
     return {
       success: true,
       returnRate: 0,
       finalAmount: 0,
-      message: "No invertiste en este país.",
+      message: noInvestMessages[randomIndex],
       outcome: 'success'
     };
   }
@@ -73,9 +82,9 @@ export const calculateInvestmentResult = (
   const random3 = seededRandom(seed + 2);
 
   // Calcular probabilidad de éxito
-  const riskFactor = 0.6; // Peso del riesgo político
-  const growthFactor = 0.3; // Peso del crecimiento económico
-  const baseBonus = 0.2; // Bonus base para hacer el juego menos punitivo
+  const riskFactor = 0.5; // Peso del riesgo político (reducido)
+  const growthFactor = 0.4; // Peso del crecimiento económico (aumentado)
+  const baseBonus = 0.35; // Bonus base para hacer el juego más divertido (aumentado)
   
   const normalizedGrowth = Math.max(0, Math.min(1, (country.growth + 0.05) / 0.15));
   const successProbability = (1 - country.risk / 10) * riskFactor + normalizedGrowth * growthFactor + baseBonus;
@@ -83,17 +92,17 @@ export const calculateInvestmentResult = (
   // Usar la probabilidad de expropiación real del país
   const expropriationProbability = country.expropriationProb || 0;
 
-  // Determinar resultado
+  // Determinar resultado usando rangos no superpuestos
   if (random1 < expropriationProbability) {
     // Expropiación total
     return {
       success: false,
       returnRate: -1,
       finalAmount: 0,
-      message: generatePersonalizedMessage(country, 'expropiation', -1, random2),
+      message: generatePersonalizedMessage(country, 'expropiation', -1, random2, investment),
       outcome: 'expropiation'
     };
-  } else if (random1 < successProbability) {
+  } else if (random1 < expropriationProbability + successProbability) {
     // Éxito
     const baseReturn = country.baseReturn;
     const riskPremium = (country.risk / 10) * 0.04; // Mayor riesgo = mayor retorno potencial (4% por punto de riesgo normalizado)
@@ -107,7 +116,7 @@ export const calculateInvestmentResult = (
       success: true,
       returnRate: totalReturn,
       finalAmount,
-      message: generatePersonalizedMessage(country, 'success', totalReturn, random3),
+      message: generatePersonalizedMessage(country, 'success', totalReturn, random3, investment),
       outcome: 'success'
     };
   } else {
@@ -123,7 +132,7 @@ export const calculateInvestmentResult = (
       success: false,
       returnRate: totalLoss,
       finalAmount,
-      message: generatePersonalizedMessage(country, 'fail', totalLoss, random3),
+      message: generatePersonalizedMessage(country, 'fail', totalLoss, random3, investment),
       outcome: 'fail'
     };
   }
