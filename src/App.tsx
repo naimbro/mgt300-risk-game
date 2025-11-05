@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Join } from './pages/Join';
 import { Lobby } from './pages/Lobby-Multiplayer';
-import { Round } from './pages/Round';
-import { Leaderboard } from './pages/Leaderboard-Ultra-Safe';
+import { Round } from './pages/Round-Multiplayer';
+import { Leaderboard } from './pages/Leaderboard-Multiplayer';
 import { Admin } from './pages/Admin';
 
 export default function App() {
