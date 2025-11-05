@@ -186,7 +186,7 @@ class GameService {
     console.log(`📊 Round ${roundNumber} started:`, countries.A.name, 'vs', countries.B.name);
   }
 
-  // Enviar inversión
+  // Enviar inversión (versión ultra-simplificada)
   async submitInvestment(
     gameId: string, 
     round: number, 
@@ -195,42 +195,62 @@ class GameService {
     const user = await ensureAnon();
     const gameRef = doc(db, 'games', gameId);
     
-    const gameSnap = await getDoc(gameRef);
-    if (!gameSnap.exists()) {
-      throw new Error('Partida no encontrada');
+    try {
+      console.log('🔥 Attempting to submit investment...', { user: user.uid, gameId, round, allocation });
+      
+      const gameSnap = await getDoc(gameRef);
+      if (!gameSnap.exists()) {
+        throw new Error('Partida no encontrada');
+      }
+
+      const gameData = gameSnap.data() as GameData;
+      const roundData = gameData.rounds[round];
+      
+      if (!roundData || !roundData.isActive) {
+        throw new Error('Ronda no activa');
+      }
+
+      // Verificar que no haya enviado ya
+      const player = gameData.players[user.uid];
+      if (!player) {
+        throw new Error('Jugador no encontrado en la partida');
+      }
+      
+      const hasSubmitted = player.submissions?.some(sub => sub.round === round) || false;
+      
+      if (hasSubmitted) {
+        throw new Error('Ya enviaste tu inversión para esta ronda');
+      }
+
+      // Crear submission con estructura mínima
+      const now = new Date();
+      const submission = {
+        round: round,
+        allocation: {
+          A: allocation.A,
+          B: allocation.B
+        },
+        submittedAt: {
+          seconds: Math.floor(now.getTime() / 1000),
+          nanoseconds: 0
+        }
+      };
+
+      // Usar la estrategia más simple: obtener, modificar, guardar
+      const currentSubmissions = player.submissions || [];
+      currentSubmissions.push(submission);
+
+      // Actualizar solo las submissions de este jugador específico
+      await updateDoc(gameRef, {
+        [`players.${user.uid}.submissions`]: currentSubmissions
+      });
+
+      console.log('✅ Investment submitted successfully:', allocation);
+      
+    } catch (error) {
+      console.error('❌ Error in submitInvestment:', error);
+      throw error;
     }
-
-    const gameData = gameSnap.data() as GameData;
-    const roundData = gameData.rounds[round];
-    
-    if (!roundData || !roundData.isActive) {
-      throw new Error('Ronda no activa');
-    }
-
-    // Verificar que no haya enviado ya
-    const player = gameData.players[user.uid];
-    const hasSubmitted = player.submissions.some(sub => sub.round === round);
-    
-    if (hasSubmitted) {
-      throw new Error('Ya enviaste tu inversión para esta ronda');
-    }
-
-    // Crear submission con timestamp actual (no serverTimestamp en arrayUnion)
-    const submission: RoundSubmission = {
-      round,
-      allocation,
-      submittedAt: Timestamp.now()
-    };
-
-    // Actualizar submissions del jugador
-    const currentSubmissions = player.submissions || [];
-    const newSubmissions = [...currentSubmissions, submission];
-
-    await updateDoc(gameRef, {
-      [`players.${user.uid}.submissions`]: newSubmissions
-    });
-
-    console.log('💰 Investment submitted:', allocation);
   }
 
   // Procesar resultados de ronda (solo admin)
