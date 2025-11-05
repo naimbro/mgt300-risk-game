@@ -216,7 +216,8 @@ class GameService {
         throw new Error('Jugador no encontrado en la partida');
       }
       
-      const hasSubmitted = player.submissions?.some(sub => sub.round === round) || false;
+      const hasSubmitted = player.submissions && Array.isArray(player.submissions) ? 
+        player.submissions.some(sub => sub.round === round) : false;
       
       if (hasSubmitted) {
         throw new Error('Ya enviaste tu inversión para esta ronda');
@@ -233,7 +234,8 @@ class GameService {
       };
 
       // Usar la estrategia más simple: obtener, modificar, guardar
-      const currentSubmissions = player.submissions || [];
+      const currentSubmissions = player.submissions && Array.isArray(player.submissions) ? 
+        [...player.submissions] : [];
       currentSubmissions.push(submission);
 
       // Actualizar solo las submissions de este jugador específico
