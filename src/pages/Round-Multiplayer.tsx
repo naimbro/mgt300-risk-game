@@ -4,6 +4,7 @@ import { CountryCard } from '../components/CountryCard';
 import { Timer } from '../components/Timer';
 import { useAudio } from '../lib/audio';
 import { useGame } from '../hooks/useGame';
+import { calculateInvestmentResult } from '../lib/riskEngine';
 
 export const Round = () => {
   const navigate = useNavigate();
@@ -26,6 +27,12 @@ export const Round = () => {
 
   const [allocation, setAllocation] = useState({ A: 0, B: 0 });
   const [submitted, setSubmitted] = useState(false);
+  const [investmentResults, setInvestmentResults] = useState<{
+    resultA?: any;
+    resultB?: any;
+    netGain?: number;
+  } | null>(null);
+  const [showingResults, setShowingResults] = useState(false);
 
   // Solo navegar si no hay ronda activa (no navegar si ya envió - esperar a otros)
   useEffect(() => {
@@ -83,10 +90,39 @@ export const Round = () => {
       console.log('💰 Submitting investment:', allocation);
       audio.playInvestmentConfirm();
       
+      // Primero enviamos la inversión
       await submitInvestment(allocation);
       
+      // Calcular resultados inmediatamente (sin guardarlos en Firebase)
+      if (allocation.A > 0 || allocation.B > 0) {
+        const resultA = allocation.A > 0 ? 
+          calculateInvestmentResult(currentRound.countries.A, allocation.A, `${gameData?.currentRound}-${currentUser?.uid}-A`) : null;
+        const resultB = allocation.B > 0 ? 
+          calculateInvestmentResult(currentRound.countries.B, allocation.B, `${gameData?.currentRound}-${currentUser?.uid}-B`) : null;
+        
+        const totalPayout = (resultA?.finalAmount || 0) + (resultB?.finalAmount || 0);
+        const totalInvestment = allocation.A + allocation.B;
+        const netGain = Math.round(totalPayout - totalInvestment);
+        
+        setInvestmentResults({
+          resultA,
+          resultB,
+          netGain
+        });
+        setShowingResults(true);
+        
+        console.log('📊 Investment results calculated:', { resultA, resultB, netGain });
+      }
+      
       setSubmitted(true);
-      console.log('✅ Investment submitted, waiting for others or round end');
+      console.log('✅ Investment submitted, showing results');
+      
+      // Dar tiempo mínimo para leer resultados si jugando solo
+      if (Object.keys(gameData?.players || {}).length === 1) {
+        setTimeout(() => {
+          setShowingResults(false);
+        }, 8000); // 8 segundos para leer cuando juegas solo
+      }
       
     } catch (err) {
       console.error('Error submitting investment:', err);
@@ -243,21 +279,103 @@ export const Round = () => {
 
         {/* Waiting State - Show after submission */}
         {submitted && (
-          <div className="mt-6 bg-green-50 border border-green-200 rounded-xl p-6 text-center">
-            <h3 className="text-lg font-semibold text-green-800 mb-3">
-              ¡Inversión Enviada! ✅
-            </h3>
-            <div className="text-left bg-white p-4 rounded-lg mb-4 max-w-md mx-auto">
-              <p className="text-gray-700">
-                <span className="font-semibold">{currentRound.countries.A.name}:</span> ${allocation.A.toLocaleString()}
-              </p>
-              <p className="text-gray-700 mt-1">
-                <span className="font-semibold">{currentRound.countries.B.name}:</span> ${allocation.B.toLocaleString()}
-              </p>
-              <p className="text-gray-700 mt-2 pt-2 border-t border-gray-200 font-bold">
-                Total: ${(allocation.A + allocation.B).toLocaleString()}
-              </p>
-            </div>
+          <div className="mt-6">
+            {/* Investment Results - Show immediately after submission */}
+            {showingResults && investmentResults && (
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 mb-6 shadow-lg animate-fadeIn">
+                <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">
+                  📊 Resultados de tu Inversión
+                </h3>
+                
+                {/* Results for each country */}
+                <div className="space-y-4 mb-4">
+                  {investmentResults.resultA && allocation.A > 0 && (
+                    <div className={`bg-white rounded-lg p-4 shadow-sm border-l-4 ${
+                      investmentResults.resultA.outcome === 'success' ? 'border-green-500' :
+                      investmentResults.resultA.outcome === 'fail' ? 'border-red-500' :
+                      'border-purple-500'
+                    }`}>
+                      <div className="flex justify-between items-start mb-2">
+                        <span className="font-semibold text-gray-700">
+                          🏳️ {currentRound.countries.A.name}
+                        </span>
+                        <span className={`text-sm font-medium px-3 py-1 rounded-full ${
+                          investmentResults.resultA.outcome === 'success' ? 'bg-green-100 text-green-700' :
+                          investmentResults.resultA.outcome === 'fail' ? 'bg-red-100 text-red-700' :
+                          'bg-purple-100 text-purple-700'
+                        }`}>
+                          {investmentResults.resultA.outcome === 'success' ? '✅ Éxito' :
+                           investmentResults.resultA.outcome === 'fail' ? '❌ Pérdida' :
+                           '💥 Expropiación'}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-700 leading-relaxed">{investmentResults.resultA.message}</p>
+                      <div className="mt-2 text-sm text-gray-600">
+                        Invertido: ${allocation.A} → Retorno: ${Math.round(investmentResults.resultA.finalAmount)}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {investmentResults.resultB && allocation.B > 0 && (
+                    <div className={`bg-white rounded-lg p-4 shadow-sm border-l-4 ${
+                      investmentResults.resultB.outcome === 'success' ? 'border-green-500' :
+                      investmentResults.resultB.outcome === 'fail' ? 'border-red-500' :
+                      'border-purple-500'
+                    }`}>
+                      <div className="flex justify-between items-start mb-2">
+                        <span className="font-semibold text-gray-700">
+                          🏳️ {currentRound.countries.B.name}
+                        </span>
+                        <span className={`text-sm font-medium px-3 py-1 rounded-full ${
+                          investmentResults.resultB.outcome === 'success' ? 'bg-green-100 text-green-700' :
+                          investmentResults.resultB.outcome === 'fail' ? 'bg-red-100 text-red-700' :
+                          'bg-purple-100 text-purple-700'
+                        }`}>
+                          {investmentResults.resultB.outcome === 'success' ? '✅ Éxito' :
+                           investmentResults.resultB.outcome === 'fail' ? '❌ Pérdida' :
+                           '💥 Expropiación'}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-700 leading-relaxed">{investmentResults.resultB.message}</p>
+                      <div className="mt-2 text-sm text-gray-600">
+                        Invertido: ${allocation.B} → Retorno: ${Math.round(investmentResults.resultB.finalAmount)}
+                      </div>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Total Result */}
+                <div className="bg-gray-100 rounded-lg p-4 text-center">
+                  <p className="text-sm text-gray-600 mb-1">Resultado Total de la Ronda</p>
+                  <p className={`text-2xl font-bold ${
+                    (investmentResults.netGain || 0) >= 0 ? 'text-green-600' : 'text-red-600'
+                  }`}>
+                    {(investmentResults.netGain || 0) >= 0 ? '+' : ''}${investmentResults.netGain || 0}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {Object.keys(gameData?.players || {}).length === 1 && 
+                      'Los resultados se mostrarán por 8 segundos'}
+                  </p>
+                </div>
+              </div>
+            )}
+            
+            {/* Summary after results or if not showing results */}
+            <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center">
+              <h3 className="text-lg font-semibold text-green-800 mb-3">
+                ¡Inversión Enviada! ✅
+              </h3>
+              <div className="text-left bg-white p-4 rounded-lg mb-4 max-w-md mx-auto">
+                <p className="text-gray-700">
+                  <span className="font-semibold">{currentRound.countries.A.name}:</span> ${allocation.A.toLocaleString()}
+                </p>
+                <p className="text-gray-700 mt-1">
+                  <span className="font-semibold">{currentRound.countries.B.name}:</span> ${allocation.B.toLocaleString()}
+                </p>
+                <p className="text-gray-700 mt-2 pt-2 border-t border-gray-200 font-bold">
+                  Total: ${(allocation.A + allocation.B).toLocaleString()}
+                </p>
+              </div>
             
             {/* Estado del progreso */}
             <div className="mb-4">
@@ -311,6 +429,7 @@ export const Round = () => {
                 Como admin, procesarás automáticamente los resultados
               </p>
             )}
+            </div>
           </div>
         )}
 

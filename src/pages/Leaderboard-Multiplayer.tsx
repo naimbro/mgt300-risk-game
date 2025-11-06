@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAudio } from '../lib/audio';
 import { useGame } from '../hooks/useGame';
-import { gameService } from '../lib/gameService';
 
 export const Leaderboard = () => {
   const navigate = useNavigate();
@@ -62,63 +61,44 @@ export const Leaderboard = () => {
 
   }, [gameData, currentUser, isAdmin]);
 
-  const handleProcessAndContinue = async () => {
-    if (!isAdmin || processingResults || startingNextRound) {
-      console.log('⏭️ Skipping process - not admin or already processing', { isAdmin, processingResults, startingNextRound });
+  const handleProcessResultsOnly = async () => {
+    if (!isAdmin || processingResults) {
+      console.log('⏭️ Skipping process - not admin or already processing', { isAdmin, processingResults });
       return;
     }
 
     try {
-      console.log('🔄 Starting handleProcessAndContinue...', { 
-        gameData: gameData?.currentRound, 
-        totalRounds: gameData?.totalRounds,
-        playerCount: Object.keys(gameData?.players || {}).length 
-      });
-
-      // Primero procesar resultados
+      console.log('📊 Processing round results only...');
       setProcessingResults(true);
-      console.log('📊 Processing round results...');
       await processRoundResults();
-      console.log('✅ Round results processed successfully');
-      
-      // Verificar si el juego debe continuar (después de procesar, el currentRound se actualiza)
-      // Esperamos un momento para que Firebase se actualice y luego revisamos
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const gameSnap = await gameService.getGame(gameId!);
-      if (!gameSnap) {
-        throw new Error('No se pudo obtener datos del juego');
-      }
-      
-      console.log('🔍 Checking game status after processing:', {
-        currentRound: gameSnap.currentRound,
-        totalRounds: gameSnap.totalRounds,
-        shouldContinue: gameSnap.currentRound < gameSnap.totalRounds
-      });
-      
-      if (gameSnap.currentRound >= gameSnap.totalRounds) {
-        console.log('🎉 Game finished after processing results');
-        setProcessingResults(false);
-        return;
-      }
-      
-      // Luego iniciar siguiente ronda
-      setStartingNextRound(true);
-      console.log('🚀 Starting next round...');
-      await startNextRound();
-      console.log('✅ Next round started successfully');
-      
-      // Reset states
+      console.log('✅ Round results processed successfully - staying on leaderboard');
       setProcessingResults(false);
-      setStartingNextRound(false);
-      
     } catch (err) {
       console.error('❌ Error processing results:', err);
       setProcessingResults(false);
+      setProcessingError(err instanceof Error ? err.message : 'Error desconocido');
+    }
+  };
+
+  const handleStartNextRound = async () => {
+    if (!isAdmin || startingNextRound) {
+      console.log('⏭️ Skipping start - not admin or already starting', { isAdmin, startingNextRound });
+      return;
+    }
+
+    try {
+      console.log('🚀 Starting next round...');
+      setStartingNextRound(true);
+      await startNextRound();
+      console.log('✅ Next round started successfully');
+      setStartingNextRound(false);
+    } catch (err) {
+      console.error('❌ Error starting next round:', err);
       setStartingNextRound(false);
       setProcessingError(err instanceof Error ? err.message : 'Error desconocido');
     }
   };
+
 
   // Navegar a la ronda solo si está activa y el usuario NO ha enviado inversión
   useEffect(() => {
@@ -463,17 +443,31 @@ export const Leaderboard = () => {
                       </h3>
                       <div className="space-y-3">
                         <button
-                          onClick={handleProcessAndContinue}
+                          onClick={handleProcessResultsOnly}
                           disabled={processingResults || startingNextRound}
-                          className="w-full px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200"
+                          className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200"
                         >
-                          {processingResults || startingNextRound ? 
+                          {processingResults ? 
                             '⏳ Procesando...' : 
-                            '🚀 Continuar a Siguiente Ronda'
+                            '📊 Procesar Resultados'
                           }
                         </button>
                         <p className="text-xs text-gray-600">
-                          Esto procesará los resultados e iniciará la ronda {gameData.currentRound + 1}
+                          Ver los mensajes educativos y resultados de inversión
+                        </p>
+                        
+                        <button
+                          onClick={handleStartNextRound}
+                          disabled={processingResults || startingNextRound}
+                          className="w-full px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200"
+                        >
+                          {startingNextRound ? 
+                            '🚀 Iniciando...' : 
+                            '⏭️ Iniciar Siguiente Ronda'
+                          }
+                        </button>
+                        <p className="text-xs text-gray-600">
+                          Continuar a la ronda {gameData.currentRound + 1}
                         </p>
                       </div>
                     </div>
