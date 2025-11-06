@@ -33,6 +33,7 @@ export const Round = () => {
     netGain?: number;
   } | null>(null);
   const [showingResults, setShowingResults] = useState(false);
+  const [showResultsScreen, setShowResultsScreen] = useState(false);
 
   // Solo navegar si no hay ronda activa (no navegar si ya envió - esperar a otros)
   useEffect(() => {
@@ -63,7 +64,7 @@ export const Round = () => {
       
       // Dar más tiempo si estás jugando solo y mostrando resultados
       const isSoloPlay = Object.keys(gameData?.players || {}).length === 1;
-      const delay = isSoloPlay && showingResults ? 10000 : 2000; // 10 segundos si juegas solo, 2 si hay más jugadores
+      const delay = isSoloPlay && showResultsScreen ? 12000 : 2000; // 12 segundos si juegas solo, 2 si hay más jugadores
       
       const timer = setTimeout(() => {
         processRoundResults();
@@ -71,17 +72,18 @@ export const Round = () => {
       
       return () => clearTimeout(timer);
     }
-  }, [shouldEndRound, isAdmin, allPlayersSubmitted, roundTimeExpired, gameData?.currentRound, processRoundResults, showingResults]);
+  }, [shouldEndRound, isAdmin, allPlayersSubmitted, roundTimeExpired, gameData?.currentRound, processRoundResults, showResultsScreen]);
 
   // Debug effect
   useEffect(() => {
     console.log('🐛 Round State Debug:', { 
       submitted, 
       showingResults, 
+      showResultsScreen,
       hasInvestmentResults: !!investmentResults,
       investmentResults 
     });
-  }, [submitted, showingResults, investmentResults]);
+  }, [submitted, showingResults, showResultsScreen, investmentResults]);
 
   const handleAllocationChange = (country: 'A' | 'B', value: number) => {
     if (submitted) return;
@@ -123,9 +125,10 @@ export const Round = () => {
           netGain
         });
         setShowingResults(true);
+        setShowResultsScreen(true);
         
         console.log('📊 Investment results calculated:', { resultA, resultB, netGain });
-        console.log('🎯 SHOWING RESULTS NOW - should display educational messages');
+        console.log('🎯 SHOWING RESULTS SCREEN NOW - full screen experience');
       }
       
       setSubmitted(true);
@@ -134,8 +137,9 @@ export const Round = () => {
       // Dar tiempo mínimo para leer resultados si jugando solo
       if (Object.keys(gameData?.players || {}).length === 1) {
         setTimeout(() => {
+          setShowResultsScreen(false);
           setShowingResults(false);
-        }, 8000); // 8 segundos para leer cuando juegas solo
+        }, 10000); // 10 segundos para leer cuando juegas solo
       }
       
     } catch (err) {
@@ -179,6 +183,156 @@ export const Round = () => {
 
   const totalAllocated = allocation.A + allocation.B;
   const remaining = currentUser.capital - totalAllocated;
+
+  // Full-screen results screen (gamer style)
+  if (showResultsScreen && investmentResults) {
+    const isWin = (investmentResults.netGain || 0) > 0;
+    const playerCount = Object.keys(gameData?.players || {}).length;
+    const submittedCount = Object.values(gameData?.players || {}).filter(p => 
+      p.submissions && Array.isArray(p.submissions) ? 
+        p.submissions.some(sub => sub.round === gameData?.currentRound) : false
+    ).length;
+    
+    return (
+      <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${
+        isWin 
+          ? 'bg-gradient-to-br from-green-900 via-green-800 to-emerald-900' 
+          : 'bg-gradient-to-br from-red-900 via-red-800 to-orange-900'
+      } animate-fadeIn`}>
+        <div className="max-w-4xl w-full text-center text-white relative">
+          
+          {/* Resultado Principal */}
+          <div className="mb-8 animate-bounce">
+            <h1 className={`text-6xl md:text-8xl font-black mb-4 ${
+              isWin ? 'text-green-400' : 'text-red-400'
+            } drop-shadow-2xl animate-pulse`}>
+              {isWin ? '🎉 ¡VICTORIA!' : '💥 ¡PERDISTE!'}
+            </h1>
+            <div className={`text-4xl md:text-6xl font-bold ${
+              isWin ? 'text-green-300' : 'text-red-300'
+            } drop-shadow-lg`}>
+              {(investmentResults.netGain || 0) >= 0 ? '+' : ''}${investmentResults.netGain || 0} USD
+            </div>
+          </div>
+
+          {/* Resultados por País */}
+          <div className="grid gap-6 mb-8">
+            {investmentResults.resultA && allocation.A > 0 && (
+              <div className={`bg-black bg-opacity-40 rounded-xl p-6 border-2 ${
+                investmentResults.resultA.outcome === 'success' ? 'border-green-400' :
+                investmentResults.resultA.outcome === 'fail' ? 'border-red-400' :
+                'border-purple-400'
+              } shadow-2xl transform hover:scale-105 transition-all duration-300`}>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-2xl font-bold text-white">
+                    🏳️ {currentRound?.countries.A.name}
+                  </h3>
+                  <span className={`px-4 py-2 rounded-full text-lg font-black ${
+                    investmentResults.resultA.outcome === 'success' ? 'bg-green-500 text-green-100' :
+                    investmentResults.resultA.outcome === 'fail' ? 'bg-red-500 text-red-100' :
+                    'bg-purple-500 text-purple-100'
+                  }`}>
+                    {investmentResults.resultA.outcome === 'success' ? '✅ ÉXITO' :
+                     investmentResults.resultA.outcome === 'fail' ? '❌ FRACASO' :
+                     '💥 EXPROPIADO'}
+                  </span>
+                </div>
+                <p className="text-lg leading-relaxed text-gray-100 mb-4">
+                  {investmentResults.resultA.message}
+                </p>
+                <div className="flex justify-between text-xl font-bold">
+                  <span className="text-blue-300">Invertido: ${allocation.A}</span>
+                  <span className={investmentResults.resultA.outcome === 'success' ? 'text-green-300' : 'text-red-300'}>
+                    Retorno: ${Math.round(investmentResults.resultA.finalAmount)}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {investmentResults.resultB && allocation.B > 0 && (
+              <div className={`bg-black bg-opacity-40 rounded-xl p-6 border-2 ${
+                investmentResults.resultB.outcome === 'success' ? 'border-green-400' :
+                investmentResults.resultB.outcome === 'fail' ? 'border-red-400' :
+                'border-purple-400'
+              } shadow-2xl transform hover:scale-105 transition-all duration-300`}>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-2xl font-bold text-white">
+                    🏳️ {currentRound?.countries.B.name}
+                  </h3>
+                  <span className={`px-4 py-2 rounded-full text-lg font-black ${
+                    investmentResults.resultB.outcome === 'success' ? 'bg-green-500 text-green-100' :
+                    investmentResults.resultB.outcome === 'fail' ? 'bg-red-500 text-red-100' :
+                    'bg-purple-500 text-purple-100'
+                  }`}>
+                    {investmentResults.resultB.outcome === 'success' ? '✅ ÉXITO' :
+                     investmentResults.resultB.outcome === 'fail' ? '❌ FRACASO' :
+                     '💥 EXPROPIADO'}
+                  </span>
+                </div>
+                <p className="text-lg leading-relaxed text-gray-100 mb-4">
+                  {investmentResults.resultB.message}
+                </p>
+                <div className="flex justify-between text-xl font-bold">
+                  <span className="text-blue-300">Invertido: ${allocation.B}</span>
+                  <span className={investmentResults.resultB.outcome === 'success' ? 'text-green-300' : 'text-red-300'}>
+                    Retorno: ${Math.round(investmentResults.resultB.finalAmount)}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Progreso del juego */}
+          <div className="bg-black bg-opacity-60 rounded-xl p-6 mb-6">
+            <h3 className="text-2xl font-bold text-white mb-4">🎮 Estado del Juego</h3>
+            <div className="flex justify-between items-center mb-4 text-lg">
+              <span className="text-gray-300">Jugadores que invirtieron:</span>
+              <span className="text-white font-bold">{submittedCount} / {playerCount}</span>
+            </div>
+            <div className="w-full bg-gray-700 rounded-full h-4 overflow-hidden">
+              <div 
+                className={`h-4 rounded-full transition-all duration-1000 ${
+                  submittedCount === playerCount ? 'bg-green-500' : 'bg-blue-500'
+                }`}
+                style={{ width: `${(submittedCount / playerCount) * 100}%` }}
+              ></div>
+            </div>
+            <p className="text-center mt-4 text-lg font-semibold">
+              {submittedCount === playerCount ? 
+                '🎯 ¡Todos los jugadores han invertido!' : 
+                `⏳ Esperando a ${playerCount - submittedCount} jugadores más...`
+              }
+            </p>
+            {playerCount === 1 && (
+              <p className="text-yellow-300 text-sm mt-2 animate-pulse">
+                ⚡ Esta pantalla se cerrará automáticamente en unos segundos
+              </p>
+            )}
+          </div>
+
+          {/* Efectos visuales adicionales */}
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+            {isWin && (
+              <>
+                <div className="absolute top-10 left-10 text-6xl animate-bounce delay-100">💰</div>
+                <div className="absolute top-20 right-20 text-6xl animate-bounce delay-200">💎</div>
+                <div className="absolute bottom-20 left-20 text-6xl animate-bounce delay-300">🚀</div>
+                <div className="absolute bottom-10 right-10 text-6xl animate-bounce delay-400">⭐</div>
+              </>
+            )}
+            {!isWin && (
+              <>
+                <div className="absolute top-10 left-10 text-6xl animate-pulse delay-100">💀</div>
+                <div className="absolute top-20 right-20 text-6xl animate-pulse delay-200">⚡</div>
+                <div className="absolute bottom-20 left-20 text-6xl animate-pulse delay-300">💥</div>
+                <div className="absolute bottom-10 right-10 text-6xl animate-pulse delay-400">🔥</div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-100 p-4">
