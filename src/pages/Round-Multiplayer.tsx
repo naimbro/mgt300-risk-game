@@ -61,14 +61,27 @@ export const Round = () => {
         currentRound: gameData?.currentRound
       });
       
-      // Dar un pequeño delay para que se actualice la UI
+      // Dar más tiempo si estás jugando solo y mostrando resultados
+      const isSoloPlay = Object.keys(gameData?.players || {}).length === 1;
+      const delay = isSoloPlay && showingResults ? 10000 : 2000; // 10 segundos si juegas solo, 2 si hay más jugadores
+      
       const timer = setTimeout(() => {
         processRoundResults();
-      }, 2000);
+      }, delay);
       
       return () => clearTimeout(timer);
     }
-  }, [shouldEndRound, isAdmin, allPlayersSubmitted, roundTimeExpired, gameData?.currentRound, processRoundResults]);
+  }, [shouldEndRound, isAdmin, allPlayersSubmitted, roundTimeExpired, gameData?.currentRound, processRoundResults, showingResults]);
+
+  // Debug effect
+  useEffect(() => {
+    console.log('🐛 Round State Debug:', { 
+      submitted, 
+      showingResults, 
+      hasInvestmentResults: !!investmentResults,
+      investmentResults 
+    });
+  }, [submitted, showingResults, investmentResults]);
 
   const handleAllocationChange = (country: 'A' | 'B', value: number) => {
     if (submitted) return;
@@ -112,6 +125,7 @@ export const Round = () => {
         setShowingResults(true);
         
         console.log('📊 Investment results calculated:', { resultA, resultB, netGain });
+        console.log('🎯 SHOWING RESULTS NOW - should display educational messages');
       }
       
       setSubmitted(true);
@@ -281,7 +295,7 @@ export const Round = () => {
         {submitted && (
           <div className="mt-6">
             {/* Investment Results - Show immediately after submission */}
-            {showingResults && investmentResults && (
+            {showingResults && investmentResults ? (
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 mb-6 shadow-lg animate-fadeIn">
                 <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">
                   📊 Resultados de tu Inversión
@@ -358,7 +372,7 @@ export const Round = () => {
                   </p>
                 </div>
               </div>
-            )}
+            ) : null}
             
             {/* Summary after results or if not showing results */}
             <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center">
