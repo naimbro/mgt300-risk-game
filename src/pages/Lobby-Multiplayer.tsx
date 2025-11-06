@@ -245,7 +245,7 @@ export const Lobby = () => {
             <h3 className="text-lg font-bold text-gray-800 mb-4">📚 Instrucciones</h3>
             <div className="space-y-2 text-gray-700">
               <p>• Espera a que el profesor inicie la simulación</p>
-              <p>• Tendrás $100,000,000 USD para invertir</p>
+              <p>• Tendrás $100 USD para invertir</p>
               <p>• Cada ronda: elige entre 2 países y decide cuánto invertir</p>
               <p>• Los retornos dependen del riesgo político y crecimiento económico</p>
               <p>• ¡Compite por el primer lugar!</p>

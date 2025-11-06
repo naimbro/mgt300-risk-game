@@ -20,10 +20,10 @@ export const Lobby = () => {
   useEffect(() => {
     // Simular otros jugadores
     const demoPlayers: Player[] = [
-      { id: '1', name: userName, capital: 100000000 },
-      { id: '2', name: 'Ana García', capital: 100000000 },
-      { id: '3', name: 'Carlos López', capital: 100000000 },
-      { id: '4', name: 'María Rodríguez', capital: 100000000 },
+      { id: '1', name: userName, capital: 100 },
+      { id: '2', name: 'Ana García', capital: 100 },
+      { id: '3', name: 'Carlos López', capital: 100 },
+      { id: '4', name: 'María Rodríguez', capital: 100 },
     ];
     setPlayers(demoPlayers);
     

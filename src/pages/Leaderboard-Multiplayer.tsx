@@ -314,17 +314,24 @@ export const Leaderboard = () => {
             
             {/* Display current user's investment feedback prominently */}
             {(() => {
-              // Los mensajes están en la ronda que acabamos de completar (currentRound - 1 si ya avanzamos)
-              const roundToCheck = gameData.currentRound > 1 ? gameData.currentRound - 1 : 1;
+              // Buscar la submission más reciente que tenga resultado
               const userLastSubmission = currentUser.submissions && Array.isArray(currentUser.submissions) ? 
-                currentUser.submissions.find(sub => sub.round === roundToCheck) : null;
+                [...currentUser.submissions]
+                  .sort((a, b) => b.round - a.round) // Ordenar por ronda descendente
+                  .find(sub => sub.result) : null; // Encontrar la primera que tenga resultado
               const userLastResult = userLastSubmission?.result;
-              const roundData = gameData.rounds[roundToCheck];
+              const roundData = userLastSubmission ? gameData.rounds[userLastSubmission.round] : null;
+              
+              console.log('🔍 Message search debug:', {
+                userLastSubmission,
+                userLastResult,
+                roundData: roundData ? 'Found' : 'Not found'
+              });
               
               if (userLastResult && roundData) {
                 const hasMessages = userLastResult.messageA || userLastResult.messageB;
                 console.log('🔍 Checking user messages:', {
-                  round: lastCompletedRound,
+                  round: userLastSubmission.round,
                   hasMessages,
                   messageA: userLastResult.messageA,
                   messageB: userLastResult.messageB,
@@ -492,10 +499,11 @@ export const Leaderboard = () => {
                     }
                   };
 
-                  // Obtener resultado de la última ronda completada
-                  const roundToCheck = gameData.currentRound > 1 ? gameData.currentRound - 1 : 1;
+                  // Obtener la submission más reciente con resultado
                   const lastSubmission = player.submissions && Array.isArray(player.submissions) ? 
-                    player.submissions.find(sub => sub.round === roundToCheck) : null;
+                    [...player.submissions]
+                      .sort((a, b) => b.round - a.round)
+                      .find(sub => sub.result) : null;
                   const lastResult = lastSubmission?.result;
                   const currentRound = gameData.rounds[lastCompletedRound];
 

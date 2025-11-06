@@ -313,7 +313,10 @@ class GameService {
             payout: totalPayout,
             netGain,
             oldCapital: player.capital,
-            newCapital,
+            newCapital
+          });
+          
+          console.log(`💬 MESSAGES for ${player.name}:`, {
             messageA: resultA.message,
             messageB: resultB.message,
             outcomeA: resultA.outcome,
