@@ -81,16 +81,19 @@ export const calculateInvestmentResult = (
   const random2 = seededRandom(seed + 1);
   const random3 = seededRandom(seed + 2);
 
-  // Calcular probabilidad de éxito
-  const riskFactor = 0.5; // Peso del riesgo político (reducido)
-  const growthFactor = 0.4; // Peso del crecimiento económico (aumentado)
-  const baseBonus = 0.35; // Bonus base para hacer el juego más divertido (aumentado)
+  // Calcular probabilidad de éxito (rebalanceado para mayor realismo)
+  const riskFactor = 0.8; // Peso del riesgo político (aumentado para mayor impacto)
+  const growthFactor = 0.3; // Peso del crecimiento económico
+  const baseBonus = 0.15; // Bonus base reducido (era demasiado alto)
   
   const normalizedGrowth = Math.max(0, Math.min(1, (country.growth + 0.05) / 0.15));
   const successProbability = (1 - country.risk / 10) * riskFactor + normalizedGrowth * growthFactor + baseBonus;
   
   // Usar la probabilidad de expropiación real del país
   const expropriationProbability = country.expropriationProb || 0;
+  
+  // Debug log para verificar probabilidades
+  console.log(`🎲 ${country.name} - Exprop: ${Math.round(expropriationProbability*100)}%, Success: ${Math.round(successProbability*100)}%, Fail: ${Math.round((1-expropriationProbability-successProbability)*100)}%`);
 
   // Determinar resultado usando rangos no superpuestos
   if (random1 < expropriationProbability) {
@@ -121,12 +124,12 @@ export const calculateInvestmentResult = (
     };
   } else {
     // Fallo
-    const baseLoss = -0.1 - ((country.risk / 10) * 0.5); // -10% a -60% dependiendo del riesgo normalizado
-    const economicFactor = Math.min(0, country.growth) * 2; // Crecimiento negativo empeora las pérdidas
-    const volatility = 0.2 * (random2 - 0.5); // ±10% de volatilidad
+    const baseLoss = -0.15 - ((country.risk / 10) * 0.4); // -15% a -55% dependiendo del riesgo
+    const economicFactor = Math.min(0, country.growth) * 1.5; // Crecimiento negativo empeora las pérdidas
+    const volatility = 0.25 * (random2 - 0.5); // ±12.5% de volatilidad
     
     const totalLoss = baseLoss + economicFactor + volatility;
-    const finalAmount = Math.round(investment * (1 + Math.max(-0.8, totalLoss))); // Máximo 80% de pérdida
+    const finalAmount = Math.round(investment * (1 + Math.max(-0.75, totalLoss))); // Máximo 75% de pérdida
     
     return {
       success: false,
