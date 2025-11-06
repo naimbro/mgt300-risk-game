@@ -6,7 +6,7 @@ import App from './App.tsx'
 // Version info for debugging
 console.log('🚀 MGT300 Risk Game - Version Info:');
 console.log('📅 Build Date:', new Date().toLocaleString());
-console.log('🔧 Last Commit:', 'REALDATA (2025-11-06 11:35:00) - Replace with ChatGPT real country data');
+console.log('🔧 Last Commit:', 'ADMIN (2025-11-06 11:45:00) - Admin skip button implementation complete');
 console.log('👨‍💻 Environment:', import.meta.env.MODE);
 console.log('🌐 Base URL:', import.meta.env.BASE_URL);
 

@@ -310,6 +310,28 @@ export const Round = () => {
             )}
           </div>
 
+          {/* Admin Controls */}
+          {isAdmin && (
+            <div className="bg-black bg-opacity-70 rounded-xl p-4 mt-4">
+              <h3 className="text-lg font-bold text-white mb-3 text-center">
+                👨‍🏫 Controles de Profesor
+              </h3>
+              <button
+                onClick={() => {
+                  console.log('🔧 Admin forcing skip to leaderboard...');
+                  setShowResultsScreen(false);
+                  setShowingResults(false);
+                }}
+                className="w-full px-6 py-3 bg-orange-600 text-white rounded-lg font-semibold hover:bg-orange-700 transition-all duration-200 shadow-lg"
+              >
+                ⏭️ Saltar al Leaderboard
+              </button>
+              <p className="text-xs text-gray-300 text-center mt-2">
+                Continúa sin esperar el tiempo automático
+              </p>
+            </div>
+          )}
+
           {/* Efectos visuales adicionales */}
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
             {isWin && (
