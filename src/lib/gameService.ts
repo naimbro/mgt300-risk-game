@@ -299,14 +299,9 @@ class GameService {
         if (submission && !submission.result) {
           console.log(`💰 Found submission for ${player.name}:`, submission.allocation);
           
-          // Calcular resultados
-          const resultA = submission.allocation.A > 0 ? 
-            calculateInvestmentResult(roundData.countries.A, submission.allocation.A, `${round}-${uid}-A`) :
-            { finalAmount: 0, outcome: 'success' as const, message: '', success: true, returnRate: 0 };
-            
-          const resultB = submission.allocation.B > 0 ? 
-            calculateInvestmentResult(roundData.countries.B, submission.allocation.B, `${round}-${uid}-B`) :
-            { finalAmount: 0, outcome: 'success' as const, message: '', success: true, returnRate: 0 };
+          // Calcular resultados - SIEMPRE calcular para obtener mensajes
+          const resultA = calculateInvestmentResult(roundData.countries.A, submission.allocation.A, `${round}-${uid}-A`);
+          const resultB = calculateInvestmentResult(roundData.countries.B, submission.allocation.B, `${round}-${uid}-B`);
 
           const totalPayout = Math.round(resultA.finalAmount + resultB.finalAmount);
           const totalInvestment = submission.allocation.A + submission.allocation.B;
@@ -318,7 +313,11 @@ class GameService {
             payout: totalPayout,
             netGain,
             oldCapital: player.capital,
-            newCapital
+            newCapital,
+            messageA: resultA.message,
+            messageB: resultB.message,
+            outcomeA: resultA.outcome,
+            outcomeB: resultB.outcome
           });
 
           // Actualizar submission con resultado

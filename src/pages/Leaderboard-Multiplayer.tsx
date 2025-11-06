@@ -21,10 +21,32 @@ export const Leaderboard = () => {
   const [processingResults, setProcessingResults] = useState(false);
   const [startingNextRound, setStartingNextRound] = useState(false);
   const [processingError, setProcessingError] = useState<string | null>(null);
+  const [showNewResults, setShowNewResults] = useState(false);
 
   // NO auto-procesar - solo mostrar controles para admin
   useEffect(() => {
     if (!gameData || !currentUser) return;
+    
+    // Debug: Check for messages
+    if (currentUser.submissions && Array.isArray(currentUser.submissions)) {
+      const lastSub = currentUser.submissions[currentUser.submissions.length - 1];
+      if (lastSub?.result) {
+        console.log('📝 User last submission result:', {
+          round: lastSub.round,
+          hasMessageA: !!lastSub.result.messageA,
+          hasMessageB: !!lastSub.result.messageB,
+          messageA: lastSub.result.messageA,
+          messageB: lastSub.result.messageB,
+          netGain: lastSub.result.netGain
+        });
+        
+        // Show new results notification
+        if (lastSub.round === gameData.currentRound - 1 || lastSub.round === gameData.currentRound) {
+          setShowNewResults(true);
+          setTimeout(() => setShowNewResults(false), 5000);
+        }
+      }
+    }
     
     // Si el juego terminó
     if (gameData.currentRound >= gameData.totalRounds) {
@@ -131,6 +153,15 @@ export const Leaderboard = () => {
 
   const isGameFinished = gameData.currentRound >= gameData.totalRounds;
   const lastCompletedRound = Math.min(gameData.currentRound, gameData.totalRounds);
+  
+  // Debug logging
+  console.log('🔍 Leaderboard Debug:', {
+    currentRound: gameData.currentRound,
+    lastCompletedRound,
+    currentUser,
+    submissions: currentUser?.submissions,
+    rounds: gameData.rounds
+  });
 
   // Pantalla final del juego
   if (isGameFinished) {
@@ -272,6 +303,107 @@ export const Leaderboard = () => {
               🏆 Ranking - Ronda {lastCompletedRound} de {gameData.totalRounds}
             </h1>
             
+            {/* New Results Alert */}
+            {showNewResults && (
+              <div className="bg-green-100 border-2 border-green-400 rounded-lg p-4 mb-6 animate-pulse">
+                <p className="text-green-800 font-semibold text-center">
+                  ✨ ¡Nuevos resultados disponibles! Revisa el análisis de tu inversión abajo.
+                </p>
+              </div>
+            )}
+            
+            {/* Display current user's investment feedback prominently */}
+            {(() => {
+              // Los mensajes están en la ronda que acabamos de completar (currentRound - 1 si ya avanzamos)
+              const roundToCheck = gameData.currentRound > 1 ? gameData.currentRound - 1 : 1;
+              const userLastSubmission = currentUser.submissions && Array.isArray(currentUser.submissions) ? 
+                currentUser.submissions.find(sub => sub.round === roundToCheck) : null;
+              const userLastResult = userLastSubmission?.result;
+              const roundData = gameData.rounds[roundToCheck];
+              
+              if (userLastResult && roundData) {
+                const hasMessages = userLastResult.messageA || userLastResult.messageB;
+                console.log('🔍 Checking user messages:', {
+                  round: lastCompletedRound,
+                  hasMessages,
+                  messageA: userLastResult.messageA,
+                  messageB: userLastResult.messageB,
+                  allocation: userLastSubmission?.allocation
+                });
+                
+                if (!hasMessages) {
+                  return (
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                      <p className="text-yellow-800">
+                        ⚠️ No se encontraron mensajes educativos para la ronda {lastCompletedRound}.
+                        Esto puede indicar un problema con el procesamiento de resultados.
+                      </p>
+                    </div>
+                  );
+                }
+                
+                return (
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 mb-6 shadow-inner">
+                    <h3 className="text-lg font-bold text-gray-800 mb-3 flex items-center">
+                      <span className="mr-2">📝</span>
+                      Resultados de tu última inversión - Ronda {lastCompletedRound}
+                    </h3>
+                    <div className="space-y-3">
+                      {userLastResult.messageA && (
+                        <div className="bg-white rounded-lg p-4 shadow-sm">
+                          <div className="flex justify-between items-start mb-2">
+                            <span className="font-semibold text-gray-700">
+                              🏳️ {roundData.countries.A.name}
+                            </span>
+                            <span className={`text-sm font-medium px-2 py-1 rounded ${
+                              userLastResult.outcomeA === 'success' ? 'bg-green-100 text-green-700' :
+                              userLastResult.outcomeA === 'fail' ? 'bg-red-100 text-red-700' :
+                              'bg-purple-100 text-purple-700'
+                            }`}>
+                              {userLastResult.outcomeA === 'success' ? 'Éxito' :
+                               userLastResult.outcomeA === 'fail' ? 'Pérdida' :
+                               'Expropiación'}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-700 leading-relaxed">{userLastResult.messageA}</p>
+                        </div>
+                      )}
+                      {userLastResult.messageB && (
+                        <div className="bg-white rounded-lg p-4 shadow-sm">
+                          <div className="flex justify-between items-start mb-2">
+                            <span className="font-semibold text-gray-700">
+                              🏳️ {roundData.countries.B.name}
+                            </span>
+                            <span className={`text-sm font-medium px-2 py-1 rounded ${
+                              userLastResult.outcomeB === 'success' ? 'bg-green-100 text-green-700' :
+                              userLastResult.outcomeB === 'fail' ? 'bg-red-100 text-red-700' :
+                              'bg-purple-100 text-purple-700'
+                            }`}>
+                              {userLastResult.outcomeB === 'success' ? 'Éxito' :
+                               userLastResult.outcomeB === 'fail' ? 'Pérdida' :
+                               'Expropiación'}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-700 leading-relaxed">{userLastResult.messageB}</p>
+                        </div>
+                      )}
+                    </div>
+                    <div className="mt-4 pt-4 border-t border-blue-200">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-600">Resultado neto:</span>
+                        <span className={`font-bold text-lg ${
+                          userLastResult.netGain >= 0 ? 'text-green-600' : 'text-red-600'
+                        }`}>
+                          {userLastResult.netGain >= 0 ? '+' : ''}${Math.round(userLastResult.netGain)} USD
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+              return null;
+            })()}
+            
             <div className="bg-blue-50 rounded-lg p-6 mb-8">
               {/* Error de procesamiento */}
               {processingError && (
@@ -360,10 +492,12 @@ export const Leaderboard = () => {
                     }
                   };
 
-                  // Obtener resultado de la última ronda
+                  // Obtener resultado de la última ronda completada
+                  const roundToCheck = gameData.currentRound > 1 ? gameData.currentRound - 1 : 1;
                   const lastSubmission = player.submissions && Array.isArray(player.submissions) ? 
-                    player.submissions.find(sub => sub.round === lastCompletedRound) : null;
+                    player.submissions.find(sub => sub.round === roundToCheck) : null;
                   const lastResult = lastSubmission?.result;
+                  const currentRound = gameData.rounds[lastCompletedRound];
 
                   return (
                     <div 
@@ -397,21 +531,33 @@ export const Leaderboard = () => {
                         </div>
                       </div>
                       
-                      {/* Investment Feedback Messages */}
-                      {player.uid === currentUser.uid && lastResult && (
-                        <div className="mt-3 p-3 bg-gray-50 rounded-lg border-l-4 border-blue-500">
-                          <h4 className="text-sm font-semibold text-gray-800 mb-2">📊 Análisis de tu inversión:</h4>
-                          {lastResult.messageA && (
-                            <div className="mb-2">
-                              <span className="text-xs font-medium text-gray-600">País A:</span>
-                              <p className="text-xs text-gray-700 leading-relaxed">{lastResult.messageA}</p>
-                            </div>
-                          )}
-                          {lastResult.messageB && (
-                            <div>
-                              <span className="text-xs font-medium text-gray-600">País B:</span>
-                              <p className="text-xs text-gray-700 leading-relaxed">{lastResult.messageB}</p>
-                            </div>
+                      {/* Investment Feedback Messages - Show for ALL players */}
+                      {lastResult && (
+                        <div className={`mt-3 p-3 rounded-lg border-l-4 ${
+                          player.uid === currentUser.uid 
+                            ? 'bg-blue-50 border-blue-500' 
+                            : 'bg-gray-50 border-gray-300'
+                        }`}>
+                          <h4 className="text-sm font-semibold text-gray-800 mb-2">
+                            📊 {player.uid === currentUser.uid ? 'Análisis de tu inversión:' : `Análisis de ${player.name}:`}
+                          </h4>
+                          {(lastResult.messageA || lastResult.messageB) ? (
+                            <>
+                              {lastResult.messageA && (
+                                <div className="mb-2">
+                                  <span className="text-xs font-medium text-gray-600">{currentRound.countries.A.name}:</span>
+                                  <p className="text-xs text-gray-700 leading-relaxed">{lastResult.messageA}</p>
+                                </div>
+                              )}
+                              {lastResult.messageB && (
+                                <div className={lastResult.messageA ? '' : ''}>
+                                  <span className="text-xs font-medium text-gray-600">{currentRound.countries.B.name}:</span>
+                                  <p className="text-xs text-gray-700 leading-relaxed">{lastResult.messageB}</p>
+                                </div>
+                              )}
+                            </>
+                          ) : (
+                            <p className="text-xs text-gray-500 italic">No hay mensajes disponibles para esta ronda.</p>
                           )}
                         </div>
                       )}
