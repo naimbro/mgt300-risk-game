@@ -154,7 +154,7 @@ export const Join = () => {
         )}
         
         <div className="mt-6 text-center text-sm text-gray-600">
-          <p>Presupuesto inicial: $100,000,000 USD</p>
+          <p>Presupuesto inicial: $100 USD</p>
           <p>Compite para obtener los mejores retornos</p>
           <div className="mt-4">
             <ResetGameButton onReset={() => window.location.reload()} />

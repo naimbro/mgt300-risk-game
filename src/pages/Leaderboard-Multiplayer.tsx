@@ -325,8 +325,22 @@ export const Leaderboard = () => {
               console.log('🔍 Message search debug:', {
                 userLastSubmission,
                 userLastResult,
-                roundData: roundData ? 'Found' : 'Not found'
+                roundData: roundData ? 'Found' : 'Not found',
+                allSubmissions: currentUser.submissions,
+                submissionsWithResults: currentUser.submissions && Array.isArray(currentUser.submissions) ? 
+                  currentUser.submissions.filter(sub => sub.result) : []
               });
+              
+              // Si no hay submissions con resultados, mostrar mensaje de espera
+              if (!userLastSubmission && currentUser.submissions && Array.isArray(currentUser.submissions) && currentUser.submissions.length > 0) {
+                return (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                    <p className="text-blue-800">
+                      ⏳ Has enviado tu inversión. Esperando que el profesor procese los resultados para ver el análisis de tu inversión.
+                    </p>
+                  </div>
+                );
+              }
               
               if (userLastResult && roundData) {
                 const hasMessages = userLastResult.messageA || userLastResult.messageB;
