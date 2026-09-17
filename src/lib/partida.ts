@@ -47,6 +47,8 @@ export interface Partida {
   faseTerminaEn: number | null;
   jugadores: Record<string, { nombre: string; unidoEn: number }>;
   capitales: Record<string, number>;
+  /** Capitales al inicio del último año resuelto, para mostrar el cambio en el ranking. */
+  capitalesAnteriores: Record<string, number>;
   /** ronda -> ids de señales del informe. */
   senales: Record<string, string[]>;
   /** ronda -> mundo sorteado. Existe solo cuando la ronda ya se resolvió. */
@@ -96,6 +98,7 @@ export async function crearPartida(opts: { totalRondas: number; duracionSeg: num
         faseTerminaEn: null,
         jugadores: {},
         capitales: {},
+        capitalesAnteriores: {},
         senales: {},
         mundos: {},
       };
@@ -159,7 +162,20 @@ export function senalesDeRonda(p: Partida, ronda: number): SenalAplicada[] {
   return (p.senales[String(ronda)] ?? []).map((id) => SENALES.find((s) => s.id === id)).filter((s): s is NonNullable<typeof s> => !!s);
 }
 
-export async function abrirRonda(p: Partida): Promise<void> {
+/**
+ * Relee la partida antes de una acción del profesor. La pantalla puede ir un
+ * snapshot atrasada, y cerrar dos veces el mismo año sortearía otro mundo.
+ */
+async function leerFresca(codigo: string): Promise<Partida> {
+  const s = await getDoc(refPartida(codigo));
+  if (!s.exists()) throw new Error('La partida ya no existe.');
+  return s.data() as Partida;
+}
+
+export async function abrirRonda(vista: Partida): Promise<void> {
+  const p = await leerFresca(vista.codigo);
+  if (p.fase !== 'lobby' && p.fase !== 'resultados') return;
+  if (p.ronda >= p.totalRondas) return;
   const ronda = p.ronda + 1;
   const usadas = Object.values(p.senales).flat();
   const ids = p.senales[String(ronda)] ?? sortearSenales(usadas, rngCripto()).map((s) => s.id);
@@ -167,7 +183,8 @@ export async function abrirRonda(p: Partida): Promise<void> {
     fase: 'decision',
     ronda,
     [`senales.${ronda}`]: ids,
-    faseTerminaEn: Date.now() + p.duracionSeg * 1000,
+    // El primer año se leen las fichas por primera vez: 30 segundos extra.
+    faseTerminaEn: Date.now() + (p.duracionSeg + (ronda === 1 ? 30 : 0)) * 1000,
   });
 }
 
@@ -176,7 +193,9 @@ export async function abrirRonda(p: Partida): Promise<void> {
  * Es idempotente: si el mundo de esta ronda ya existe (p. ej. el profesor
  * recargó a mitad de camino), se reutiliza en vez de sortear otro.
  */
-export async function cerrarRonda(p: Partida): Promise<void> {
+export async function cerrarRonda(vista: Partida): Promise<void> {
+  const p = await leerFresca(vista.codigo);
+  if (p.fase !== 'decision' || p.ronda !== vista.ronda) return;
   const ronda = p.ronda;
   const clave = String(ronda);
   const anterior = p.mundos[String(ronda - 1)];
@@ -222,6 +241,7 @@ export async function cerrarRonda(p: Partida): Promise<void> {
   batch.update(refPartida(p.codigo), {
     [`mundos.${clave}`]: mundo,
     capitales: { ...p.capitales, ...capitales },
+    capitalesAnteriores: p.capitales,
     fase: 'resultados',
     faseTerminaEn: null,
   });
@@ -229,6 +249,8 @@ export async function cerrarRonda(p: Partida): Promise<void> {
 }
 
 export async function terminarPartida(p: Partida): Promise<void> {
+  const fresca = await leerFresca(p.codigo);
+  if (fresca.fase !== 'resultados') return;
   await updateDoc(refPartida(p.codigo), { fase: 'final', faseTerminaEn: null });
 }
 

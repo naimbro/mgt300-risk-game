@@ -116,7 +116,6 @@ describe('resolución', () => {
   });
 
   it('nunca se pierde más de lo invertido', () => {
-    const mx = pais('MX');
     const m = mundoQuieto(['expropiacion', 'violencia', 'regulacion', 'conflicto_social', 'geopolitica', 'controles_capital'].map((tipo) => ({ iso2: 'MX', tipo: tipo as never })));
     const r = resolverCartera(PAISES, { pesos: { MX: 100 }, mitigacion: {} }, 100, m);
     expect(r.capitalFinal).toBeGreaterThanOrEqual(0);

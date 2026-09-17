@@ -79,6 +79,93 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // ── Versión 2026: colección `partidas` ────────────────────────────────
+    // El profesor (hostUid) escribe el estado y los resultados. El alumno solo
+    // puede: agregarse a sí mismo a la partida, enviar UNA cartera por año
+    // mientras el año está abierto, y dejar su recomendación final. Qué decidió
+    // cada uno lo ven solo él y el profesor.
+    match /partidas/{codigo} {
+      function partida() {
+        return get(/databases/$(database)/documents/partidas/$(codigo)).data;
+      }
+      function esHostDe(p) {
+        return p.hostUid == request.auth.uid;
+      }
+      function esUnirse() {
+        let uid = request.auth.uid;
+        let nuevo = request.resource.data;
+        let jugador = nuevo.jugadores[uid];
+        return nuevo.diff(resource.data).affectedKeys().hasOnly(['jugadores', 'capitales'])
+          && !(uid in resource.data.jugadores)
+          && resource.data.fase != 'final'
+          && nuevo.jugadores.diff(resource.data.jugadores).affectedKeys().hasOnly([uid])
+          && nuevo.capitales.diff(resource.data.capitales).affectedKeys().hasOnly([uid])
+          && nuevo.capitales[uid] == 100
+          && jugador.keys().hasOnly(['nombre', 'unidoEn'])
+          && jugador.nombre is string && jugador.nombre.size() > 0 && jugador.nombre.size() <= 24;
+      }
+      // Documento de un alumno para el año abierto: el ID es la llave (uid_ronda).
+      function envioValido(id) {
+        let p = partida();
+        let d = request.resource.data;
+        return d.uid == request.auth.uid
+          && d.ronda is int
+          && id == request.auth.uid + '_' + string(d.ronda)
+          && request.auth.uid in p.jugadores
+          && p.fase == 'decision'
+          && p.ronda == d.ronda;
+      }
+
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.hostUid == request.auth.uid
+        && request.resource.data.version == 2
+        && request.resource.data.fase == 'lobby'
+        && request.resource.data.ronda == 0
+        && request.resource.data.jugadores.size() == 0
+        && request.resource.data.capitales.size() == 0;
+      allow update: if signedIn() && (
+        (esHostDe(resource.data)
+          && request.resource.data.hostUid == resource.data.hostUid
+          && request.resource.data.codigo == resource.data.codigo)
+        || esUnirse()
+      );
+      allow delete: if false;
+
+      match /respuestas/{id} {
+        allow read: if signedIn();
+        allow create: if signedIn() && envioValido(id)
+          && request.resource.data.keys().hasOnly(['uid', 'ronda']);
+        allow update, delete: if false;
+      }
+
+      match /carteras/{id} {
+        allow read: if signedIn() && (resource.data.uid == request.auth.uid || esHostDe(partida()));
+        allow create: if signedIn() && envioValido(id)
+          && request.resource.data.keys().hasOnly(['uid', 'ronda', 'pesos', 'mitigacion'])
+          && request.resource.data.pesos is map
+          && request.resource.data.mitigacion is map;
+        allow update, delete: if false;
+      }
+
+      match /jugadores/{uid} {
+        allow read: if signedIn() && (uid == request.auth.uid || esHostDe(partida()));
+        allow write: if signedIn() && esHostDe(partida());
+      }
+
+      match /memos/{uid} {
+        allow read: if signedIn() && (uid == request.auth.uid || esHostDe(partida()));
+        allow create, update: if signedIn()
+          && uid == request.auth.uid
+          && request.resource.data.keys().hasOnly(['uid', 'texto', 'enviadoEn'])
+          && request.resource.data.uid == uid
+          && request.resource.data.texto is string
+          && request.resource.data.texto.size() <= 280
+          && partida().fase == 'final';
+        allow delete: if false;
+      }
+    }
+
     // Todo lo demás queda cerrado.
     match /{document=**} {
       allow read, write: if false;

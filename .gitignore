@@ -41,3 +41,4 @@ firebase-debug.log
 firestore-debug.log
 ui-debug.log
 .env.txt
+GAME_DEVELOPMENT_PLAYBOOK.md

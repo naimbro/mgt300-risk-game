@@ -16,6 +16,7 @@
   "dependencies": {
     "canvas-confetti": "^1.9.4",
     "firebase": "^12.9.0",
+    "flag-icons": "^7.5.0",
     "framer-motion": "^12.34.0",
     "lucide-react": "^0.563.0",
     "qrcode.react": "^4.2.0",
