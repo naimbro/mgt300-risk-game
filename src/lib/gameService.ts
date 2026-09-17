@@ -323,21 +323,21 @@ class GameService {
             outcomeB: resultB.outcome
           });
 
-          // Actualizar submission con resultado
-          const submissionIndex = player.submissions && Array.isArray(player.submissions) ? 
-            player.submissions.findIndex(sub => sub.round === round) : -1;
-          
-          if (submissionIndex >= 0) {
-            updates[`players.${uid}.submissions.${submissionIndex}.result`] = {
-              payout: totalPayout,
-              netGain,
-              newCapital,
-              messageA: resultA.message, // Siempre incluir mensaje, incluso si no se invirtió
-              messageB: resultB.message, // Siempre incluir mensaje, incluso si no se invirtió  
-              outcomeA: resultA.outcome,
-              outcomeB: resultB.outcome
-            };
-          }
+          // Actualizar submission con resultado. Se reescribe el arreglo completo:
+          // Firestore no puede direccionar un elemento de arreglo con una ruta
+          // "submissions.0.result" (la trataría como clave de mapa).
+          const result = {
+            payout: totalPayout,
+            netGain,
+            newCapital,
+            messageA: resultA.message, // Siempre incluir mensaje, incluso si no se invirtió
+            messageB: resultB.message, // Siempre incluir mensaje, incluso si no se invirtió
+            outcomeA: resultA.outcome,
+            outcomeB: resultB.outcome
+          };
+          updates[`players.${uid}.submissions`] = player.submissions.map(sub =>
+            sub.round === round ? { ...sub, result } : sub
+          );
           
           // Actualizar capital del jugador
           updates[`players.${uid}.capital`] = newCapital;

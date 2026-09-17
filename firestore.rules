@@ -1,60 +1,87 @@
 rules_version = '2';
+
+// Reglas para el modelo de datos actual: un documento por partida
+// (games/game_<código>) con los jugadores en el mapa `players`.
+// Todo se escribe desde el navegador, así que estas reglas son la única
+// barrera para que un alumno no se cambie el capital desde la consola.
 service cloud.firestore {
   match /databases/{database}/documents {
-    function isAuthed() { 
-      return request.auth != null; 
-    }
-    
-    function isValidTimeWindow(gameId, roundIndex) {
-      let round = get(/databases/$(database)/documents/games/$(gameId)/rounds/$(roundIndex));
-      return round != null && 
-             request.time >= round.data.startsAt && 
-             request.time <= round.data.endsAt;
+
+    function signedIn() {
+      return request.auth != null;
     }
 
-    // Games collection - public read for basic info
-    match /games/{gameId} {
-      allow read: if true;
-      allow write: if false; // Only admin via Functions
-      
-      // Users subcollection
-      match /users/{userId} {
-        allow read, write: if isAuthed() && request.auth.uid == userId;
-      }
-      
-      // Submissions subcollection
-      match /submissions/{submissionId} {
-        allow create: if isAuthed() && 
-                        request.resource.data.userId == request.auth.uid &&
-                        isValidTimeWindow(gameId, request.resource.data.roundIndex);
-        allow read: if isAuthed() && resource.data.userId == request.auth.uid;
-        allow update, delete: if false; // Submissions are immutable
-      }
-      
-      // Results subcollection - read only for users
-      match /results/{resultId} {
-        allow read: if isAuthed() && resource.data.userId == request.auth.uid;
-        allow write: if false; // Only Functions can write
-      }
-      
-      // Rounds subcollection
-      match /rounds/{roundId} {
-        allow read: if true;
-        allow write: if false; // Admin via Functions
-      }
-      
-      // User round pairs (for personalized country options)
-      match /userRoundPairs/{pairId} {
-        allow read: if isAuthed() && 
-                      pairId.matches('.*_' + request.auth.uid + '_.*');
-        allow write: if false; // Only Functions
-      }
+    // Quien creó la partida es el profesor (admin). Solo él cierra rondas,
+    // procesa resultados y modifica capitales.
+    function isHost() {
+      return resource.data.createdBy == request.auth.uid;
     }
-    
-    // Catalog collection - public read
-    match /catalog/{document=**} { 
-      allow read: if true; 
-      allow write: if false; // Admin only
+
+    // El cambio solo toca la entrada del propio jugador dentro de `players`.
+    function onlyOwnPlayerEntry() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['players'])
+        && request.resource.data.players.diff(resource.data.players).affectedKeys()
+             .hasOnly([request.auth.uid]);
+    }
+
+    function validNewPlayer(p) {
+      return p.keys().hasOnly(['uid', 'name', 'capital', 'isAdmin', 'joinedAt', 'submissions'])
+        && p.uid == request.auth.uid
+        && p.name is string && p.name.size() > 0 && p.name.size() <= 40
+        && p.isAdmin == false
+        && p.capital == resource.data.settings.initialCapital
+        && p.submissions == [];
+    }
+
+    // Unirse: solo mientras la partida espera en el lobby.
+    function isJoining() {
+      return !(request.auth.uid in resource.data.players)
+        && resource.data.status == 'waiting'
+        && validNewPlayer(request.resource.data.players[request.auth.uid]);
+    }
+
+    // Invertir: agrega exactamente una inversión para la ronda activa, sin
+    // tocar las anteriores, sin resultado precargado y sin gastar más que su capital.
+    function isSubmitting() {
+      let before = resource.data.players[request.auth.uid];
+      let after = request.resource.data.players[request.auth.uid];
+      let oldSubs = before.submissions;
+      let newSubs = after.submissions;
+      let sub = newSubs[newSubs.size() - 1];
+      let round = resource.data.rounds[string(resource.data.currentRound)];
+      return request.auth.uid in resource.data.players
+        && after.diff(before).affectedKeys().hasOnly(['submissions'])
+        && newSubs.size() == oldSubs.size() + 1
+        && (oldSubs.size() == 0 || newSubs[0:oldSubs.size()] == oldSubs)
+        && sub.keys().hasOnly(['round', 'allocation', 'submittedAt'])
+        && sub.round == resource.data.currentRound
+        && round.isActive == true
+        && sub.allocation.keys().hasOnly(['A', 'B'])
+        && sub.allocation.A is number && sub.allocation.A >= 0
+        && sub.allocation.B is number && sub.allocation.B >= 0
+        && sub.allocation.A + sub.allocation.B <= before.capital;
+    }
+
+    match /games/{gameId} {
+      allow read: if signedIn();
+
+      allow create: if signedIn()
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.status == 'waiting'
+        && request.resource.data.players.keys().hasOnly([request.auth.uid])
+        && request.resource.data.players[request.auth.uid].isAdmin == true;
+
+      allow update: if signedIn() && (
+        (isHost() && request.resource.data.createdBy == resource.data.createdBy)
+        || (onlyOwnPlayerEntry() && (isJoining() || isSubmitting()))
+      );
+
+      allow delete: if false;
+    }
+
+    // Todo lo demás queda cerrado.
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

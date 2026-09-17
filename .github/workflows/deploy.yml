@@ -44,6 +44,8 @@ jobs:
         path: ./dist
 
   deploy:
+    # Un pull request solo compila; publicar solo al hacer push a main.
+    if: github.event_name == 'push'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

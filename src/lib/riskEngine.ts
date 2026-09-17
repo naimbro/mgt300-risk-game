@@ -75,8 +75,9 @@ export const calculateInvestmentResult = (
     };
   }
 
-  // Crear un seed determinista pero variable por ronda
-  const seed = hashString(roundSeed + country.iso2 + investment.toString());
+  // Seed determinista por ronda, jugador y país. No incluye el monto: si lo
+  // incluyera, se podría probar montos en la consola hasta dar con uno ganador.
+  const seed = hashString(roundSeed + country.iso2);
   const random1 = seededRandom(seed);
   const random2 = seededRandom(seed + 1);
   const random3 = seededRandom(seed + 2);
@@ -91,9 +92,6 @@ export const calculateInvestmentResult = (
   
   // Usar la probabilidad de expropiación real del país
   const expropriationProbability = country.expropriationProb || 0;
-  
-  // Debug log para verificar probabilidades
-  console.log(`🎲 ${country.name} - Exprop: ${Math.round(expropriationProbability*100)}%, Success: ${Math.round(successProbability*100)}%, Fail: ${Math.round((1-expropriationProbability-successProbability)*100)}%`);
 
   // Determinar resultado usando rangos no superpuestos
   if (random1 < expropriationProbability) {

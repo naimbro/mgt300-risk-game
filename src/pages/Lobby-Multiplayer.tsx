@@ -209,7 +209,7 @@ export const Lobby = () => {
                 </div>
                 <div className="bg-white rounded-lg p-4">
                   <p className="text-sm text-gray-600">Duración estimada</p>
-                  <p className="text-2xl font-bold text-gray-800">15 min</p>
+                  <p className="text-2xl font-bold text-gray-800">25-30 min</p>
                 </div>
               </div>
 

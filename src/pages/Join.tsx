@@ -75,10 +75,10 @@ export const Join = () => {
             Simula inversiones en países reales durante 10 rondas. Cada ronda recibes 2 países con datos reales de riesgo político, crecimiento económico y retorno base.
           </p>
           <p className="mb-3">
-            <strong>Cálculo de probabilidades:</strong> Tu éxito depende de una fórmula que considera el riesgo político del país (escala 0-10), su crecimiento económico, y añade un bonus base del 35% para balancear el juego. Países menos riesgosos como Estados Unidos tienen ~94% probabilidad de éxito, mientras que países de alto riesgo como Rusia tienen ~59%.
+            <strong>¿Cómo se decide el resultado?</strong> Cada inversión puede terminar en tres cosas: <em>expropiación</em> (pierdes todo lo invertido en ese país), <em>éxito</em> (ganas) o <em>fracaso</em> (pierdes una parte). Mientras más alto el riesgo político del país (escala 0-10) y más bajo su crecimiento, menos probable es el éxito y más probable la expropiación. Por ejemplo, Estados Unidos tiene ~93% de éxito y ~2% de expropiación; Rusia, ~38% de éxito y ~45% de expropiación. El dinero que no inviertes queda en caja, sin ganar ni perder.
           </p>
           <p className="text-xs text-gray-600">
-            Los datos provienen del Banco Mundial 2024 y el Fragile States Index 2023. El riesgo de expropiación se calcula según datos históricos por país.
+            Los indicadores son aproximaciones construidas con datos de 2023-2024 (Banco Mundial y Fragile States Index). Úsalos como punto de partida y compáralos con la situación actual de cada país.
           </p>
         </div>
         

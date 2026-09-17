@@ -9,6 +9,9 @@ export default defineConfig({
     host: true,
     port: 5173
   },
+  // En producción se eliminan los console.log de depuración: imprimían
+  // probabilidades y resultados que los alumnos podían leer en la consola.
+  esbuild: process.env.NODE_ENV === 'production' ? { pure: ['console.log'] } : {},
   build: {
     outDir: 'dist',
     sourcemap: false
