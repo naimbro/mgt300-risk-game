@@ -9,7 +9,9 @@ export const db = getFirestore(app);
 
 // Pruebas locales: `npm run emu` + `npm run dev:emu`. Sesión en memoria para que
 // cada pestaña sea un jugador distinto.
-export const usandoEmulador = import.meta.env.DEV && !!import.meta.env.VITE_USE_EMULATOR;
+// Solo se activa si se compila o se sirve con VITE_USE_EMULATOR=1; el build de
+// producción (GitHub Actions) nunca define esa variable.
+export const usandoEmulador = !!import.meta.env.VITE_USE_EMULATOR;
 if (usandoEmulador) {
   connectAuthEmulator(auth, `http://${location.hostname}:9099`, { disableWarnings: true });
   connectFirestoreEmulator(db, location.hostname, 8080);

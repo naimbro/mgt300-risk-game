@@ -44,6 +44,7 @@ export interface Partida {
   anioInicial: number;
   creadaEn: number;
   /** Reloj del profesor, en ms. */
+  faseIniciadaEn: number;
   faseTerminaEn: number | null;
   jugadores: Record<string, { nombre: string; unidoEn: number }>;
   capitales: Record<string, number>;
@@ -95,6 +96,7 @@ export async function crearPartida(opts: { totalRondas: number; duracionSeg: num
         duracionSeg: opts.duracionSeg,
         anioInicial: 2027,
         creadaEn: Date.now(),
+        faseIniciadaEn: Date.now(),
         faseTerminaEn: null,
         jugadores: {},
         capitales: {},
@@ -183,6 +185,7 @@ export async function abrirRonda(vista: Partida): Promise<void> {
     fase: 'decision',
     ronda,
     [`senales.${ronda}`]: ids,
+    faseIniciadaEn: Date.now(),
     // El primer año se leen las fichas por primera vez: 30 segundos extra.
     faseTerminaEn: Date.now() + (p.duracionSeg + (ronda === 1 ? 30 : 0)) * 1000,
   });
@@ -243,6 +246,7 @@ export async function cerrarRonda(vista: Partida): Promise<void> {
     capitales: { ...p.capitales, ...capitales },
     capitalesAnteriores: p.capitales,
     fase: 'resultados',
+    faseIniciadaEn: Date.now(),
     faseTerminaEn: null,
   });
   await batch.commit();

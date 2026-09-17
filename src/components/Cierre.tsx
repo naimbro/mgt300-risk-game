@@ -62,30 +62,27 @@ function Podio({ partida }: { partida: Partida }) {
     return () => t.forEach(clearTimeout);
   }, []);
 
-  // Se revela 3°, 2°, 1°.
+  // Se revela 3°, 2°, 1°. Un escalón sin nadie no se dibuja: en un curso chico
+  // quedaba un podio de tres con dos puestos vacíos.
   const lugares = [
     { puesto: 2, alto: 'h-44', color: 'bg-surface-3', aparece: 2 },
     { puesto: 1, alto: 'h-60', color: 'bg-amber', aparece: 3 },
     { puesto: 3, alto: 'h-32', color: 'bg-orange', aparece: 1 },
-  ];
+  ].filter((l) => filas.some((f) => f.posicion === l.puesto));
   return (
-    <div className="flex items-end justify-center gap-6 min-h-[420px]">
+    <div className="flex items-end justify-center gap-4 lg:gap-6 min-h-[420px]">
       {lugares.map(({ puesto, alto, color, aparece }) => {
         const ganadores = filas.filter((f) => f.posicion === puesto);
         const mostrar = visibles >= aparece;
         return (
-          <div key={puesto} className="w-64 text-center">
+          <div key={puesto} className="w-44 lg:w-64 text-center">
             <div className={`transition-opacity duration-500 ${mostrar ? 'opacity-100' : 'opacity-0'}`}>
-              {ganadores.length === 0 ? (
-                <p className="text-muted">—</p>
-              ) : (
-                ganadores.map(({ item: [uid, cap] }) => (
+              {ganadores.map(({ item: [uid, cap] }) => (
                   <div key={uid} className="mb-2 animate-scale-in">
                     <p className="font-bold text-2xl truncate">{partida.jugadores[uid]?.nombre}</p>
                     <p className="font-display text-xl tabular">{millones(cap)}</p>
                   </div>
-                ))
-              )}
+              ))}
             </div>
             <div className={`${alto} ${color} rounded-t-xl border-[2.5px] border-ink flex items-start justify-center pt-3`}>
               <span className="font-display text-5xl">{puesto}°</span>

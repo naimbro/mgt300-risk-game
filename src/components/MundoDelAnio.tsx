@@ -38,7 +38,7 @@ export function MundoDelAnio({ mundo, anio }: { mundo: Mundo; anio: number }) {
                 <span className={`font-display text-2xl tabular ${r.retorno >= 0 ? 'text-gain' : 'text-loss'}`}>{pctSigno(r.retorno)}</span>
               </div>
               {eventos.length === 0 ? (
-                <p className="text-muted mt-2">Sin eventos políticos. Mercado {pctSigno(r.mercado)}.</p>
+                <p className="text-muted mt-2">Sin eventos políticos: el negocio rindió {pctSigno(r.mercado)}.</p>
               ) : (
                 <ul className="mt-2 space-y-2">
                   {eventos.map((e) => (
@@ -60,7 +60,7 @@ export function MundoDelAnio({ mundo, anio }: { mundo: Mundo; anio: number }) {
           );
         })}
       </ul>
-      <p className="text-sm text-muted mt-3">Retorno sin mitigación. Los titulares son escenarios de ficción inspirados en episodios reales.</p>
+      <p className="text-sm text-muted mt-3">Retorno de un proyecto sin seguro ni relación con la comunidad. En los países riesgosos el negocio rinde más en los años normales: esa es la prima por riesgo, y es la que los eventos se llevan. Los titulares son escenarios de ficción inspirados en episodios reales.</p>
     </section>
   );
 }

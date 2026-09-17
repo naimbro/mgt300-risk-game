@@ -90,7 +90,7 @@ describe('resolución', () => {
     const m = mundoQuieto([{ iso2: 'AR', tipo: 'expropiacion' }]);
     const sin = resolverPais(ar, m, { seguro: false, comunidad: false }).retorno;
     const con = resolverPais(ar, m, { seguro: true, comunidad: false }).retorno;
-    expect(con).toBeCloseTo(sin + 0.9 * 0.7 - primaSeguro(ar)!);
+    expect(con).toBeCloseTo(sin + 0.9 * -PARAMETROS.impacto.expropiacion - primaSeguro(ar)!);
   });
 
   it('el seguro no cubre un cambio regulatorio', () => {
@@ -112,7 +112,7 @@ describe('resolución', () => {
     const m = mundoQuieto([{ iso2: 'CL', tipo: 'conflicto_social' }]);
     const sin = resolverPais(cl, m, { seguro: false, comunidad: false }).retorno;
     const con = resolverPais(cl, m, { seguro: false, comunidad: true }).retorno;
-    expect(con).toBeCloseTo(sin + 0.25 * 0.6 - PARAMETROS.costoComunidad);
+    expect(con).toBeCloseTo(sin + -PARAMETROS.impacto.conflicto_social * PARAMETROS.mitigacionComunidadConflicto - PARAMETROS.costoComunidad);
   });
 
   it('nunca se pierde más de lo invertido', () => {

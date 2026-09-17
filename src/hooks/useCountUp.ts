@@ -41,7 +41,12 @@ export function useCountUp(
       frame.current = requestAnimationFrame(tick);
     }
 
+    // Red de seguridad: requestAnimationFrame no corre en una pestaña en segundo
+    // plano, y el numero se quedaria congelado en el valor inicial.
+    const cierre = setTimeout(() => setValue(to), durationMs + 120);
+
     return () => {
+      clearTimeout(cierre);
       if (frame.current !== null) cancelAnimationFrame(frame.current);
     };
   }, [from, to, durationMs, decimals, skip]);

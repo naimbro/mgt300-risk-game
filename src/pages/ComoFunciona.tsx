@@ -64,6 +64,11 @@ export default function ComoFunciona() {
         <section className="card p-5">
           <h2 className="font-display text-xl">3. Los eventos políticos</h2>
           <p className="mt-2">Cada año, cada país puede sufrir uno o más eventos. Su probabilidad depende de sus indicadores:</p>
+          <p className="mt-2 text-sm text-ink-soft">
+            Un año del juego concentra mucho más riesgo que un año real: si no, en cinco rondas casi nunca pasaría nada. Por eso las
+            probabilidades y las primas del seguro son más altas que las de la vida real, donde una prima de MIGA ronda el 1% anual. Lo que
+            importa es la comparación entre países, no el nivel.
+          </p>
           <ul className="mt-3 space-y-3">
             {TIPOS_EVENTO.map((t) => (
               <li key={t} className="flex gap-3">

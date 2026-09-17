@@ -16,26 +16,29 @@ import type { Indicadores, Mitigacion, Pais, Region, SenalAplicada, TipoEvento }
 
 export const PARAMETROS = {
   tasaLibreDeRiesgo: 0.03,
-  primaPorPuntoDeRiesgo: 0.013,
+  primaPorPuntoDeRiesgo: 0.012,
   sigmaGlobal: 0.06,
   sigmaRegional: 0.05,
   betaBase: 0.6,
   betaPorPunto: 0.08,
   sigmaIdioBase: 0.04,
-  sigmaIdioPorPunto: 0.012,
+  sigmaIdioPorPunto: 0.03,
 
   /** Puntaje WGI que cuenta como gobernanza "de primer nivel" y como "débil". */
   wgiAlto: 85,
-  wgiBajo: 40,
+  wgiBajo: 30,
 
+  // Los impactos son fuertes pero acotados: si son mayores, el retorno de un año
+  // normal tiene que compensarlos y los países riesgosos muestran retornos
+  // inverosímiles (+40% anual) en los años sin eventos.
   impacto: {
     expropiacion: -0.7,
-    regulacion: -0.2,
-    conflicto_social: -0.25,
-    controles_capital: -0.3,
-    geopolitica: -0.2,
-    violencia: -0.35,
-    reforma: 0.12,
+    regulacion: -0.12,
+    conflicto_social: -0.15,
+    controles_capital: -0.2,
+    geopolitica: -0.12,
+    violencia: -0.25,
+    reforma: 0.08,
   } satisfies Record<TipoEvento, number>,
 
   /**
@@ -49,7 +52,7 @@ export const PARAMETROS = {
   primaSeguroCarga: 1.3,
 
   /** Relación con la comunidad: costo fijo; reduce el daño de un conflicto social y, menos, de un cambio regulatorio. */
-  costoComunidad: 0.03,
+  costoComunidad: 0.02,
   mitigacionComunidadConflicto: 0.6,
   mitigacionComunidadRegulacion: 0.25,
 
@@ -85,7 +88,7 @@ export function probabilidadesBase(ind: Indicadores): Record<TipoEvento, number>
   const inestable = 1 - gobernanza(ind.estabilidadPolitica);
   return {
     // Jensen (2008): los contrapesos democráticos reducen el riesgo de expropiación.
-    expropiacion: 0.08 * sinDerecho * sinDerecho * (1.5 - ind.democraciaLiberal),
+    expropiacion: 0.05 * sinDerecho * sinDerecho * (1.5 - ind.democraciaLiberal),
     regulacion: 0.04 + 0.25 * (1 - gobernanza(ind.calidadRegulatoria)),
     conflicto_social: 0.03 + 0.2 * inestable,
     controles_capital: 0.01 + 0.3 * (1 - ind.solvencia) ** 2,

@@ -53,7 +53,7 @@ export function ResultadoPersonal({ ronda, anio, posicion, total }: { ronda: Ron
               <p className="text-xs text-muted tabular mt-0.5">
                 {millones(pp.monto, 1)} → {millones(pp.final, 1)}
               </p>
-              {pp.eventos.length === 0 && <p className="text-sm mt-1 text-ink-soft">Año sin eventos políticos: solo se movió el mercado.</p>}
+              {pp.eventos.length === 0 && <p className="text-sm mt-1 text-ink-soft">Año sin eventos políticos: rindió el negocio.</p>}
               {pp.eventos.map((e) => (
                 <div key={e} className={`mt-2 rounded-lg p-2 text-sm ${EVENTOS[e].positivo ? 'bg-surface-2' : 'bg-[#FDECEC]'}`}>
                   <p className="font-bold flex items-center gap-1.5">

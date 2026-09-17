@@ -80,11 +80,13 @@ function Conduccion({ partida }: { partida: Partida }) {
   const [todosDesde, setTodosDesde] = useState<number | null>(null);
   useEffect(() => {
     setTodosDesde(todosDecidieron ? Date.now() : null);
-  }, [todosDecidieron]);
+  }, [todosDecidieron, partida.ronda]);
   useEffect(() => {
-    if (partida.fase !== 'decision') return;
+    if (partida.fase !== 'decision' || partida.faseTerminaEn === null) return;
+    // Colchón desde que se abrió el año: protege de cerrar con datos de la ronda anterior.
+    const abierto = ahora - partida.faseIniciadaEn > 5000;
     const sinTiempo = segundosRestantes(partida.faseTerminaEn, ahora) === 0;
-    const gracia = todosDesde !== null && ahora - todosDesde > 3000;
+    const gracia = abierto && todosDesde !== null && ahora - todosDesde > 3000;
     if (sinTiempo || gracia) {
       void accion(async () => {
         playTensionSweep();
@@ -123,7 +125,7 @@ function Conduccion({ partida }: { partida: Partida }) {
         )}
 
         {partida.fase === 'decision' && (
-          <div className="grid xl:grid-cols-[1fr_320px] gap-8">
+          <div className="grid lg:grid-cols-[1fr_320px] gap-8">
             <div>
               <InformeAnual senales={senalesDeRonda(partida, partida.ronda) as Senal[]} anio={anio} grande />
               <MapaRiesgo />
