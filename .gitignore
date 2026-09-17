@@ -34,3 +34,10 @@ dist-ssr
 .firebase/
 firebaseConfig.js
 service-account-key.json
+
+# v2
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+.env.txt

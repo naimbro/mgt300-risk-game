@@ -1,19 +1,16 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   base: '/mgt300-risk-game/',
-  server: {
-    host: true,
-    port: 5173
-  },
-  // En producción se eliminan los console.log de depuración: imprimían
-  // probabilidades y resultados que los alumnos podían leer en la consola.
+  // En producción se eliminan los console.log de depuración.
   esbuild: process.env.NODE_ENV === 'production' ? { pure: ['console.log'] } : {},
-  build: {
-    outDir: 'dist',
-    sourcemap: false
-  }
+  server: {
+    // El repo vive en /mnt/c y Vite corre en WSL: sin polling, los cambios no se ven.
+    watch: { usePolling: true, interval: 300 },
+  },
+  test: {
+    include: ['src/**/*.test.ts'],
+  },
 })

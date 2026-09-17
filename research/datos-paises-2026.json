@@ -1,0 +1,827 @@
+{
+  "generado": "2026-09-17",
+  "paises": [
+    {
+      "iso2": "US",
+      "nombre": "Estados Unidos",
+      "wgi": {
+        "anio_datos": 2024,
+        "escala": "puntaje_0_100",
+        "nota_escala": "WGI (metodologia revisada 2024-2025) publica 'governance score' 0-100 (codigos GOV_WGI_*.SC) y 'estimate' aprox. -2.5..+2.5 (GOV_WGI_*.EST). NO es el percentil de ranking antiguo; la API ya no expone *.PER.RNK. Mayor = mejor gobernanza.",
+        "estabilidad_politica": 64.3,
+        "calidad_regulatoria": 76.2,
+        "estado_de_derecho": 73.5,
+        "voz_y_rendicion": 72.4,
+        "estimacion_menos2_5_a_2_5": {
+          "estabilidad_politica": -0.1,
+          "calidad_regulatoria": 1.35,
+          "estado_de_derecho": 0.96,
+          "voz_y_rendicion": 0.89
+        },
+        "fuente": "https://www.worldbank.org/en/publication/worldwide-governance-indicators",
+        "fuente_datos": "https://api.worldbank.org/v2/country/USA;DEU;CHL;MEX;ARG;VNM;IDN;ARE/indicator/GOV_WGI_{PV|RQ|RL|VA}.{SC|EST}?source=3&format=json&date=2023:2025",
+        "fecha_acceso": "2026-09-17"
+      },
+      "vdem": {
+        "anio_datos": 2025,
+        "ldi": 0.57,
+        "ranking_ldi_de_179": 51,
+        "regimen": "democracia electoral",
+        "codigo_row": "ED+",
+        "fuente": "https://www.v-dem.net/documents/75/V-Dem_Institute_Democracy_Report_2026_lowres.pdf",
+        "nota": "Democracy Report 2026 (marzo 2026), Tabla 1 'Regimes of the World, 2025' y tabla de indices. '+'/'-' = zona gris entre categorias.",
+        "declive_significativo_10_anios": true
+      },
+      "fmi": {
+        "edicion": "WEO Update julio 2026",
+        "crecimiento_2026": 2.3,
+        "crecimiento_2026_weo_abril_2026": 2.3,
+        "crecimiento_2026_weo_julio_2026": 2.3,
+        "inflacion": 3.2,
+        "inflacion_anio": 2026,
+        "inflacion_2025": 2.7,
+        "nota_inflacion": "IPC promedio anual, WEO abril 2026 (Tablas A6/A7). El Update de julio 2026 no publica inflacion por pais.",
+        "fuente": "https://www.imf.org/-/media/files/publications/weo/2026/update/july/english/text.pdf",
+        "fuente_abril": "https://www.imf.org/-/media/files/publications/weo/2026/april/english/tablea.pdf"
+      },
+      "rating": {
+        "agencia": "S&P",
+        "nota": "AA+",
+        "perspectiva": "estable",
+        "fecha": "2026-06-26",
+        "fuente": "https://fortune.com/2026/06/27/sp-global-us-sovereign-credit-rating-aa-stable-outlook-debt-deficits/"
+      },
+      "riesgo_credito_exportacion": {
+        "coface": {
+          "riesgo_pais": "A2",
+          "clima_negocios": "A1",
+          "actualizacion_ficha": "agosto 2026",
+          "fuente": "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/united-states-of-america"
+        },
+        "allianz_trade": {
+          "rating_pais": "A1",
+          "riesgo_politico_nivel_1_6": 2,
+          "actualizacion": "septiembre 2026",
+          "fuente": "https://www.allianz-trade.com/en_global/economic-research/country-reports/United-States.html"
+        }
+      },
+      "proyecto": "Planta de empaquetado avanzado de chips para IA en Arizona",
+      "episodios": [
+        {
+          "anio": 2022,
+          "tipo": "sanciones_geopolitica_export_controls",
+          "descripcion": "El Departamento de Comercio (BIS) impuso controles de exportación que restringen el acceso de China a chips de computación avanzada, supercomputadores y equipos para fabricar semiconductores avanzados.",
+          "fuente": "https://www.bis.gov/press-release/commerce-implements-new-export-controls-advanced-computing-semiconductor-manufacturing-items-peoples"
+        },
+        {
+          "anio": 2025,
+          "tipo": "cambio_regulatorio",
+          "descripcion": "En mayo de 2025 el Departamento de Comercio anunció la rescisión de la 'AI Diffusion Rule' de enero de 2025, que clasificaba países en niveles para exportar chips de IA, y emitió nuevas guías contra el desvío de chips avanzados.",
+          "fuente": "https://www.bis.gov/press-release/department-commerce-announces-rescission-biden-era-artificial-intelligence-diffusion-rule-strengthens"
+        },
+        {
+          "anio": 2026,
+          "tipo": "cambio_regulatorio",
+          "descripcion": "El 20 de febrero de 2026 la Corte Suprema resolvió que la ley IEEPA no autoriza al presidente a imponer aranceles, y el gobierno los reemplazó por un recargo general de 10% bajo la Sección 122 de la Ley de Comercio de 1974.",
+          "fuente": "https://globaltradealert.org/blog/from-ieepa-to-section-122"
+        }
+      ]
+    },
+    {
+      "iso2": "DE",
+      "nombre": "Alemania",
+      "wgi": {
+        "anio_datos": 2024,
+        "escala": "puntaje_0_100",
+        "nota_escala": "WGI (metodologia revisada 2024-2025) publica 'governance score' 0-100 (codigos GOV_WGI_*.SC) y 'estimate' aprox. -2.5..+2.5 (GOV_WGI_*.EST). NO es el percentil de ranking antiguo; la API ya no expone *.PER.RNK. Mayor = mejor gobernanza.",
+        "estabilidad_politica": 68.0,
+        "calidad_regulatoria": 78.5,
+        "estado_de_derecho": 84.9,
+        "voz_y_rendicion": 84.8,
+        "estimacion_menos2_5_a_2_5": {
+          "estabilidad_politica": 0.12,
+          "calidad_regulatoria": 1.5,
+          "estado_de_derecho": 1.63,
+          "voz_y_rendicion": 1.6
+        },
+        "fuente": "https://www.worldbank.org/en/publication/worldwide-governance-indicators",
+        "fuente_datos": "https://api.worldbank.org/v2/country/USA;DEU;CHL;MEX;ARG;VNM;IDN;ARE/indicator/GOV_WGI_{PV|RQ|RL|VA}.{SC|EST}?source=3&format=json&date=2023:2025",
+        "fecha_acceso": "2026-09-17"
+      },
+      "vdem": {
+        "anio_datos": 2025,
+        "ldi": 0.78,
+        "ranking_ldi_de_179": 15,
+        "regimen": "democracia liberal",
+        "codigo_row": "LD",
+        "fuente": "https://www.v-dem.net/documents/75/V-Dem_Institute_Democracy_Report_2026_lowres.pdf",
+        "nota": "Democracy Report 2026 (marzo 2026), Tabla 1 'Regimes of the World, 2025' y tabla de indices. '+'/'-' = zona gris entre categorias."
+      },
+      "fmi": {
+        "edicion": "WEO Update julio 2026",
+        "crecimiento_2026": 0.7,
+        "crecimiento_2026_weo_abril_2026": 0.8,
+        "crecimiento_2026_weo_julio_2026": 0.7,
+        "inflacion": 2.7,
+        "inflacion_anio": 2026,
+        "inflacion_2025": 2.3,
+        "nota_inflacion": "IPC promedio anual, WEO abril 2026 (Tablas A6/A7). El Update de julio 2026 no publica inflacion por pais.",
+        "fuente": "https://www.imf.org/-/media/files/publications/weo/2026/update/july/english/text.pdf",
+        "fuente_abril": "https://www.imf.org/-/media/files/publications/weo/2026/april/english/tablea.pdf"
+      },
+      "rating": {
+        "agencia": "S&P",
+        "nota": "AAA",
+        "perspectiva": "estable",
+        "fecha": "2026-04-24",
+        "fuente": "https://www.deutsche-finanzagentur.de/en/federal-funding/government-as-issuer/ratings"
+      },
+      "riesgo_credito_exportacion": {
+        "coface": {
+          "riesgo_pais": "A3",
+          "clima_negocios": "A1",
+          "actualizacion_ficha": "agosto 2026",
+          "fuente": "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/germany"
+        },
+        "allianz_trade": {
+          "rating_pais": "AA1",
+          "riesgo_politico_nivel_1_6": 1,
+          "actualizacion": "febrero 2026",
+          "fuente": "https://www.allianz-trade.com/en_global/economic-research/country-reports/Germany.html"
+        }
+      },
+      "proyecto": "Data center de IA con reutilización de calor en Frankfurt",
+      "episodios": [
+        {
+          "anio": 2023,
+          "tipo": "cambio_regulatorio",
+          "descripcion": "La Ley de Eficiencia Energética (EnEfG), vigente desde noviembre de 2023, exige a los data centers de 300 kW o más cubrir 50% de su electricidad con renovables desde 2024 y 100% desde 2027, además de metas de PUE y reutilización de calor.",
+          "fuente": "https://www.whitecase.com/insight-alert/data-center-requirements-under-new-german-energy-efficiency-act"
+        },
+        {
+          "anio": 2024,
+          "tipo": "cambio_regulatorio",
+          "descripcion": "El Reglamento Europeo de Inteligencia Artificial (AI Act) entró en vigor el 1 de agosto de 2024, con obligaciones escalonadas: prohibiciones desde febrero de 2025 y reglas para modelos de propósito general desde agosto de 2025.",
+          "fuente": "https://commission.europa.eu/news-and-media/news/ai-act-enters-force-2024-08-01_en"
+        },
+        {
+          "anio": 2025,
+          "tipo": "reforma_pro_inversion",
+          "nota_tipo": "Ninguna categoría calza exactamente: es la cancelación del proyecto ancla de la política de atracción de fábricas de chips.",
+          "descripcion": "En julio de 2025 Intel anunció que abandona su proyecto de fábrica de semiconductores en Magdeburgo (Alemania) y una planta en Polonia, tras haberlos postergado en 2024.",
+          "fuente": "https://www.heise.de/en/news/Intel-gives-up-Magdeburg-fab-and-announces-end-of-foundry-10499170.html"
+        }
+      ]
+    },
+    {
+      "iso2": "CL",
+      "nombre": "Chile",
+      "wgi": {
+        "anio_datos": 2024,
+        "escala": "puntaje_0_100",
+        "nota_escala": "WGI (metodologia revisada 2024-2025) publica 'governance score' 0-100 (codigos GOV_WGI_*.SC) y 'estimate' aprox. -2.5..+2.5 (GOV_WGI_*.EST). NO es el percentil de ranking antiguo; la API ya no expone *.PER.RNK. Mayor = mejor gobernanza.",
+        "estabilidad_politica": 68.0,
+        "calidad_regulatoria": 67.2,
+        "estado_de_derecho": 68.9,
+        "voz_y_rendicion": 74.3,
+        "estimacion_menos2_5_a_2_5": {
+          "estabilidad_politica": 0.12,
+          "calidad_regulatoria": 0.78,
+          "estado_de_derecho": 0.69,
+          "voz_y_rendicion": 0.99
+        },
+        "fuente": "https://www.worldbank.org/en/publication/worldwide-governance-indicators",
+        "fuente_datos": "https://api.worldbank.org/v2/country/USA;DEU;CHL;MEX;ARG;VNM;IDN;ARE/indicator/GOV_WGI_{PV|RQ|RL|VA}.{SC|EST}?source=3&format=json&date=2023:2025",
+        "fecha_acceso": "2026-09-17"
+      },
+      "vdem": {
+        "anio_datos": 2025,
+        "ldi": 0.78,
+        "ranking_ldi_de_179": 16,
+        "regimen": "democracia liberal",
+        "codigo_row": "LD-",
+        "fuente": "https://www.v-dem.net/documents/75/V-Dem_Institute_Democracy_Report_2026_lowres.pdf",
+        "nota": "Democracy Report 2026 (marzo 2026), Tabla 1 'Regimes of the World, 2025' y tabla de indices. '+'/'-' = zona gris entre categorias."
+      },
+      "fmi": {
+        "edicion": "WEO abril 2026",
+        "crecimiento_2026": 2.4,
+        "crecimiento_2026_weo_abril_2026": 2.4,
+        "crecimiento_2026_weo_julio_2026": null,
+        "inflacion": 2.9,
+        "inflacion_anio": 2026,
+        "inflacion_2025": 4.2,
+        "nota_inflacion": "IPC promedio anual, WEO abril 2026 (Tablas A6/A7). El Update de julio 2026 no publica inflacion por pais.",
+        "fuente": "https://www.imf.org/-/media/files/publications/weo/2026/april/english/tablea.pdf",
+        "fuente_abril": "https://www.imf.org/-/media/files/publications/weo/2026/april/english/tablea.pdf",
+        "nota": "Chile no aparece en el Update de julio 2026; se usa WEO abril 2026. Posible desactualización: en 2026 el Banco Central de Chile recortó su proyección de crecimiento (no verificado en detalle)."
+      },
+      "rating": {
+        "agencia": "S&P",
+        "nota": "A",
+        "perspectiva": "estable",
+        "fecha": "2025-10-24",
+        "fuente": "https://www.hacienda.cl/noticias-y-eventos/noticias/clasificadoras-s-p-y-moody-s-ratings-ratifican-la-calificacion-soberana-de",
+        "observacion": "Última acción de S&P verificada; no se encontró acción de S&P en 2026."
+      },
+      "riesgo_credito_exportacion": {
+        "coface": {
+          "riesgo_pais": "A3",
+          "clima_negocios": "A3",
+          "actualizacion_ficha": "diciembre 2025",
+          "fuente": "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/chile"
+        },
+        "allianz_trade": {
+          "rating_pais": "BB1",
+          "riesgo_politico_nivel_1_6": 2,
+          "actualizacion": "septiembre 2026",
+          "fuente": "https://www.allianz-trade.com/en_global/economic-research/country-reports/Chile.html"
+        }
+      },
+      "proyecto": "Data center hiperescala enfriado por aire en Santiago",
+      "episodios": [
+        {
+          "anio": 2023,
+          "tipo": "cambio_regulatorio",
+          "descripcion": "El gobierno lanzó la Estrategia Nacional del Litio, que promueve la participación del Estado en la explotación del litio mediante asociaciones público-privadas y anuncia una Empresa Nacional del Litio.",
+          "fuente": "https://www.economia.gob.cl/2023/04/21/presidente-gabriel-boric-junto-a-ministros-lanza-estrategia-nacional-del-litio-en-antofagasta-el-litio-nos-presenta-una-gran-oportunidad-para-el-desarrollo-que-no-podemos-desaprovechar.htm"
+        },
+        {
+          "anio": 2024,
+          "tipo": "cambio_regulatorio",
+          "descripcion": "Codelco y SQM firmaron en mayo de 2024 un acuerdo de asociación para explotar litio en el Salar de Atacama entre 2025 y 2060, con 50% más una acción para Codelco; la última aprobación de libre competencia (China) llegó en noviembre de 2025.",
+          "fuente": "https://www.codelco.com/codelco-y-sqm-firman-acuerdo-para-asociacion-que-da-a-chile-liderazgo-en",
+          "fuentes_adicionales": [
+            "http://english.scio.gov.cn/pressroom/2025-11/11/content_118170698.html"
+          ]
+        },
+        {
+          "anio": 2024,
+          "tipo": "conflicto_social_licencia",
+          "descripcion": "En febrero de 2024 el Segundo Tribunal Ambiental anuló parcialmente la aprobación ambiental del data center de Google en Cerrillos y ordenó evaluar los efectos del cambio climático sobre el acuífero de Santiago; en septiembre Google renunció a ese permiso para rediseñar el proyecto.",
+          "fuente": "https://www.biobiochile.cl/noticias/nacional/region-metropolitana/2024/02/27/anulan-parcialmente-permiso-de-data-center-de-google-piden-que-incluya-efectos-de-cambio-climatico.shtml",
+          "fuentes_adicionales": [
+            "https://www.biobiochile.cl/noticias/nacional/region-metropolitana/2024/09/17/tras-reves-judicial-google-renuncia-a-permiso-para-data-center-en-cerrillos-y-evalua-nueva-iniciativa.shtml"
+          ]
+        }
+      ]
+    },
+    {
+      "iso2": "MX",
+      "nombre": "México",
+      "wgi": {
+        "anio_datos": 2024,
+        "escala": "puntaje_0_100",
+        "nota_escala": "WGI (metodologia revisada 2024-2025) publica 'governance score' 0-100 (codigos GOV_WGI_*.SC) y 'estimate' aprox. -2.5..+2.5 (GOV_WGI_*.EST). NO es el percentil de ranking antiguo; la API ya no expone *.PER.RNK. Mayor = mejor gobernanza.",
+        "estabilidad_politica": 53.7,
+        "calidad_regulatoria": 51.8,
+        "estado_de_derecho": 37.1,
+        "voz_y_rendicion": 50.9,
+        "estimacion_menos2_5_a_2_5": {
+          "estabilidad_politica": -0.72,
+          "calidad_regulatoria": -0.2,
+          "estado_de_derecho": -1.15,
+          "voz_y_rendicion": -0.34
+        },
+        "fuente": "https://www.worldbank.org/en/publication/worldwide-governance-indicators",
+        "fuente_datos": "https://api.worldbank.org/v2/country/USA;DEU;CHL;MEX;ARG;VNM;IDN;ARE/indicator/GOV_WGI_{PV|RQ|RL|VA}.{SC|EST}?source=3&format=json&date=2023:2025",
+        "fecha_acceso": "2026-09-17"
+      },
+      "vdem": {
+        "anio_datos": 2025,
+        "ldi": 0.22,
+        "ranking_ldi_de_179": 110,
+        "regimen": "autocracia electoral",
+        "codigo_row": "EA+",
+        "fuente": "https://www.v-dem.net/documents/75/V-Dem_Institute_Democracy_Report_2026_lowres.pdf",
+        "nota": "Democracy Report 2026 (marzo 2026), Tabla 1 'Regimes of the World, 2025' y tabla de indices. '+'/'-' = zona gris entre categorias.",
+        "declive_significativo_10_anios": true
+      },
+      "fmi": {
+        "edicion": "WEO Update julio 2026",
+        "crecimiento_2026": 1.2,
+        "crecimiento_2026_weo_abril_2026": 1.6,
+        "crecimiento_2026_weo_julio_2026": 1.2,
+        "inflacion": 3.9,
+        "inflacion_anio": 2026,
+        "inflacion_2025": 3.8,
+        "nota_inflacion": "IPC promedio anual, WEO abril 2026 (Tablas A6/A7). El Update de julio 2026 no publica inflacion por pais.",
+        "fuente": "https://www.imf.org/-/media/files/publications/weo/2026/update/july/english/text.pdf",
+        "fuente_abril": "https://www.imf.org/-/media/files/publications/weo/2026/april/english/tablea.pdf"
+      },
+      "rating": {
+        "agencia": "S&P",
+        "nota": "BBB",
+        "perspectiva": "negativa",
+        "fecha": "2026-05-12",
+        "fuente": "https://www.bloomberg.com/news/articles/2026-05-12/mexico-rating-outlook-revised-to-negative-at-s-p-as-debts-mount"
+      },
+      "riesgo_credito_exportacion": {
+        "coface": {
+          "riesgo_pais": "B",
+          "clima_negocios": "B",
+          "actualizacion_ficha": "noviembre 2025",
+          "fuente": "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/mexico"
+        },
+        "allianz_trade": {
+          "rating_pais": "BB2",
+          "riesgo_politico_nivel_1_6": 2,
+          "actualizacion": "enero 2026",
+          "fuente": "https://www.allianz-trade.com/en_global/economic-research/country-reports/Mexico.html"
+        }
+      },
+      "proyecto": "Planta de ensamblaje de servidores de IA en Nuevo León (nearshoring)",
+      "episodios": [
+        {
+          "anio": 2022,
+          "tipo": "expropiacion_nacionalizacion",
+          "descripcion": "Una reforma a la Ley Minera publicada el 20 de abril de 2022 declaró el litio de utilidad pública y reservó su exploración y explotación al Estado; en agosto de 2022 se creó el organismo estatal Litio para México (LitioMx).",
+          "fuente": "https://www.dof.gob.mx/nota_detalle.php?codigo=5649533&fecha=20/04/2022",
+          "fuentes_adicionales": [
+            "https://www.dof.gob.mx/nota_detalle.php?codigo=5662345&fecha=23%2F08%2F2022"
+          ]
+        },
+        {
+          "anio": 2023,
+          "tipo": "expropiacion_nacionalizacion",
+          "descripcion": "En agosto de 2023 las autoridades notificaron a la china Ganfeng la cancelación de nueve concesiones del proyecto de litio de Sonora por supuesto incumplimiento de inversión mínima; la empresa inició un arbitraje ante el CIADI.",
+          "fuente": "https://www.mining.com/ganfeng-sues-mexico-over-lithium-permit-cancellation/",
+          "fuentes_adicionales": [
+            "https://www.italaw.com/cases/12371"
+          ]
+        },
+        {
+          "anio": 2025,
+          "tipo": "sanciones_geopolitica_export_controls",
+          "descripcion": "En marzo de 2025 Estados Unidos aplicó aranceles adicionales de 25% a importaciones desde México bajo la ley IEEPA, invocando el narcotráfico y la migración.",
+          "fuente": "https://www.whitehouse.gov/fact-sheets/2025/03/fact-sheet-president-donald-j-trump-proceeds-with-tariffs-on-imports-from-canada-and-mexico/"
+        }
+      ]
+    },
+    {
+      "iso2": "AR",
+      "nombre": "Argentina",
+      "wgi": {
+        "anio_datos": 2024,
+        "escala": "puntaje_0_100",
+        "nota_escala": "WGI (metodologia revisada 2024-2025) publica 'governance score' 0-100 (codigos GOV_WGI_*.SC) y 'estimate' aprox. -2.5..+2.5 (GOV_WGI_*.EST). NO es el percentil de ranking antiguo; la API ya no expone *.PER.RNK. Mayor = mejor gobernanza.",
+        "estabilidad_politica": 63.0,
+        "calidad_regulatoria": 51.2,
+        "estado_de_derecho": 52.6,
+        "voz_y_rendicion": 63.6,
+        "estimacion_menos2_5_a_2_5": {
+          "estabilidad_politica": -0.17,
+          "calidad_regulatoria": -0.24,
+          "estado_de_derecho": -0.25,
+          "voz_y_rendicion": 0.39
+        },
+        "fuente": "https://www.worldbank.org/en/publication/worldwide-governance-indicators",
+        "fuente_datos": "https://api.worldbank.org/v2/country/USA;DEU;CHL;MEX;ARG;VNM;IDN;ARE/indicator/GOV_WGI_{PV|RQ|RL|VA}.{SC|EST}?source=3&format=json&date=2023:2025",
+        "fecha_acceso": "2026-09-17"
+      },
+      "vdem": {
+        "anio_datos": 2025,
+        "ldi": 0.52,
+        "ranking_ldi_de_179": 56,
+        "regimen": "democracia electoral",
+        "codigo_row": "ED",
+        "fuente": "https://www.v-dem.net/documents/75/V-Dem_Institute_Democracy_Report_2026_lowres.pdf",
+        "nota": "Democracy Report 2026 (marzo 2026), Tabla 1 'Regimes of the World, 2025' y tabla de indices. '+'/'-' = zona gris entre categorias.",
+        "declive_significativo_10_anios": true
+      },
+      "fmi": {
+        "edicion": "WEO Update julio 2026",
+        "crecimiento_2026": 3.5,
+        "crecimiento_2026_weo_abril_2026": 3.5,
+        "crecimiento_2026_weo_julio_2026": 3.5,
+        "inflacion": 30.4,
+        "inflacion_anio": 2026,
+        "inflacion_2025": 41.9,
+        "nota_inflacion": "IPC promedio anual, WEO abril 2026 (Tablas A6/A7). El Update de julio 2026 no publica inflacion por pais.",
+        "fuente": "https://www.imf.org/-/media/files/publications/weo/2026/update/july/english/text.pdf",
+        "fuente_abril": "https://www.imf.org/-/media/files/publications/weo/2026/april/english/tablea.pdf"
+      },
+      "rating": {
+        "agencia": "S&P",
+        "nota": "B-",
+        "perspectiva": "estable",
+        "fecha": "2026-06-10",
+        "fuente": "https://www.bloomberg.com/news/articles/2026-06-10/argentina-rating-raised-to-b-by-s-p-in-win-for-milei",
+        "fuentes_adicionales": [
+          "https://www.riotimesonline.com/argentina-credit-rating-upgrade-sp-b-minus-milei-energy-june-2026/"
+        ]
+      },
+      "riesgo_credito_exportacion": {
+        "coface": {
+          "riesgo_pais": "D",
+          "clima_negocios": "B",
+          "actualizacion_ficha": "diciembre 2025",
+          "fuente": "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/argentina"
+        },
+        "allianz_trade": {
+          "rating_pais": "C3",
+          "riesgo_politico_nivel_1_6": 5,
+          "actualizacion": "septiembre 2026",
+          "fuente": "https://www.allianz-trade.com/en_global/economic-research/country-reports/Argentina.html"
+        }
+      },
+      "proyecto": "Planta de hidróxido de litio en Salta (bajo RIGI)",
+      "episodios": [
+        {
+          "anio": 2019,
+          "tipo": "controles_capital_cambiario",
+          "descripcion": "El DNU 609/2019 del 1 de septiembre de 2019 reinstaló controles cambiarios: obligó a liquidar exportaciones en el mercado local y sujetó compras de divisas y transferencias al exterior a autorización del BCRA.",
+          "fuente": "https://www.argentina.gob.ar/normativa/nacional/decreto-609-2019-327566/texto"
+        },
+        {
+          "anio": 2024,
+          "tipo": "reforma_pro_inversion",
+          "descripcion": "La Ley 27.742 (Ley Bases), promulgada en julio de 2024, creó el Régimen de Incentivo para Grandes Inversiones (RIGI), con beneficios y estabilidad jurídica para proyectos grandes en minería, energía, tecnología e infraestructura, entre otros.",
+          "fuente": "https://www.deloitte.com/latam/es/services/legal/perspectives/ley-bases-rigi.html",
+          "fuentes_adicionales": [
+            "https://www.boletinoficial.gob.ar/detalleAviso/primera/312707/20240823"
+          ]
+        },
+        {
+          "anio": 2025,
+          "tipo": "controles_capital_cambiario",
+          "descripcion": "Desde el 14 de abril de 2025 el BCRA eliminó las restricciones cambiarias para personas humanas, adoptó una banda de flotación inicial de 1.000 a 1.400 pesos por dólar y flexibilizó el acceso de las empresas al mercado de cambios.",
+          "fuente": "https://www.lanacion.com.ar/economia/eliminan-el-cepo-cambiario-para-personas-y-cambian-el-regimen-para-administrar-el-dolar-nid11042025/"
+        }
+      ]
+    },
+    {
+      "iso2": "VN",
+      "nombre": "Vietnam",
+      "wgi": {
+        "anio_datos": 2024,
+        "escala": "puntaje_0_100",
+        "nota_escala": "WGI (metodologia revisada 2024-2025) publica 'governance score' 0-100 (codigos GOV_WGI_*.SC) y 'estimate' aprox. -2.5..+2.5 (GOV_WGI_*.EST). NO es el percentil de ranking antiguo; la API ya no expone *.PER.RNK. Mayor = mejor gobernanza.",
+        "estabilidad_politica": 66.0,
+        "calidad_regulatoria": 50.7,
+        "estado_de_derecho": 51.6,
+        "voz_y_rendicion": 37.6,
+        "estimacion_menos2_5_a_2_5": {
+          "estabilidad_politica": 0.01,
+          "calidad_regulatoria": -0.27,
+          "estado_de_derecho": -0.31,
+          "voz_y_rendicion": -1.1
+        },
+        "fuente": "https://www.worldbank.org/en/publication/worldwide-governance-indicators",
+        "fuente_datos": "https://api.worldbank.org/v2/country/USA;DEU;CHL;MEX;ARG;VNM;IDN;ARE/indicator/GOV_WGI_{PV|RQ|RL|VA}.{SC|EST}?source=3&format=json&date=2023:2025",
+        "fecha_acceso": "2026-09-17"
+      },
+      "vdem": {
+        "anio_datos": 2025,
+        "ldi": 0.1,
+        "ranking_ldi_de_179": 144,
+        "regimen": "autocracia cerrada",
+        "codigo_row": "CA",
+        "fuente": "https://www.v-dem.net/documents/75/V-Dem_Institute_Democracy_Report_2026_lowres.pdf",
+        "nota": "Democracy Report 2026 (marzo 2026), Tabla 1 'Regimes of the World, 2025' y tabla de indices. '+'/'-' = zona gris entre categorias."
+      },
+      "fmi": {
+        "edicion": "WEO Update julio 2026",
+        "crecimiento_2026": 7.5,
+        "crecimiento_2026_weo_abril_2026": 7.1,
+        "crecimiento_2026_weo_julio_2026": 7.5,
+        "inflacion": 4.9,
+        "inflacion_anio": 2026,
+        "inflacion_2025": 3.3,
+        "nota_inflacion": "IPC promedio anual, WEO abril 2026 (Tablas A6/A7). El Update de julio 2026 no publica inflacion por pais.",
+        "fuente": "https://www.imf.org/-/media/files/publications/weo/2026/update/july/english/text.pdf",
+        "fuente_abril": "https://www.imf.org/-/media/files/publications/weo/2026/april/english/tablea.pdf",
+        "nota": "7,5% proviene del texto del Update de julio 2026 ('revisado al alza 0,4 pp'); Vietnam no figura en sus tablas."
+      },
+      "rating": {
+        "agencia": "S&P",
+        "nota": "BB+",
+        "perspectiva": "estable",
+        "fecha": "2025-08",
+        "fuente": "https://wkzo.com/2026/04/01/vietnams-infrastructure-push-to-boost-growth-and-deficit-sp-ratings-says/",
+        "observacion": "Última ratificación verificada: agosto 2025 (nota Reuters de abril 2026 la confirma vigente). Fitch subió a Vietnam a BBB- en enero 2026 (no verificado en fuente primaria)."
+      },
+      "riesgo_credito_exportacion": {
+        "coface": {
+          "riesgo_pais": "B",
+          "clima_negocios": "A4",
+          "actualizacion_ficha": "enero 2026",
+          "fuente": "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/vietnam-socialist-republic-of"
+        },
+        "allianz_trade": {
+          "rating_pais": "B1",
+          "riesgo_politico_nivel_1_6": 4,
+          "actualizacion": "febrero 2026",
+          "fuente": "https://www.allianz-trade.com/en_global/economic-research/country-reports/Vietnam.html"
+        }
+      },
+      "proyecto": "Planta de ensamblaje y prueba de semiconductores en Bac Ninh",
+      "episodios": [
+        {
+          "anio": 2024,
+          "tipo": "reforma_pro_inversion",
+          "descripcion": "La Decisión 1018/QD-TTg de septiembre de 2024 aprobó la estrategia de la industria de semiconductores a 2030 (visión 2050), que busca atraer inversión extranjera selectiva y formar al menos 50.000 ingenieros al 2030.",
+          "fuente": "https://en.baochinhphu.vn/govt-targets-to-raise-turnover-of-semiconductor-industry-to-us100-billion-by-2050-111240923114027879.htm"
+        },
+        {
+          "anio": 2025,
+          "tipo": "sanciones_geopolitica_export_controls",
+          "descripcion": "Estados Unidos anunció en abril de 2025 un arancel 'recíproco' de 46% a Vietnam y en julio acordó un marco con 20% para bienes vietnamitas y 40% para bienes considerados triangulados.",
+          "fuente": "https://www.cnbc.com/2025/07/02/trump-trade-vietnam-deal.html",
+          "fuentes_adicionales": [
+            "https://ustr.gov/about/policy-offices/press-office/fact-sheets/2025/october/fact-sheet-united-states-and-viet-nam-reach-framework-agreement-reciprocal-fair-and-balanced-trade"
+          ]
+        }
+      ]
+    },
+    {
+      "iso2": "ID",
+      "nombre": "Indonesia",
+      "wgi": {
+        "anio_datos": 2024,
+        "escala": "puntaje_0_100",
+        "nota_escala": "WGI (metodologia revisada 2024-2025) publica 'governance score' 0-100 (codigos GOV_WGI_*.SC) y 'estimate' aprox. -2.5..+2.5 (GOV_WGI_*.EST). NO es el percentil de ranking antiguo; la API ya no expone *.PER.RNK. Mayor = mejor gobernanza.",
+        "estabilidad_politica": 55.5,
+        "calidad_regulatoria": 56.8,
+        "estado_de_derecho": 53.4,
+        "voz_y_rendicion": 53.8,
+        "estimacion_menos2_5_a_2_5": {
+          "estabilidad_politica": -0.61,
+          "calidad_regulatoria": 0.12,
+          "estado_de_derecho": -0.21,
+          "voz_y_rendicion": -0.18
+        },
+        "fuente": "https://www.worldbank.org/en/publication/worldwide-governance-indicators",
+        "fuente_datos": "https://api.worldbank.org/v2/country/USA;DEU;CHL;MEX;ARG;VNM;IDN;ARE/indicator/GOV_WGI_{PV|RQ|RL|VA}.{SC|EST}?source=3&format=json&date=2023:2025",
+        "fecha_acceso": "2026-09-17"
+      },
+      "vdem": {
+        "anio_datos": 2025,
+        "ldi": 0.3,
+        "ranking_ldi_de_179": 99,
+        "regimen": "autocracia electoral",
+        "codigo_row": "EA+",
+        "fuente": "https://www.v-dem.net/documents/75/V-Dem_Institute_Democracy_Report_2026_lowres.pdf",
+        "nota": "Democracy Report 2026 (marzo 2026), Tabla 1 'Regimes of the World, 2025' y tabla de indices. '+'/'-' = zona gris entre categorias.",
+        "declive_significativo_10_anios": true
+      },
+      "fmi": {
+        "edicion": "WEO Update julio 2026",
+        "crecimiento_2026": 5.0,
+        "crecimiento_2026_weo_abril_2026": 5.0,
+        "crecimiento_2026_weo_julio_2026": 5.0,
+        "inflacion": 3.0,
+        "inflacion_anio": 2026,
+        "inflacion_2025": 1.9,
+        "nota_inflacion": "IPC promedio anual, WEO abril 2026 (Tablas A6/A7). El Update de julio 2026 no publica inflacion por pais.",
+        "fuente": "https://www.imf.org/-/media/files/publications/weo/2026/update/july/english/text.pdf",
+        "fuente_abril": "https://www.imf.org/-/media/files/publications/weo/2026/april/english/tablea.pdf"
+      },
+      "rating": {
+        "agencia": "S&P",
+        "nota": "BBB",
+        "perspectiva": "estable",
+        "fecha": "2026-07-13",
+        "fuente": "http://www.thejakartapost.com/business/2026/07/13/sp-affirms-bbb-rating-stable-outlook-for-indonesia",
+        "observacion": "Fitch (y según Xinhua también Moody's) pasaron a perspectiva negativa a comienzos de 2026."
+      },
+      "riesgo_credito_exportacion": {
+        "coface": {
+          "riesgo_pais": "B",
+          "clima_negocios": "A4",
+          "actualizacion_ficha": "marzo 2025",
+          "fuente": "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/indonesia"
+        },
+        "allianz_trade": {
+          "rating_pais": "B1",
+          "riesgo_politico_nivel_1_6": 4,
+          "actualizacion": "febrero 2026",
+          "fuente": "https://www.allianz-trade.com/en_global/economic-research/country-reports/Indonesia.html"
+        }
+      },
+      "proyecto": "Refinería de níquel para baterías en Sulawesi Central",
+      "episodios": [
+        {
+          "anio": 2020,
+          "tipo": "cambio_regulatorio",
+          "descripcion": "Indonesia prohibió desde enero de 2020 la exportación de mineral de níquel sin procesar; en noviembre de 2022 un panel de la OMC la consideró incompatible con sus reglas e Indonesia apeló.",
+          "fuente": "https://www.wto.org/english/tratop_e/dispu_e/cases_e/ds592_e.htm"
+        },
+        {
+          "anio": 2024,
+          "tipo": "cambio_regulatorio",
+          "descripcion": "En octubre de 2024 el gobierno bloqueó la venta del iPhone 16 porque Apple no había cumplido sus compromisos de inversión local exigidos por las reglas de contenido nacional.",
+          "fuente": "https://www.engadget.com/mobile/smartphones/the-iphone-16-is-banned-from-sale-in-indonesia-after-apple-fails-to-invest-enough-locally-133907141.html",
+          "fuentes_adicionales": [
+            "https://www.lightreading.com/regulatory-politics/apple-reaches-agreement-with-indonesia-iphone-16-ban-to-be-lifted-soon-reports"
+          ]
+        },
+        {
+          "anio": 2026,
+          "tipo": "cambio_regulatorio",
+          "descripcion": "En mayo de 2026 el gobierno creó Danantara Sumberdaya Indonesia, filial del fondo soberano Danantara, como canal único de exportación de carbón, aceite de palma y ferroaleaciones, con implementación gradual desde junio de 2026.",
+          "fuente": "https://www.reccessary.com/en/news/indonesia-export-control-coal-nickel-palm-oil",
+          "fuentes_adicionales": [
+            "https://www.indonesiancoalandnickel.com/government-officially-appoints-pt-danantara-sumberdaya-indonesia-as-the-single-export-agency-for-coal-and-two-other-commodities-effective-june-1-2026/"
+          ]
+        }
+      ]
+    },
+    {
+      "iso2": "AE",
+      "nombre": "Emiratos Árabes Unidos",
+      "wgi": {
+        "anio_datos": 2024,
+        "escala": "puntaje_0_100",
+        "nota_escala": "WGI (metodologia revisada 2024-2025) publica 'governance score' 0-100 (codigos GOV_WGI_*.SC) y 'estimate' aprox. -2.5..+2.5 (GOV_WGI_*.EST). NO es el percentil de ranking antiguo; la API ya no expone *.PER.RNK. Mayor = mejor gobernanza.",
+        "estabilidad_politica": 79.4,
+        "calidad_regulatoria": 72.6,
+        "estado_de_derecho": 65.5,
+        "voz_y_rendicion": 41.9,
+        "estimacion_menos2_5_a_2_5": {
+          "estabilidad_politica": 0.79,
+          "calidad_regulatoria": 1.13,
+          "estado_de_derecho": 0.5,
+          "voz_y_rendicion": -0.85
+        },
+        "fuente": "https://www.worldbank.org/en/publication/worldwide-governance-indicators",
+        "fuente_datos": "https://api.worldbank.org/v2/country/USA;DEU;CHL;MEX;ARG;VNM;IDN;ARE/indicator/GOV_WGI_{PV|RQ|RL|VA}.{SC|EST}?source=3&format=json&date=2023:2025",
+        "fecha_acceso": "2026-09-17"
+      },
+      "vdem": {
+        "anio_datos": 2025,
+        "ldi": 0.08,
+        "ranking_ldi_de_179": 155,
+        "regimen": "autocracia cerrada",
+        "codigo_row": "CA",
+        "fuente": "https://www.v-dem.net/documents/75/V-Dem_Institute_Democracy_Report_2026_lowres.pdf",
+        "nota": "Democracy Report 2026 (marzo 2026), Tabla 1 'Regimes of the World, 2025' y tabla de indices. '+'/'-' = zona gris entre categorias."
+      },
+      "fmi": {
+        "edicion": "WEO abril 2026",
+        "crecimiento_2026": 3.1,
+        "crecimiento_2026_weo_abril_2026": 3.1,
+        "crecimiento_2026_weo_julio_2026": null,
+        "inflacion": 2.5,
+        "inflacion_anio": 2026,
+        "inflacion_2025": 1.3,
+        "nota_inflacion": "IPC promedio anual, WEO abril 2026 (Tablas A6/A7). El Update de julio 2026 no publica inflacion por pais.",
+        "fuente": "https://www.imf.org/-/media/files/publications/weo/2026/april/english/tablea.pdf",
+        "fuente_abril": "https://www.imf.org/-/media/files/publications/weo/2026/april/english/tablea.pdf",
+        "nota": "EAU no aparece en el Update de julio 2026; se usa WEO abril 2026. Ese Update recortó a 0,7% el crecimiento 2026 de Medio Oriente y Asia Central por un cierre más largo del Estrecho de Ormuz, por lo que la cifra de abril probablemente está desactualizada."
+      },
+      "rating": {
+        "agencia": "S&P",
+        "nota": "AA",
+        "perspectiva": "estable",
+        "fecha": "2026-09-04",
+        "fuente": "https://au.investing.com/news/stock-market-news/sp-affirms-uae-at-aaa1-on-strong-fiscal-buffers-despite-war-risks-93CH-4630560",
+        "observacion": "Ratificación previa de S&P: 6 de marzo de 2026. Moody's: Aa2 estable (revisión periódica 30 de marzo de 2026)."
+      },
+      "riesgo_credito_exportacion": {
+        "coface": {
+          "riesgo_pais": "A2",
+          "clima_negocios": "A2",
+          "actualizacion_ficha": "junio 2026",
+          "fuente": "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/united-arab-emirates"
+        },
+        "allianz_trade": {
+          "rating_pais": "A2",
+          "riesgo_politico_nivel_1_6": 2,
+          "actualizacion": "febrero 2026",
+          "fuente": "https://www.allianz-trade.com/en_global/economic-research/country-reports/United-Arab-Emirates.html",
+          "nota": "Actualizado antes de los ataques de marzo 2026; probablemente no refleja el riesgo de guerra."
+        }
+      },
+      "proyecto": "Campus de data centers de IA en Abu Dabi",
+      "episodios": [
+        {
+          "anio": 2024,
+          "tipo": "sanciones_geopolitica_export_controls",
+          "descripcion": "Microsoft invirtió 1.500 millones de dólares en la emiratí G42 con un acuerdo de garantías intergubernamentales, en el marco del cual G42 se comprometió a retirar hardware chino de sus operaciones.",
+          "fuente": "https://techcrunch.com/2024/04/16/microsofts-1-5b-check-for-g42-shows-growing-us-china-rift"
+        },
+        {
+          "anio": 2025,
+          "tipo": "sanciones_geopolitica_export_controls",
+          "descripcion": "En mayo de 2025 EAU y EE.UU. presentaron un campus de IA de 5 GW en Abu Dabi liderado por G42, y en noviembre Microsoft obtuvo licencias de exportación de EE.UU. para enviar GPUs de Nvidia a EAU.",
+          "fuente": "https://www.commerce.gov/news/press-releases/2025/05/uae-and-us-presidents-attend-unveiling-phase-1-new-5gw-ai-campus-abu",
+          "fuentes_adicionales": [
+            "https://www.cnbc.com/2025/11/03/nvidia-shares-rise-after-us-approves-chip-sales-to-the-uae.html"
+          ]
+        },
+        {
+          "anio": 2026,
+          "tipo": "sanciones_geopolitica_export_controls",
+          "nota_tipo": "Ninguna categoría calza exactamente: es riesgo de guerra y violencia política (cubierto por seguros tipo MIGA 'War and Civil Disturbance').",
+          "descripcion": "En marzo de 2026, en el contexto de la guerra en Medio Oriente, un dron iraní impactó un data center de AWS en EAU; en septiembre Reuters informó que EAU rediseña su campus de IA como una red distribuida de instalaciones más protegidas.",
+          "fuente": "https://asiapolicy.asiasociety.org/p/iran-is-hitting-data-centers-in-the",
+          "fuentes_adicionales": [
+            "https://ground.news/article/uae-revises-ai-data-center-plan-after-iranian-attacks-reuters_59dd4a"
+          ]
+        }
+      ]
+    }
+  ],
+  "global": {
+    "miga": {
+      "que_es": "Multilateral Investment Guarantee Agency (Grupo Banco Mundial). Seguro de riesgo político (PRI) para inversión extranjera directa en países miembros en desarrollo; hoy comercializado bajo la plataforma 'World Bank Group Guarantees'.",
+      "coberturas": [
+        {
+          "riesgo": "Inconvertibilidad de moneda y restricción de transferencias",
+          "definicion": "Pérdidas por no poder convertir legalmente moneda local a divisa fuerte o transferirla fuera del país, por acción u omisión del gobierno; cubre capital, intereses, utilidades, regalías y otras remesas.",
+          "fuente": "https://www.miga.org/product/currency-inconvertibility-and-transfer-restriction"
+        },
+        {
+          "riesgo": "Expropiación",
+          "definicion": "Actos del gobierno que reducen o eliminan la propiedad, el control o los derechos sobre la inversión; incluye expropiación progresiva ('creeping') y, de forma limitada, parcial. Compensación de capital basada en valor libro neto.",
+          "fuente": "https://www.miga.org/product/expropriation"
+        },
+        {
+          "riesgo": "Guerra, terrorismo y disturbios civiles",
+          "definicion": "Pérdida, daño o destrucción de activos tangibles por violencia con motivación política (revolución, insurrección, golpe, sabotaje, terrorismo); puede incluir interrupción del negocio.",
+          "fuente": "https://www.miga.org/product/war-and-civil-disturbance"
+        },
+        {
+          "riesgo": "Incumplimiento de contrato",
+          "definicion": "Pérdidas por repudio o incumplimiento de un contrato por el gobierno; paga si el inversionista no logra un laudo por interferencia estatal o si el gobierno no paga el laudo.",
+          "fuente": "https://www.miga.org/product/breach-contract"
+        },
+        {
+          "riesgo": "Incumplimiento de obligaciones financieras soberanas / de empresas estatales ('non-honoring')",
+          "definicion": "Protege a prestamistas cuando un soberano, subsoberano o empresa estatal no paga una obligación financiera incondicional o garantía.",
+          "fuente": "https://www.miga.org/sites/default/files/2019-05/miga_at_a_glance_v1_0.pdf"
+        }
+      ],
+      "no_cubre": [
+        {
+          "item": "Devaluación o depreciación de la moneda (riesgo cambiario de mercado).",
+          "fuente": "https://www.miga.org/product/currency-inconvertibility-and-transfer-restriction",
+          "base_legal": "Convenio MIGA, art. 11(b): la cobertura nunca puede extenderse al riesgo de devaluación o depreciación."
+        },
+        {
+          "item": "Medidas no discriminatorias de aplicación general que los gobiernos normalmente adoptan para regular la actividad económica (p. ej., cambios regulatorios, tributarios o ambientales de buena fe), salvo que tengan efecto confiscatorio.",
+          "fuente": "https://www.miga.org/sites/default/files/archive/Documents/MIGA%20Convention%20February%202016.pdf",
+          "base_legal": "Convenio MIGA, art. 11(a)(ii)."
+        },
+        {
+          "item": "Actos del gobierno que el asegurado aceptó o de los que fue responsable, y eventos ocurridos antes de firmar el contrato de garantía.",
+          "fuente": "https://www.miga.org/sites/default/files/archive/Documents/MIGA%20Convention%20February%202016.pdf",
+          "base_legal": "Convenio MIGA, art. 11(c)."
+        },
+        {
+          "item": "Riesgo comercial o de mercado en general (demanda, precios, gestión): MIGA cubre solo riesgos 'no comerciales' de origen político.",
+          "fuente": "https://www.miga.org/political-risk-insurance",
+          "nota": "Inferido del alcance del producto (riesgos derivados de acciones u omisiones de gobiernos); la página no trae una lista explícita de exclusiones comerciales."
+        }
+      ],
+      "primas": {
+        "dato": "Las primas se fijan según riesgo país y del proyecto; promedian aproximadamente 1% del monto asegurado por año, pero pueden ser bastante menores o mayores.",
+        "tarifa_solicitud": "US$5.000 para coberturas bajo US$25 millones y US$10.000 para montos mayores (dato de 2019; puede haber cambiado).",
+        "fuente": "https://www.miga.org/sites/default/files/2019-05/miga_at_a_glance_v1_0.pdf",
+        "anio_fuente": 2019
+      },
+      "plazo": {
+        "dato": "Hasta 15 años (en algunos casos 20).",
+        "fuente": "https://www.miga.org/sites/default/files/2019-05/miga_at_a_glance_v1_0.pdf",
+        "anio_fuente": 2019
+      },
+      "elegibilidad_pais_anfitrion": {
+        "dato": "Solo inversiones en países miembros en desarrollo (art. 14). En el Anexo A del Convenio, Argentina, Chile, Indonesia, México, EAU y Vietnam están en la 'Categoría Dos' (en desarrollo); Alemania y EE.UU. en la 'Categoría Uno'. Implicancia para el juego: un seguro MIGA no estaría disponible para proyectos en EE.UU. o Alemania.",
+        "fuente": "https://www.miga.org/sites/default/files/archive/Documents/MIGA%20Convention%20February%202016.pdf",
+        "anio_fuente": 2016
+      }
+    },
+    "rice_zegart": [
+      {
+        "hecho": "Rice y Zegart (HBR, mayo-junio 2018) sostienen que el riesgo político ya no es principalmente un dictador que confisca activos extranjeros: hoy lo generan también ciudadanos con celulares, autoridades locales, terroristas y ciberdelincuentes, entre otros.",
+        "fuente": "https://store.hbr.org/product/managing-21st-century-political-risk/R1803L"
+      },
+      {
+        "hecho": "Proponen que las organizaciones que gestionan bien el riesgo político dominan cuatro competencias: entender el riesgo, analizarlo, mitigarlo y responder a las crisis.",
+        "fuente": "https://store.hbr.org/product/managing-21st-century-political-risk/R1803L"
+      },
+      {
+        "hecho": "Entender implica definir el apetito de riesgo (cuánto es inevitable y cuánto se está dispuesto a aceptar); analizar implica identificar qué activos son más valiosos y más vulnerables; mitigar implica preparar sistemas y relaciones antes de la crisis; responder implica gestionar la situación y el relato.",
+        "fuente": "https://www.leadershipreview.net/how-to-manage-risk-in-the-21st-century/",
+        "nota": "Fuente secundaria (resumen del artículo); el texto completo en HBR está tras muro de pago."
+      },
+      {
+        "hecho": "El artículo abre con SeaWorld: un documental de bajo presupuesto ('Blackfish') detonó activismo y presión regulatoria; en unos 18 meses la acción cayó alrededor de 60% y el CEO renunció.",
+        "fuente": "https://hbr.org/2018/05/managing-21st-century-political-risk"
+      }
+    ],
+    "escalas": {
+      "coface": "Evaluación de riesgo país Coface: A1 (riesgo muy bajo) ... A4, B, C, D, E (riesgo extremo). Mide riesgo de impago empresarial de corto plazo, no riesgo político puro. 'Clima de negocios' usa la misma escala.",
+      "allianz_trade": "Rating país Allianz Trade: letras = riesgo de mediano plazo (AA, A, BB, B, C, D), dígito = riesgo de corto plazo (1 bajo a 4 alto). 'riesgo_politico_nivel_1_6' se obtuvo del gráfico de barras de la página (Histogram6_LevelN; mayor = más riesgo); la escala 1-6 es inferida del gráfico, no está publicada como texto.",
+      "wgi": "Puntaje 0-100 (mayor = mejor). No es percentil.",
+      "vdem": "LDI 0-1. Regímenes del Mundo: LD democracia liberal, ED democracia electoral, EA autocracia electoral, CA autocracia cerrada; +/- = zona gris."
+    },
+    "notas": [
+      "Todas las fuentes consultadas el 2026-09-17.",
+      "Contexto 2026: guerra en Medio Oriente desde ~marzo 2026 con cierre del Estrecho de Ormuz (FMI, WEO julio 2026); afecta especialmente a EAU.",
+      "Aranceles de EE.UU.: la Corte Suprema anuló los aranceles IEEPA el 20-feb-2026 y se reemplazaron por un 10% bajo la Sección 122; en mayo de 2026 el Tribunal de Comercio Internacional también rechazó el arancel de la Sección 122 (apelación en curso). Los montos de 2025 para México y Vietnam no están vigentes tal cual.",
+      "WGI: el último año disponible en la API (fuente 3, actualizada 2026-03-18) es 2024; no hay datos 2025."
+    ]
+  }
+}

@@ -2,49 +2,174 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+/* ═══════════════════════════════════════════════════════════════════════
+   "Cancha" (portado de ml2-master-game). Fuentes autoalojadas: un juego en
+   vivo no puede depender de un CDN de fuentes.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: 'Archivo Black';
+  src: url('./assets/fonts/archivo-black-latin.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Archivo Black';
+  src: url('./assets/fonts/archivo-black-latin-ext.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('./assets/fonts/outfit-latin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('./assets/fonts/outfit-latin-ext.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+  --paper: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-2: #F2F1ED;
+  --surface-3: #E8E7E2;
+  --ink: #101114;
+  --muted: #5F6269;
+  --faint: #767980;
+  --line: #E6E5E0;
+  --orange: #FF5A1F;
+  --gain: #0B7A46;
+  --loss: #B3272B;
+  --amber: #F5A524;
+  --shadow-print: 4px 4px 0;
+
+  font-family: 'Outfit', system-ui, sans-serif;
+  line-height: 1.5;
+  font-weight: 500;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+.font-display {
+  font-family: 'Archivo Black', 'Outfit', system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: -0.015em;
+}
+
+@layer utilities {
+  /* Trama al 5%: se nota en el teléfono y desaparece proyectada. */
+  .bg-trama {
+    background:
+      radial-gradient(circle at 1px 1px, rgba(16, 17, 20, .05) 1px, transparent 1.6px) 0 0 / 7px 7px,
+      var(--paper);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .tabular { font-variant-numeric: tabular-nums; }
+}
+
+@layer components {
+  .card {
+    @apply bg-surface rounded-xl border-2 border-line;
+    box-shadow: 0 2px 0 var(--line);
+  }
+  .card-play {
+    @apply bg-surface rounded-2xl;
+    border: 2.5px solid var(--ink);
+    box-shadow: var(--shadow-print) var(--orange);
+  }
+  .card-ink {
+    @apply bg-surface rounded-xl;
+    border: 2px solid var(--ink);
+    box-shadow: 0 3px 0 var(--ink);
+  }
+  .sticker {
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px var(--surface), 2px 3px 5px rgba(16, 17, 20, .30);
+    transform: rotate(-7deg);
+  }
+  .tape {
+    background: var(--amber);
+    color: var(--ink);
+    padding: 0 .4em;
+    transform: rotate(-2deg);
+    display: inline-block;
+    font-weight: 800;
+  }
+  .tilt-a { transform: rotate(-0.6deg); }
+  .tilt-b { transform: rotate(0.5deg); }
+
+  /* Tinta sobre naranjo: blanco sobre #FF5A1F no llega a 4,5:1. */
+  .btn-primary {
+    @apply text-ink px-6 py-3 rounded-xl font-bold text-base uppercase tracking-wide transition-all duration-150;
+    @apply disabled:opacity-40 disabled:cursor-not-allowed;
+    background: var(--orange);
+    border: 2.5px solid var(--ink);
+    box-shadow: var(--shadow-print) var(--ink);
+  }
+  .btn-primary:hover:not(:disabled) { filter: brightness(1.05); }
+  .btn-primary:active:not(:disabled) { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--ink); }
+
+  .btn-secondary {
+    @apply bg-surface text-ink px-6 py-3 rounded-xl font-bold uppercase tracking-wide transition-all duration-150;
+    @apply disabled:opacity-40 disabled:cursor-not-allowed;
+    border: 2.5px solid var(--ink);
+    box-shadow: var(--shadow-print) var(--ink);
+  }
+  .btn-secondary:hover:not(:disabled) { background: var(--surface-2); }
+  .btn-secondary:active:not(:disabled) { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--ink); }
+
+  .btn-ghost {
+    @apply px-3 py-2 rounded-lg font-semibold text-sm text-ink-soft hover:bg-surface-2 transition-colors;
+  }
+
+  .input {
+    @apply bg-surface border-2 border-line rounded-xl px-4 py-3 text-ink font-medium w-full transition-all duration-150;
+    @apply focus:outline-none;
+  }
+  .input::placeholder { color: var(--faint); }
+  .input:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255, 90, 31, 0.18); }
+
+  .chip {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-bold uppercase tracking-wide border;
   }
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.5s ease-out;
+.timer-critical { animation: timerPulse 0.5s ease-in-out infinite; }
+@keyframes timerPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+
+.evento-golpe { animation: golpe 0.5s ease-in-out; }
+@keyframes golpe {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  50% { transform: translateX(5px); }
+  80% { transform: translateX(-3px); }
 }
 
-@keyframes bounce {
-  0%, 20%, 53%, 80%, 100% {
-    transform: translate3d(0,0,0);
-  }
-  40%, 43% {
-    transform: translate3d(0, -30px, 0);
-  }
-  70% {
-    transform: translate3d(0, -15px, 0);
-  }
-  90% {
-    transform: translate3d(0, -4px, 0);
-  }
+::selection { background: rgba(255, 90, 31, 0.22); color: var(--ink); }
+
+:where(button, a, input, textarea, select, [tabindex]):focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 2px;
 }
 
-@keyframes pulse {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 1;
-  }
+@media (prefers-reduced-motion: reduce) {
+  .timer-critical, .evento-golpe, .animate-slide-up, .animate-scale-in { animation: none !important; }
+  .btn-primary:active:not(:disabled), .btn-secondary:active:not(:disabled) { transform: none; }
+  /* Las rotaciones son estáticas: `animation: none` no las apaga. */
+  .sticker, .tape, .tilt-a, .tilt-b { transform: none; }
 }
-
-.delay-100 { animation-delay: 0.1s; }
-.delay-200 { animation-delay: 0.2s; }
-.delay-300 { animation-delay: 0.3s; }
-.delay-400 { animation-delay: 0.4s; }
