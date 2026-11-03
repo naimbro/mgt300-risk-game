@@ -107,28 +107,52 @@ function PodioGrupos({ partida }: { partida: Partida }) {
     else grupos.set(g, [...(grupos.get(g) ?? []), cap]);
   }
   const filas = posiciones(
-    [...grupos].map(([g, caps]) => ({ g, n: caps.length, promedio: caps.reduce((a, b) => a + b, 0) / caps.length })),
+    [...grupos].map(([g, caps]) => ({ g, caps, promedio: caps.reduce((a, b) => a + b, 0) / caps.length })),
     (f) => f.promedio,
   );
   if (filas.length === 0) return <p className="text-xl text-muted">Nadie entró con un nombre tipo «G3 Ana».</p>;
 
+  // Una sola escala para todos los grupos, con el capital inicial siempre a la vista.
+  const todos = filas.flatMap(({ item }) => item.caps);
+  const min = Math.min(100, ...todos), max = Math.max(100, ...todos);
+  const margen = Math.max(5, (max - min) * 0.05);
+  const x = (c: number) => `${((c - (min - margen)) / (max - min + 2 * margen)) * 100}%`;
+
   return (
-    <section className="max-w-4xl">
+    <section className="max-w-5xl">
       <h2 className="font-display text-3xl">Podio por grupo</h2>
-      <p className="text-xl text-ink-soft mt-1">Capital final promedio de los jugadores de cada grupo.</p>
+      <p className="text-xl text-ink-soft mt-1">
+        Capital final promedio de cada grupo. Cada punto es un integrante y la raya es el promedio: una barra larga es un grupo que decidió dividido.
+      </p>
       <ol className="space-y-2 mt-4">
-        {filas.map(({ item: f, posicion }, i) => (
-          <li key={f.g} className="card-ink flex items-center gap-4 px-4 py-2.5 animate-slide-up" style={{ animationDelay: `${i * 90}ms` }}>
-            <span className={`sticker w-10 h-10 flex items-center justify-center font-display text-lg shrink-0 ${posicion === 1 ? 'bg-amber' : posicion <= 3 ? 'bg-orange' : 'bg-surface-3'}`}>
-              {posicion}
-            </span>
-            <span className="font-bold text-2xl flex-1">Grupo {f.g}</span>
-            <span className="text-lg text-muted">{f.n} {f.n === 1 ? 'jugador' : 'jugadores'}</span>
-            <span className="font-display text-2xl tabular w-40 text-right">{millones(f.promedio)}</span>
-          </li>
-        ))}
+        {filas.map(({ item: f, posicion }, i) => {
+          const lo = Math.min(...f.caps), hi = Math.max(...f.caps);
+          return (
+            <li key={f.g} className="card-ink flex items-center gap-4 px-4 py-2.5 animate-slide-up" style={{ animationDelay: `${i * 90}ms` }}>
+              <span className={`sticker w-10 h-10 flex items-center justify-center font-display text-lg shrink-0 ${posicion === 1 ? 'bg-amber' : posicion <= 3 ? 'bg-orange' : 'bg-surface-3'}`}>
+                {posicion}
+              </span>
+              <span className="font-bold text-2xl w-32 shrink-0">Grupo {f.g}</span>
+              <div className="flex-1 min-w-[10rem]">
+                <div className="relative h-7" role="img" aria-label={`Integrantes entre ${millones(lo)} y ${millones(hi)}`}>
+                  <div className="absolute inset-y-0 border-l-2 border-dashed border-muted" style={{ left: x(100) }} title="Capital inicial" />
+                  <div className="absolute top-1/2 -translate-y-1/2 h-1.5 bg-ink rounded-full" style={{ left: x(lo), width: `calc(${x(hi)} - ${x(lo)})` }} />
+                  {f.caps.map((c, k) => (
+                    <div key={k} className="absolute top-1/2 w-3.5 h-3.5 -ml-[7px] -mt-[7px] rounded-full bg-surface border-2 border-ink" style={{ left: x(c) }} />
+                  ))}
+                  <div className="absolute inset-y-0 w-1 -ml-0.5 bg-orange rounded" style={{ left: x(f.promedio) }} />
+                </div>
+                <p className="text-sm text-muted tabular">
+                  {f.caps.length} {f.caps.length === 1 ? 'jugador' : 'jugadores'}
+                  {f.caps.length > 1 && <> · de {millones(lo)} a {millones(hi)}</>}
+                </p>
+              </div>
+              <span className="font-display text-2xl tabular w-40 text-right">{millones(f.promedio)}</span>
+            </li>
+          );
+        })}
       </ol>
-      {sinGrupo > 0 && <p className="text-muted mt-3">{sinGrupo} sin grupo en el nombre: no cuentan aquí.</p>}
+      <p className="text-muted mt-3">La línea punteada marca el capital inicial (US$ 100 M).{sinGrupo > 0 && <> {sinGrupo} sin grupo en el nombre: no cuentan aquí.</>}</p>
     </section>
   );
 }
