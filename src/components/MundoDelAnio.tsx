@@ -3,10 +3,12 @@ import { EVENTOS, TITULARES } from '../content/eventos';
 import { PAISES } from '../content/paises';
 import { PARAMETROS } from '../engine/modelo';
 import { resolverPais } from '../engine/resolver';
-import type { Mundo } from '../engine/tipos';
+import type { Mundo, TipoEvento } from '../engine/tipos';
 import { pctSigno } from '../lib/formato';
 import { Bandera } from './Bandera';
 import { IconoEvento } from './Icono';
+
+const politica = (eventos: TipoEvento[]) => eventos.reduce((s, e) => s + PARAMETROS.impacto[e], 0);
 
 /** Proyector: qué le pasó a cada país este año, igual para todo el curso. */
 export function MundoDelAnio({ mundo, anio }: { mundo: Mundo; anio: number }) {
@@ -54,6 +56,11 @@ export function MundoDelAnio({ mundo, anio }: { mundo: Mundo; anio: number }) {
                       <p className="leading-snug text-[15px]">{TITULARES[p.iso2]?.[e]}</p>
                     </li>
                   ))}
+                  <li className="text-[15px] tabular">
+                    {/* Los impactos son porcentajes enteros: negocio + política suman exactamente el total mostrado. */}
+                    Negocio <strong>{pctSigno(r.mercado)}</strong> · política <strong>{pctSigno(politica(eventos))}</strong>
+                    {r.retorno > -1 ? <> = <strong>{pctSigno(r.retorno)}</strong></> : <>: se pierde todo lo invertido</>}
+                  </li>
                 </ul>
               )}
             </li>
