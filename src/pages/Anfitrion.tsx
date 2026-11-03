@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
-import { ArrowRight, Clock, Flag, Users } from 'lucide-react';
+import { ArrowRight, Clock, Flag, Users, X } from 'lucide-react';
 import { BotonSonido } from '../components/BotonSonido';
 import { Cierre } from '../components/Cierre';
 import { InformeAnual } from '../components/InformeAnual';
@@ -15,9 +15,9 @@ import { PAISES } from '../content/paises';
 import type { Senal } from '../content/senales';
 import { retornoEsperado, riesgoPais } from '../engine/modelo';
 import { useAhora, usePartida, useRespuestas, useSesion } from '../hooks/usePartida';
-import { pct } from '../lib/formato';
+import { grupoDe, pct } from '../lib/formato';
 import { currentJoinUrl } from '../lib/joinUrl';
-import { abrirRonda, cerrarRonda, extenderTiempo, senalesDeRonda, terminarPartida, type Partida } from '../lib/partida';
+import { abrirRonda, cerrarRonda, expulsar, extenderTiempo, senalesDeRonda, terminarPartida, type Partida } from '../lib/partida';
 import { initAudio, playPlayerJoin, playTensionSweep } from '../lib/sounds';
 
 export default function Anfitrion() {
@@ -121,7 +121,12 @@ function Conduccion({ partida }: { partida: Partida }) {
         )}
 
         {partida.fase === 'lobby' && (
-          <Sala partida={partida} ocupado={ocupado} onComenzar={() => accion(async () => { initAudio(); await abrirRonda(partida); })} />
+          <Sala
+            partida={partida}
+            ocupado={ocupado}
+            onComenzar={() => accion(async () => { initAudio(); await abrirRonda(partida); })}
+            onQuitar={(uid) => accion(() => expulsar(partida, uid))}
+          />
         )}
 
         {partida.fase === 'decision' && (
@@ -203,9 +208,9 @@ function Conduccion({ partida }: { partida: Partida }) {
   );
 }
 
-function Sala({ partida, ocupado, onComenzar }: { partida: Partida; ocupado: boolean; onComenzar: () => void }) {
+function Sala({ partida, ocupado, onComenzar, onQuitar }: { partida: Partida; ocupado: boolean; onComenzar: () => void; onQuitar: (uid: string) => void }) {
   const url = currentJoinUrl(partida.codigo);
-  const nombres = Object.values(partida.jugadores).sort((a, b) => a.unidoEn - b.unidoEn);
+  const nombres = Object.entries(partida.jugadores).sort(([, a], [, b]) => a.unidoEn - b.unidoEn);
   return (
     <div className="grid lg:grid-cols-[auto_1fr] gap-10 items-start">
       <div className="card-play p-6 text-center">
@@ -240,12 +245,34 @@ function Sala({ partida, ocupado, onComenzar }: { partida: Partida; ocupado: boo
           <span className="text-xl font-bold">{nombres.length} en la sala</span>
         </div>
         <ul className="flex flex-wrap gap-2 mt-6">
-          {nombres.map((j, i) => (
-            <li key={`${j.nombre}-${j.unidoEn}`} className={`card-ink px-3 py-1.5 text-lg font-bold animate-scale-in ${i % 2 ? 'tilt-b' : 'tilt-a'}`}>
-              {j.nombre}
-            </li>
-          ))}
+          {nombres.map(([uid, j], i) => {
+            const sinGrupo = grupoDe(j.nombre) === null;
+            return (
+              <li
+                key={uid}
+                className={`card-ink pl-3 pr-1.5 py-1.5 text-lg font-bold animate-scale-in flex items-center gap-2 ${sinGrupo ? 'bg-amber' : ''} ${i % 2 ? 'tilt-b' : 'tilt-a'}`}
+                title={sinGrupo ? 'Sin «G» y número de grupo al inicio: no cuenta en el podio por grupo' : undefined}
+              >
+                {j.nombre}
+                {sinGrupo && <span className="text-xs uppercase tracking-wider">sin grupo</span>}
+                {/* El alumno vuelve a la pantalla de entrada y puede entrar de nuevo con otro nombre. */}
+                <button
+                  className="w-7 h-7 rounded-full hover:bg-surface-3 flex items-center justify-center"
+                  aria-label={`Quitar a ${j.nombre} de la sala`}
+                  disabled={ocupado}
+                  onClick={() => {
+                    if (window.confirm(`¿Quitar a «${j.nombre}» de la sala? Podrá volver a entrar con otro nombre.`)) onQuitar(uid);
+                  }}
+                >
+                  <X size={16} />
+                </button>
+              </li>
+            );
+          })}
         </ul>
+        {nombres.some(([, j]) => grupoDe(j.nombre) === null) && (
+          <p className="mt-3 text-base text-muted">En amarillo, nombres sin «G» y número: quítalos con la × y que vuelvan a entrar como «G3 Ana».</p>
+        )}
       </div>
     </div>
   );
