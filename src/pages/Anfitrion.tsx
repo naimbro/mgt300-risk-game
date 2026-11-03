@@ -157,17 +157,18 @@ function Conduccion({ partida }: { partida: Partida }) {
               <button className={`${vista === 'mundo' ? 'btn-primary' : 'btn-secondary'} !py-2`} onClick={() => setVista('mundo')}>El mundo</button>
               <button className={`${vista === 'ranking' ? 'btn-primary' : 'btn-secondary'} !py-2`} onClick={() => setVista('ranking')}>Ranking</button>
               <div className="ml-auto flex gap-3">
-                {vista === 'mundo' ? (
-                  <button className="btn-primary !py-2 flex items-center gap-2" onClick={() => setVista('ranking')}>
+                {vista === 'mundo' && (
+                  <button className="btn-secondary !py-2 flex items-center gap-2" onClick={() => setVista('ranking')}>
                     Ver ranking <ArrowRight size={18} />
                   </button>
-                ) : ultima ? (
+                )}
+                {ultima ? (
                   <button className="btn-primary !py-2 flex items-center gap-2" disabled={ocupado} onClick={() => accion(() => terminarPartida(partida))}>
                     <Flag size={18} /> Terminar y ver cierre
                   </button>
                 ) : (
                   <button className="btn-primary !py-2 flex items-center gap-2" disabled={ocupado} onClick={() => accion(() => abrirRonda(partida))}>
-                    Año {anio + 1} <ArrowRight size={18} />
+                    Abrir año {anio + 1} <ArrowRight size={18} />
                   </button>
                 )}
               </div>
