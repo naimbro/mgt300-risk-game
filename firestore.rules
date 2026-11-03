@@ -164,6 +164,25 @@ service cloud.firestore {
           && partida().fase == 'final';
         allow delete: if false;
       }
+
+      // Valoración del juego al final: nota de 1 a 7 (o nada) y un comentario.
+      // NO es anónima: el ID es el uid y guarda el nombre. La leen él y el profesor.
+      match /valoraciones/{uid} {
+        allow read: if signedIn() && (uid == request.auth.uid || esHostDe(partida()));
+        allow create, update: if signedIn()
+          && uid == request.auth.uid
+          && request.resource.data.keys().hasOnly(['uid', 'nombre', 'nota', 'comentario', 'enviadoEn'])
+          && request.resource.data.uid == uid
+          && (request.resource.data.nota == null
+              || (request.resource.data.nota is int && request.resource.data.nota >= 1 && request.resource.data.nota <= 7))
+          && request.resource.data.comentario is string
+          && request.resource.data.comentario.size() <= 300
+          && request.resource.data.nombre is string
+          && request.resource.data.nombre.size() <= 24
+          && uid in partida().jugadores
+          && partida().fase == 'final';
+        allow delete: if false;
+      }
     }
 
     // Todo lo demás queda cerrado.

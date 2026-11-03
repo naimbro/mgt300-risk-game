@@ -11,7 +11,8 @@ import { anioDeRonda } from '../content/eventos';
 import { paisPorIso } from '../content/paises';
 import { useEstadoJugador, usePartida, useRespuestas, useSesion } from '../hooks/usePartida';
 import { millones, posiciones, pctSigno } from '../lib/formato';
-import { enviarCartera, guardarMemo, senalesDeRonda, type EstadoJugador, type Partida } from '../lib/partida';
+import { enviarCartera, guardarMemo, guardarValoracion, miValoracion, senalesDeRonda, type EstadoJugador, type Partida } from '../lib/partida';
+import { ValorarJuego } from '../components/ValorarJuego';
 import { playPodiumFanfare, playRoundStart, playSubmitSuccess } from '../lib/sounds';
 import { confettiPodium } from '../lib/confetti';
 import type { Senal } from '../content/senales';
@@ -120,21 +121,27 @@ function Fase({ partida, uid, estado, capital, anio, yaRespondio }: { partida: P
     }
 
     case 'final':
-      return <Final partida={partida} estado={estado} capital={capital} posicion={miPosicion} total={total} />;
+      return <Final partida={partida} nombre={partida.jugadores[uid].nombre} estado={estado} capital={capital} posicion={miPosicion} total={total} />;
   }
 }
 
-function Final({ partida, estado, capital, posicion, total }: { partida: Partida; estado: EstadoJugador | null; capital: number; posicion: number | null; total: number }) {
+function Final({ partida, nombre, estado, capital, posicion, total }: { partida: Partida; nombre: string; estado: EstadoJugador | null; capital: number; posicion: number | null; total: number }) {
   const [memo, setMemo] = useState('');
   const [enviado, setEnviado] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // null mientras se averigua: si partiera en false, quien ya valoró vería el formulario por un instante.
+  const [valorada, setValorada] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (posicion !== null && posicion <= 3) {
+    miValoracion(partida.codigo).then((v) => setValorada(!!v)).catch(() => setValorada(false));
+  }, [partida.codigo]);
+
+  useEffect(() => {
+    if (valorada && posicion !== null && posicion <= 3) {
       playPodiumFanfare();
       confettiPodium();
     }
-  }, [posicion]);
+  }, [posicion, valorada]);
 
   const historial = estado?.historial ?? [];
   const peorAnio = historial.reduce<{ anio: number; cambio: number } | null>((peor, h) => {
@@ -143,12 +150,27 @@ function Final({ partida, estado, capital, posicion, total }: { partida: Partida
   }, null);
   const paisesUsados = new Set(historial.flatMap((h) => Object.keys(h.cartera.pesos)));
 
+  if (valorada === null) return <Centro>Cargando…</Centro>;
+  if (!valorada) {
+    return (
+      <ValorarJuego
+        onEnviar={async (nota, comentario) => {
+          // Si no se pudo guardar (o la red tarda más de 5 s), igual sigue: nadie se queda
+          // atascado sin ver su resultado. Firestore termina de enviar en segundo plano.
+          await Promise.race([guardarValoracion(partida.codigo, nombre, nota, comentario).catch(() => {}), new Promise((r) => setTimeout(r, 5000))]);
+          setValorada(true);
+        }}
+        onSaltar={() => setValorada(true)}
+      />
+    );
+  }
+
   return (
     <div className="mt-4 space-y-4">
       <section className="card-play p-5 text-center">
         <p className="text-sm font-bold uppercase tracking-wider text-muted">Resultado final</p>
         <p className="font-display text-5xl tabular mt-2">{millones(capital)}</p>
-        <p className={`font-bold ${capital >= 100 ? 'text-gain' : 'text-loss'}`}>{pctSigno(capital / 100 - 1)} en {historial.length} años</p>
+        <p className={`font-bold ${capital >= 100 ? 'text-gain' : 'text-loss'}`}>{pctSigno(capital / 100 - 1)} en {historial.length} {historial.length === 1 ? 'año' : 'años'}</p>
         {posicion !== null && (
           <p className="mt-3 text-lg">
             Terminaste <span className="tape">{posicion}°</span> de {total}

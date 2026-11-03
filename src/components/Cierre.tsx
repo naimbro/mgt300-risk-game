@@ -3,7 +3,7 @@ import { EVENTOS } from '../content/eventos';
 import { PAISES } from '../content/paises';
 import { concentracion, contrafactuales, riesgoDeCartera } from '../engine/contrafactuales';
 import type { Mundo } from '../engine/tipos';
-import { cargarCierre, type EstadoJugador, type Partida } from '../lib/partida';
+import { NOTA_MAX, NOTA_MIN, cargarCierre, cargarValoraciones, type EstadoJugador, type Partida, type Valoracion } from '../lib/partida';
 import { grupoDe, millones, posiciones } from '../lib/formato';
 import { confettiPodium } from '../lib/confetti';
 import { playDrumRoll, playPodiumFanfare } from '../lib/sounds';
@@ -11,7 +11,7 @@ import { anioDeRonda } from '../content/eventos';
 import { Bandera } from './Bandera';
 import { IconoEvento } from './Icono';
 
-const PESTANAS = ['Podio', 'Por grupo', '¿Suerte o decisión?', 'Riesgo y resultado', 'Lo que pasó', 'Para discutir', 'Recomendaciones'] as const;
+const PESTANAS = ['Podio', 'Por grupo', '¿Suerte o decisión?', 'Riesgo y resultado', 'Lo que pasó', 'Para discutir', 'Recomendaciones', 'Valoración'] as const;
 type Pestana = (typeof PESTANAS)[number];
 
 export function Cierre({ partida }: { partida: Partida }) {
@@ -44,6 +44,7 @@ export function Cierre({ partida }: { partida: Partida }) {
         {pestana === 'Lo que pasó' && <LoQuePaso partida={partida} mundos={mundos} />}
         {pestana === 'Para discutir' && <ParaDiscutir />}
         {pestana === 'Recomendaciones' && <Memos memos={datos?.memos ?? []} />}
+        {pestana === 'Valoración' && <Valoraciones codigo={partida.codigo} jugadores={Object.keys(partida.jugadores).length} />}
       </div>
     </div>
   );
@@ -348,3 +349,64 @@ function Memos({ memos }: { memos: { uid: string; texto: string }[] }) {
   );
 }
 
+
+// Esta pantalla se proyecta: los comentarios van ocultos y sin nombre (en ml2 ni
+// siquiera se proyectan, porque verlos con nombre cambia lo que la gente escribe).
+function Valoraciones({ codigo, jugadores }: { codigo: string; jugadores: number }) {
+  const [lista, setLista] = useState<Valoracion[] | null>(null);
+  const [error, setError] = useState(false);
+  const [verComentarios, setVerComentarios] = useState(false);
+
+  useEffect(() => {
+    cargarValoraciones(codigo).then(setLista).catch(() => setError(true));
+  }, [codigo]);
+
+  if (error) return <p className="text-xl text-muted">No se pudieron leer las valoraciones.</p>;
+  if (!lista) return <p className="text-xl text-muted">Cargando…</p>;
+
+  const notas = lista.map((v) => v.nota).filter((n): n is number => typeof n === 'number');
+  const promedio = notas.length ? notas.reduce((a, b) => a + b, 0) / notas.length : null;
+  const cuenta = Array.from({ length: NOTA_MAX - NOTA_MIN + 1 }, (_, i) => notas.filter((n) => n === NOTA_MIN + i).length);
+  const maxCuenta = Math.max(1, ...cuenta);
+  const comentarios = lista.filter((v) => v.comentario.trim()).map((v) => v.comentario);
+
+  return (
+    <section className="max-w-4xl">
+      <h2 className="font-display text-3xl">¿Qué les pareció el juego?</h2>
+      <p className="text-xl text-ink-soft mt-1">
+        {lista.length} de {jugadores} respondieron en el teléfono. Pídeles que contesten y vuelve a abrir esta pestaña.
+      </p>
+      <div className="flex flex-wrap items-end gap-10 mt-6">
+        <div>
+          <p className="font-display text-7xl tabular leading-none">{promedio === null ? '—' : promedio.toLocaleString('es-CL', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}</p>
+          <p className="font-bold text-muted uppercase tracking-wider text-sm mt-1">promedio de 7 · {notas.length} {notas.length === 1 ? 'nota' : 'notas'}</p>
+        </div>
+        <div className="flex items-end gap-2 h-40" role="img" aria-label="Distribución de notas de 1 a 7">
+          {cuenta.map((c, i) => (
+            <div key={i} className="flex flex-col items-center justify-end h-full w-10">
+              <span className="text-sm font-bold tabular">{c || ''}</span>
+              <div className="w-full bg-orange border-2 border-ink rounded-t-md" style={{ height: `${(c / maxCuenta) * 100}%`, minHeight: c ? 6 : 0 }} />
+              <span className="font-display text-lg mt-1">{NOTA_MIN + i}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-8">
+        {comentarios.length === 0 ? (
+          <p className="text-muted text-lg">Nadie escribió un comentario todavía.</p>
+        ) : verComentarios ? (
+          <ul className="grid lg:grid-cols-2 gap-3">
+            {comentarios.map((c, i) => (
+              <li key={i} className="card p-4 text-lg leading-snug">“{c}”</li>
+            ))}
+          </ul>
+        ) : (
+          <button className="btn-secondary !py-2" onClick={() => setVerComentarios(true)}>
+            Mostrar {comentarios.length} {comentarios.length === 1 ? 'comentario' : 'comentarios'} (sin nombres)
+          </button>
+        )}
+      </div>
+    </section>
+  );
+}

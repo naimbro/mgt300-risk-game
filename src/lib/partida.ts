@@ -27,6 +27,7 @@ import type { Cartera, Mundo, ResultadoRonda, SenalAplicada } from '../engine/ti
 //   partidas/{CODIGO}/carteras/{uid}_{r}    qué decidió (solo el profesor y el alumno)
 //   partidas/{CODIGO}/jugadores/{uid}       historial con resultados (lo escribe el profesor)
 //   partidas/{CODIGO}/memos/{uid}           recomendación final al directorio
+//   partidas/{CODIGO}/valoraciones/{uid}    nota 1-7 y comentario sobre el juego (no anónima)
 //
 // El navegador del profesor es el motor: abre y cierra rondas, sortea el mundo y
 // escribe resultados. Si se cierra, reabrir su enlace retoma la partida.
@@ -276,4 +277,43 @@ export async function cargarCierre(codigo: string): Promise<{ estados: EstadoJug
     estados: e.docs.map((d) => d.data() as EstadoJugador),
     memos: m.docs.map((d) => d.data() as { uid: string; texto: string }),
   };
+}
+
+// ── Valoración del juego ────────────────────────────────────────────────────
+// Modelo de ml2-master-game: nota de 1 a 7 (la escala de notas, que no hay que
+// explicar) y un comentario corto, ambos opcionales. NO es anónima: el ID es el uid.
+
+export const NOTA_MIN = 1;
+export const NOTA_MAX = 7;
+export const COMENTARIO_MAX = 300;
+
+export interface Valoracion {
+  uid: string;
+  nombre: string;
+  nota: number | null;
+  comentario: string;
+  enviadoEn: number;
+}
+
+export async function miValoracion(codigo: string): Promise<Valoracion | null> {
+  const user = await asegurarSesion();
+  const s = await getDoc(doc(db, 'partidas', codigo, 'valoraciones', user.uid));
+  return s.exists() ? (s.data() as Valoracion) : null;
+}
+
+export async function guardarValoracion(codigo: string, nombre: string, nota: number | null, comentario: string): Promise<void> {
+  const user = await asegurarSesion();
+  await setDoc(doc(db, 'partidas', codigo, 'valoraciones', user.uid), {
+    uid: user.uid,
+    nombre: nombre.slice(0, 24),
+    nota,
+    comentario: comentario.trim().slice(0, COMENTARIO_MAX),
+    enviadoEn: Date.now(),
+  } satisfies Valoracion);
+}
+
+/** Solo el profesor. Aparte de cargarCierre para que una falla aquí no vacíe el resto del cierre. */
+export async function cargarValoraciones(codigo: string): Promise<Valoracion[]> {
+  const s = await getDocs(collection(db, 'partidas', codigo, 'valoraciones'));
+  return s.docs.map((d) => d.data() as Valoracion);
 }

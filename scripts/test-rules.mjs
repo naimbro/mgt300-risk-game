@@ -112,12 +112,27 @@ await check('v2: ana lee su historial', assertSucceeds(getDoc(P('ana', 'jugadore
 await check('v2: beto no lee el historial de ana', assertFails(getDoc(P('beto', 'jugadores', 'ana'))));
 await check('v2: beto no envía con el año cerrado', assertFails(cartera('beto', 1)));
 await check('v2: memo antes del final no', assertFails(setDoc(P('ana', 'memos', 'ana'), { uid: 'ana', texto: 'hola', enviadoEn: 1 })));
+const valoracion = (uid, extra = {}) => setDoc(P(uid, 'valoraciones', uid), { uid, nombre: uid, nota: 6, comentario: 'Bien', enviadoEn: 1, ...extra });
+await check('v2: valoración antes del final no', assertFails(valoracion('ana')));
 await check('v2: profe termina', assertSucceeds(updateDoc(P('profe'), { fase: 'final' })));
 await check('v2: nadie se une al final', assertFails(unirse('eli')));
 await check('v2: ana deja su memo', assertSucceeds(setDoc(P('ana', 'memos', 'ana'), { uid: 'ana', texto: 'Diversificar y asegurar', enviadoEn: 1 })));
 await check('v2: memo de más de 280 no', assertFails(setDoc(P('beto', 'memos', 'beto'), { uid: 'beto', texto: 'x'.repeat(281), enviadoEn: 1 })));
 await check('v2: beto no lee memo de ana', assertFails(getDoc(P('beto', 'memos', 'ana'))));
 await check('v2: profe lee memos', assertSucceeds(getDocs(collection(db('profe'), 'partidas', 'ABCDE', 'memos'))));
+await check('v2: ana valora con nota y comentario', assertSucceeds(valoracion('ana')));
+await check('v2: ana corrige su valoración', assertSucceeds(valoracion('ana', { nota: 7 })));
+await check('v2: beto valora sin nota', assertSucceeds(valoracion('beto', { nota: null, comentario: 'Más tiempo' })));
+await check('v2: nota 8 no', assertFails(valoracion('beto', { nota: 8 })));
+await check('v2: nota 0 no', assertFails(valoracion('beto', { nota: 0 })));
+await check('v2: nota 5,5 no', assertFails(valoracion('beto', { nota: 5.5 })));
+await check('v2: comentario de más de 300 no', assertFails(valoracion('beto', { comentario: 'x'.repeat(301) })));
+await check('v2: campo extra no', assertFails(valoracion('beto', { puntaje: 100 })));
+await check('v2: ana no valora a nombre de beto', assertFails(setDoc(P('ana', 'valoraciones', 'beto'), { uid: 'beto', nombre: 'beto', nota: 1, comentario: '', enviadoEn: 1 })));
+await check('v2: quien no jugó no valora', assertFails(valoracion('zoe')));
+await check('v2: beto no lee la valoración de ana', assertFails(getDoc(P('beto', 'valoraciones', 'ana'))));
+await check('v2: ana lee la suya', assertSucceeds(getDoc(P('ana', 'valoraciones', 'ana'))));
+await check('v2: profe lee valoraciones', assertSucceeds(getDocs(collection(db('profe'), 'partidas', 'ABCDE', 'valoraciones'))));
 await check('v2: nadie borra partidas', assertFails(deleteDoc(P('profe'))));
 await check('v2: otro no toma la partida', assertFails(updateDoc(P('ana'), { hostUid: 'ana' })));
 
