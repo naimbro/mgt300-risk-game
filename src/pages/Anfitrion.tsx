@@ -202,14 +202,24 @@ function Sala({ partida, ocupado, onComenzar }: { partida: Partida; ocupado: boo
       </div>
       <div>
         <h1 className="font-display text-5xl leading-none">
-          Gobernar e invertir <br />
-          <span className="tape tilt-a mt-2">en la era de la IA</span>
+          Ustedes son el directorio <br />
+          <span className="tape tilt-a mt-2">de Anthropic</span>
         </h1>
-        <ol className="mt-6 space-y-2 text-2xl">
-          <li><strong>1.</strong> Cada año llega un informe de riesgo.</li>
-          <li><strong>2.</strong> Reparten US$ 100 M entre proyectos de IA en ocho países, y deciden si asegurarse o invertir en la comunidad.</li>
+        <p className="mt-5 text-xl text-ink-soft max-w-3xl">
+          Anthropic Direct: dejar de depender solo de las nubes de Amazon, Google y Microsoft, por donde hoy pasa el 44% de los ingresos, y montar
+          cómputo propio. ¿Dónde invertir?
+        </p>
+        <ol className="mt-5 space-y-2 text-2xl">
+          <li><strong>1.</strong> Cada año llega un informe de riesgo sobre los ocho países.</li>
+          <li><strong>2.</strong> Reparten US$ 100 M en cómputo e insumos —data centers, chips, litio, níquel— y deciden si asegurarse o invertir en la comunidad.</li>
           <li><strong>3.</strong> El mundo sortea economía y política. Lo que pasa es igual para todos.</li>
         </ol>
+        <p className="mt-5 text-2xl font-bold">
+          Entren con grupo y nombre: <span className="tape">G3 Ana</span>
+        </p>
+        <p className="mt-2 text-base text-muted max-w-3xl">
+          Escenario de clase: los proyectos, los montos y los eventos del juego son ficción, no planes de Anthropic. El 44% sale de su S-1/A.
+        </p>
         <div className="mt-8 flex items-center gap-4">
           <button className="btn-primary text-xl !px-10 !py-4" disabled={ocupado || nombres.length === 0} onClick={onComenzar}>
             Comenzar

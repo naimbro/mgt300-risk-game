@@ -46,14 +46,14 @@ export default function Entrar() {
   return (
     <main className="min-h-screen bg-trama flex flex-col items-center justify-center px-4 py-10">
       <div className="w-full max-w-sm">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted text-center">Gobernar e invertir en la era de la IA</p>
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted text-center">Anthropic sale a bolsa</p>
         <h1 className="font-display text-5xl text-center leading-[0.95] mt-3">
           Riesgo
           <br />
           <span className="tape tilt-a mt-2">político</span>
         </h1>
         <p className="text-center text-ink-soft mt-5">
-          Eres el directorio de una empresa que invierte en proyectos de IA en ocho países. Cinco años. El mundo no espera.
+          Eres el directorio de Anthropic. Decides dónde invertir en cómputo e insumos —data centers, chips, litio, níquel— en ocho países. El mundo no espera.
         </p>
 
         <form onSubmit={entrar} className="card-play p-5 mt-8 space-y-4">
@@ -71,12 +71,12 @@ export default function Entrar() {
             />
           </label>
           <label className="block">
-            <span className="text-sm font-bold">Tu nombre</span>
+            <span className="text-sm font-bold">Grupo y nombre</span>
             <input
               className="input mt-1"
               value={nombre}
               onChange={(e) => setNombre(e.target.value.slice(0, 24))}
-              placeholder="Como te conoce el curso"
+              placeholder="Ej.: G3 Ana"
               autoComplete="given-name"
               required
               minLength={2}

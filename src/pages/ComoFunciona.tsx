@@ -20,6 +20,19 @@ export default function ComoFunciona() {
         </header>
 
         <section className="card p-5">
+          <h2 className="font-display text-xl">El escenario: Anthropic Direct</h2>
+          <p className="mt-2">
+            Ustedes son el directorio de Anthropic. Hoy el 44% de sus ingresos se vende a través de las nubes de Amazon, Google y Microsoft, y su
+            S-1/A declara unos US$ 895.400 M en compromisos de cómputo hasta 2045, de los cuales US$ 69.800 M vencen en los próximos 12 meses.
+            Anthropic Direct es la apuesta por depender menos de esas nubes y montar cómputo propio.
+          </p>
+          <p className="mt-2">
+            En el juego, el directorio reparte US$ 100 M entre ocho proyectos de cómputo e insumos —data centers, chips, litio, níquel— en ocho
+            países. Los proyectos, los montos y los eventos son un escenario de clase, no planes de Anthropic.
+          </p>
+        </section>
+
+        <section className="card p-5">
           <h2 className="font-display text-xl">1. El retorno de un proyecto en un año</h2>
           <p className="mt-2">
             <strong>retorno = mercado + eventos políticos + lo que devuelve el seguro − costos de mitigación</strong>
@@ -111,7 +124,7 @@ export default function ComoFunciona() {
           <h2 className="font-display text-xl">4. Informe de riesgo, seguro y comunidad</h2>
           <ul className="list-disc pl-5 mt-2 space-y-1">
             <li>El <strong>informe</strong> de cada año trae alertas y calmas. Una alerta multiplica (×2 o ×2,5) la probabilidad de un evento ese año; una calma la reduce. Después de un evento, el país queda más inestable al año siguiente (×{PARAMETROS.persistencia.toLocaleString('es-CL')}).</li>
-            <li>El <strong>seguro de riesgo político</strong> funciona como el de MIGA (Banco Mundial): devuelve el 90% de lo perdido por expropiación, controles de capital o violencia política. No cubre cambios regulatorios de aplicación general, aranceles ni conflictos con la comunidad. MIGA solo opera en países en desarrollo, así que no hay seguro en Estados Unidos ni en Alemania. Su precio incluye el riesgo normal del país: asegurarse siempre cuesta un poco más de lo que devuelve, pero protege contra el desastre y rinde cuando hay alertas.</li>
+            <li>El <strong>seguro de riesgo político</strong> funciona como el de MIGA (Banco Mundial): devuelve el 90% de lo perdido por expropiación, controles de capital o violencia política. No cubre cambios regulatorios de aplicación general, aranceles ni conflictos con la comunidad. MIGA solo opera en países en desarrollo, así que no hay seguro en Estados Unidos ni en Alemania. Su precio incluye el riesgo normal del país: asegurarse siempre cuesta un poco más de lo que devuelve, pero protege contra el desastre y rinde cuando hay alertas. Dicho como en el memo al directorio: el seguro conviene cuando el informe advierte un riesgo que no está en el precio.</li>
             <li>La <strong>relación con la comunidad</strong> (socio local, acuerdos, licencia social) cuesta {pct(PARAMETROS.costoComunidad)} y reduce en {pct(PARAMETROS.mitigacionComunidadConflicto)} el daño de un conflicto social y en {pct(PARAMETROS.mitigacionComunidadRegulacion)} el de un cambio regulatorio.</li>
           </ul>
         </section>
@@ -119,6 +132,7 @@ export default function ComoFunciona() {
         <section className="card p-5 text-sm">
           <h2 className="font-display text-xl">Fuentes</h2>
           <ul className="list-disc pl-5 mt-2 space-y-1">
+            <li>Anthropic, formulario S-1 (26 de octubre de 2026) y enmienda S-1/A (2 de noviembre de 2026): compromisos de cómputo y ventas a través de nubes.</li>
             <li>Banco Mundial, Worldwide Governance Indicators (datos 2024, publicación 2025).</li>
             <li>V-Dem Institute, Democracy Report 2025 (Índice de Democracia Liberal).</li>
             <li>FMI, World Economic Outlook, abril y julio de 2026. Ratings soberanos S&P 2025-2026.</li>

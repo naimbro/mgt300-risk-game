@@ -8,8 +8,8 @@ const OPCIONES_DURACION = [60, 90, 120];
 
 export default function CrearPartida() {
   const navigate = useNavigate();
-  const [rondas, setRondas] = useState(5);
-  const [duracion, setDuracion] = useState(90);
+  const [rondas, setRondas] = useState(4);
+  const [duracion, setDuracion] = useState(60);
   const [creando, setCreando] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

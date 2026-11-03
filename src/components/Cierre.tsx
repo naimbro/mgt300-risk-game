@@ -4,14 +4,14 @@ import { PAISES } from '../content/paises';
 import { concentracion, contrafactuales, riesgoDeCartera } from '../engine/contrafactuales';
 import type { Mundo } from '../engine/tipos';
 import { cargarCierre, type EstadoJugador, type Partida } from '../lib/partida';
-import { millones, posiciones } from '../lib/formato';
+import { grupoDe, millones, posiciones } from '../lib/formato';
 import { confettiPodium } from '../lib/confetti';
 import { playDrumRoll, playPodiumFanfare } from '../lib/sounds';
 import { anioDeRonda } from '../content/eventos';
 import { Bandera } from './Bandera';
 import { IconoEvento } from './Icono';
 
-const PESTANAS = ['Podio', '¿Suerte o decisión?', 'Riesgo y resultado', 'Lo que pasó', 'Para discutir', 'Recomendaciones'] as const;
+const PESTANAS = ['Podio', 'Por grupo', '¿Suerte o decisión?', 'Riesgo y resultado', 'Lo que pasó', 'Para discutir', 'Recomendaciones'] as const;
 type Pestana = (typeof PESTANAS)[number];
 
 export function Cierre({ partida }: { partida: Partida }) {
@@ -38,6 +38,7 @@ export function Cierre({ partida }: { partida: Partida }) {
       </nav>
       <div className="mt-6">
         {pestana === 'Podio' && <Podio partida={partida} />}
+        {pestana === 'Por grupo' && <PodioGrupos partida={partida} />}
         {pestana === '¿Suerte o decisión?' && <SuerteODecision partida={partida} mundos={mundos} />}
         {pestana === 'Riesgo y resultado' && <RiesgoResultado estados={datos?.estados ?? []} partida={partida} />}
         {pestana === 'Lo que pasó' && <LoQuePaso partida={partida} mundos={mundos} />}
@@ -91,6 +92,44 @@ function Podio({ partida }: { partida: Partida }) {
         );
       })}
     </div>
+  );
+}
+
+// Todos juegan en su teléfono pero deciden en grupo: el grupo vale el promedio de sus jugadores.
+function PodioGrupos({ partida }: { partida: Partida }) {
+  const grupos = new Map<number, number[]>();
+  let sinGrupo = 0;
+  for (const [uid, cap] of Object.entries(partida.capitales)) {
+    const j = partida.jugadores[uid];
+    if (!j) continue;
+    const g = grupoDe(j.nombre);
+    if (g === null) sinGrupo++;
+    else grupos.set(g, [...(grupos.get(g) ?? []), cap]);
+  }
+  const filas = posiciones(
+    [...grupos].map(([g, caps]) => ({ g, n: caps.length, promedio: caps.reduce((a, b) => a + b, 0) / caps.length })),
+    (f) => f.promedio,
+  );
+  if (filas.length === 0) return <p className="text-xl text-muted">Nadie entró con un nombre tipo «G3 Ana».</p>;
+
+  return (
+    <section className="max-w-4xl">
+      <h2 className="font-display text-3xl">Podio por grupo</h2>
+      <p className="text-xl text-ink-soft mt-1">Capital final promedio de los jugadores de cada grupo.</p>
+      <ol className="space-y-2 mt-4">
+        {filas.map(({ item: f, posicion }, i) => (
+          <li key={f.g} className="card-ink flex items-center gap-4 px-4 py-2.5 animate-slide-up" style={{ animationDelay: `${i * 90}ms` }}>
+            <span className={`sticker w-10 h-10 flex items-center justify-center font-display text-lg shrink-0 ${posicion === 1 ? 'bg-amber' : posicion <= 3 ? 'bg-orange' : 'bg-surface-3'}`}>
+              {posicion}
+            </span>
+            <span className="font-bold text-2xl flex-1">Grupo {f.g}</span>
+            <span className="text-lg text-muted">{f.n} {f.n === 1 ? 'jugador' : 'jugadores'}</span>
+            <span className="font-display text-2xl tabular w-40 text-right">{millones(f.promedio)}</span>
+          </li>
+        ))}
+      </ol>
+      {sinGrupo > 0 && <p className="text-muted mt-3">{sinGrupo} sin grupo en el nombre: no cuentan aquí.</p>}
+    </section>
   );
 }
 
@@ -231,6 +270,10 @@ function LoQuePaso({ partida, mundos }: { partida: Partida; mundos: Mundo[] }) {
 
 function ParaDiscutir() {
   const preguntas = [
+    {
+      titulo: '¿Está en el precio?',
+      texto: 'Anthropic vende el 44% de sus ingresos a través de las nubes de Amazon, Google y Microsoft, y montar cómputo propio cambia esa dependencia por otras. ¿Qué riesgos del juego advertía el informe y no estaban en el precio? ¿Cuáles irían en su memo al directorio?',
+    },
     {
       titulo: 'Entender el riesgo',
       texto: 'Rice y Zegart proponen cuatro capacidades: entender, analizar, mitigar y responder. ¿Cuál usaron de verdad durante el juego y cuál ignoraron?',

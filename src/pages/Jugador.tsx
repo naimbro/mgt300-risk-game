@@ -68,10 +68,12 @@ function Fase({ partida, uid, estado, capital, anio, yaRespondio }: { partida: P
           <CheckCircle2 className="text-gain" size={32} />
           <h1 className="font-display text-2xl mt-2">Estás dentro</h1>
           <p className="mt-2">
-            Empiezas con <strong>{millones(100)}</strong>. Cada año lees un informe de riesgo, repartes tu capital entre proyectos en ocho países y
-            decides si contratar seguro o invertir en la relación con la comunidad.
+            Eres el directorio de Anthropic y tienes <strong>{millones(100)}</strong> para montar cómputo propio. Cada año lees un informe de riesgo,
+            repartes el capital entre data centers, chips, litio y níquel en ocho países, y decides si contratar seguro o invertir en la relación con
+            la comunidad.
           </p>
           <p className="mt-3">Después, el mundo reparte suerte y política. Gana quien termine con más capital, pero en el cierre veremos quién decidió bien.</p>
+          <p className="mt-3 font-semibold">Decidan en grupo; cada uno confirma en su teléfono.</p>
           <p className="mt-4 text-sm text-muted">Espera a que tu profesor comience. Mira la pantalla.</p>
         </section>
       );
@@ -169,9 +171,9 @@ function Final({ partida, estado, capital, posicion, total }: { partida: Partida
       </section>
 
       <section className="card p-4">
-        <h2 className="font-display text-lg">Tu recomendación al directorio</h2>
+        <h2 className="font-display text-lg">Tu recomendación al directorio de Anthropic</h2>
         <p className="text-sm text-ink-soft mt-1">
-          En una o dos frases: ¿dónde invertirías y cómo gestionarías el riesgo político? Tu profesor la verá sin tu nombre.
+          En una o dos frases: ¿dónde montarías el cómputo propio y cómo gestionarías el riesgo político? Tu profesor la verá sin tu nombre.
         </p>
         {enviado ? (
           <p className="mt-3 font-semibold text-gain">Recibida. Gracias.</p>

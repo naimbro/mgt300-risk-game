@@ -29,3 +29,9 @@ export function posiciones<T>(items: T[], valor: (t: T) => number): { item: T; p
     return { item, posicion: ultimaPos };
   });
 }
+
+/** Grupo al inicio del nombre: "G3 Ana", "g3ana", "G 03 Ana" o "Grupo 3 Ana" → 3. Sin prefijo → null. */
+export function grupoDe(nombre: string): number | null {
+  const m = /^\s*g(?:rupo)?\s*-?\s*(\d{1,2})(?!\d)/i.exec(nombre);
+  return m ? Number(m[1]) : null;
+}
