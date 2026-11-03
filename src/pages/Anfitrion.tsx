@@ -125,31 +125,29 @@ function Conduccion({ partida }: { partida: Partida }) {
         )}
 
         {partida.fase === 'decision' && (
-          <div className="grid lg:grid-cols-[1fr_320px] gap-8">
-            <div>
-              <InformeAnual senales={senalesDeRonda(partida, partida.ronda) as Senal[]} anio={anio} grande />
-              <MapaRiesgo />
-            </div>
-            <aside className="space-y-4">
+          <div>
+            {/* Controles arriba y fijos: en un proyector angosto, una columna lateral quedaba bajo el informe, fuera de la vista. */}
+            <div className="sticky top-0 z-10 -mx-6 px-6 py-3 mb-6 bg-paper/95 backdrop-blur border-b-[2.5px] border-ink flex flex-wrap items-center gap-4">
               <Reloj terminaEn={partida.faseTerminaEn} grande sonido />
-              <div className="card-ink p-4 text-center">
-                <p className="font-display text-5xl tabular">
+              <div className="flex-1 min-w-[16rem]">
+                <p className="font-display text-3xl tabular leading-none">
                   {decidieron}
-                  <span className="text-muted text-3xl">/{jugadores.length}</span>
+                  <span className="text-muted text-2xl">/{jugadores.length}</span> <span className="text-2xl">decidieron</span>
                 </p>
-                <p className="font-bold">decidieron</p>
-                <div className="h-3 bg-surface-3 rounded-full mt-2 overflow-hidden">
+                <div className="h-5 bg-surface-3 rounded-full mt-2 overflow-hidden border-2 border-ink">
                   <div className="h-full bg-orange transition-all" style={{ width: `${jugadores.length ? (100 * decidieron) / jugadores.length : 0}%` }} />
                 </div>
               </div>
-              <button className="btn-secondary w-full flex items-center justify-center gap-2" disabled={ocupado} onClick={() => accion(() => extenderTiempo(partida, 30))}>
+              <button className="btn-secondary flex items-center justify-center gap-2" disabled={ocupado} onClick={() => accion(() => extenderTiempo(partida, 30))}>
                 <Clock size={18} /> +30 segundos
               </button>
-              <button className="btn-primary w-full" disabled={ocupado} onClick={() => accion(async () => { playTensionSweep(); await cerrarRonda(partida); setVista('mundo'); })}>
+              <button className="btn-primary" disabled={ocupado} onClick={() => accion(async () => { playTensionSweep(); await cerrarRonda(partida); setVista('mundo'); })}>
                 Cerrar el año ahora
               </button>
-              <p className="text-sm text-muted">Se cierra solo cuando se acaba el tiempo o cuando todos decidieron. Quien no alcance mantiene su cartera anterior.</p>
-            </aside>
+            </div>
+            <InformeAnual senales={senalesDeRonda(partida, partida.ronda) as Senal[]} anio={anio} grande />
+            <MapaRiesgo />
+            <p className="text-sm text-muted mt-4">Se cierra solo cuando se acaba el tiempo o cuando todos decidieron. Quien no alcance mantiene su cartera anterior.</p>
           </div>
         )}
 
