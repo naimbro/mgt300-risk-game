@@ -167,9 +167,23 @@ function Conduccion({ partida }: { partida: Partida }) {
                     <Flag size={18} /> Terminar y ver cierre
                   </button>
                 ) : (
-                  <button className="btn-primary !py-2 flex items-center gap-2" disabled={ocupado} onClick={() => accion(() => abrirRonda(partida))}>
-                    Abrir año {anio + 1} <ArrowRight size={18} />
-                  </button>
+                  <>
+                    {/* Por si se acaba la hora: el cierre funciona con los años que se alcanzaron a jugar. */}
+                    <button
+                      className="btn-ghost !py-2 flex items-center gap-2"
+                      disabled={ocupado}
+                      onClick={() => {
+                        if (window.confirm(`¿Terminar la partida en ${anio} y pasar al cierre? Se jugaron ${partida.ronda} de ${partida.totalRondas} años.`)) {
+                          void accion(() => terminarPartida(partida));
+                        }
+                      }}
+                    >
+                      <Flag size={18} /> Terminar aquí
+                    </button>
+                    <button className="btn-primary !py-2 flex items-center gap-2" disabled={ocupado} onClick={() => accion(() => abrirRonda(partida))}>
+                      Abrir año {anio + 1} <ArrowRight size={18} />
+                    </button>
+                  </>
                 )}
               </div>
             </div>
